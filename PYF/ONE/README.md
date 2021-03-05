@@ -6,4 +6,4 @@ Follow this link for the data pre-processing routines: [PYF](https://github.com/
 
 # Authors
 
-Ana L. Dueñas C., Héctor M. Sánchez C.
+Ana L. Dueñas C., Juán J. Olivera L., Héctor M. Sánchez C.

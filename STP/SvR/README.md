@@ -6,4 +6,4 @@ Follow this link for the data pre-processing scripts: [STP](https://github.com/C
 
 # Authors
 
-Christopher De Leon, Héctor M. Sánchez C.
+Christopher De Leon, Guillermo O. Cota M., Héctor M. Sánchez C.
