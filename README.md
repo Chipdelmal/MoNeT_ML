@@ -8,8 +8,11 @@ For more information on the experiments and the datasets, follow these links:
 * [tGD](https://github.com/Chipdelmal/MoNeT_DA/tree/main/PAN/tGD): Second iteration of the tGD
 * [STP](https://github.com/Chipdelmal/MoNeT_DA/tree/main/STP/SvR): São Tomé and Príncipe linked drive
 
+<br><br>
 
 ![](https://raw.githubusercontent.com/Chipdelmal/MoNeT/master/docs/media/MoNeT.png)
 
+
+<br><br>
 
 <img src="https://chipdelmal.github.io/MGDrivE_Presentations/MMC2020/img/Logos/berkeley.jpg" height="25px"> <img src="https://chipdelmal.github.io/MGDrivE_Presentations/MMC2020/img/Logos/ihme.png" height="25px"> <img src="https://chipdelmal.github.io/MGDrivE_Presentations/MMC2020/img/Logos/UCD.jpg" height="25px"> <img src="https://chipdelmal.github.io/MGDrivE_Presentations/MMC2020/img/Logos/uci-stacked.png" height="25px"> <img src="https://chipdelmal.github.io/MGDrivE_Presentations/MMC2020/img/Logos/UCSD.jpg" height="25px"> <img src="https://chipdelmal.github.io/MGDrivE_Presentations/MMC2020/img/Logos/itesm.png" height="25px"> <img src="https://chipdelmal.github.io/MGDrivE_Presentations/MMC2020/img/Logos/nvidia.jpg" height="25px"> <img src="https://chipdelmal.github.io/MGDrivE_Presentations/MMC2020/img/Logos/tigs.png" height="25px"> <img src="https://chipdelmal.github.io/MGDrivE_Presentations/MMC2020/img/Logos/IGI.png" height="25px"> <img src="https://chipdelmal.github.io/MGDrivE_Presentations/MMC2020/img/Logos/DARPA.jpg" height="25px">
