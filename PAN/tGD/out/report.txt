@@ -1,0 +1,30 @@
+Dataset size                  : 1599
+Training size                 : 1119
+Testing size                  : 480
+Training set accuracy score   : 0.5907059874888293
+Training set F1 score         : 0.5889430602386337
+Training set precision score  : 0.5884197862261149
+Training set recall score     : 0.5884197862261149
+Training set Jaccard score    : 0.441488367076368
+Test set accuracy score       : 0.5604166666666667
+Test set F1 score             : 0.5535166171003266
+Test set precision score      : 0.5503348247801372
+Test set recall score         : 0.5503348247801372
+Test set Jaccard score        : 0.4060107289644263
+CV (f1) mean                  : 0.5864920923850777
+CV (f1) stddev                : 0.10502623821429069
+Feature importances           : {'i_hnf': 0.056862047277185274, 'i_ren': 0.347728091427481, 'i_key': 0.5954098612953338}
+Correlations                  : {'i_hnf': 0.09161941018261978, 'i_ren': 0.3676661317075303, 'i_key': -0.36933993439383705}
+Report                        : 
+              precision    recall  f1-score   support
+
+           0       0.54      0.59      0.56        97
+           1       0.43      0.43      0.43        95
+           2       0.43      0.33      0.38        96
+           3       0.51      0.53      0.52        96
+           4       0.84      0.92      0.88        96
+
+    accuracy                           0.56       480
+   macro avg       0.55      0.56      0.55       480
+weighted avg       0.55      0.56      0.55       480
+
