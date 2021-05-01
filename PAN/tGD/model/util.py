@@ -2,14 +2,34 @@ import sklearn.model_selection
 import pandas as pd
 import os
 
+# For previous data set
+# DATA_TYPES = {
+#     "i_hnf"     : 'int8'
+#     , "i_cac"   : 'int8'
+#     , "i_frc"   : 'int8'
+#     , "i_hrt"   : 'int8'
+#     , "i_ren"   : 'int8'
+#     , "i_res"   : 'int8'
+#     , "i_grp"   : 'int8'
+#     , "0.05"    : 'float64'
+#     , "0.1"     : 'float64'
+#     , "0.25"    : 'float64'
+#     , "0.5"     : 'float64'
+#     , "0.75"    : 'float64'
+#     , "0.9"     : 'float64'
+#     , "0.95"    : 'float64'
+# }
+
 DATA_TYPES = {
-    "i_hnf"     : 'int8'
-    , "i_cac"   : 'int8'
-    , "i_frc"   : 'int8'
-    , "i_hrt"   : 'int8'
+    "i_smx"     : 'int8'
+    , "i_sgv"   : 'int8'
+    , "i_sgn"   : 'int8'
+    , "i_rsg"   : 'float64'
+    , "i_rer"   : 'float64'
     , "i_ren"   : 'int8'
-    , "i_res"   : 'int8'
-    , "i_grp"   : 'int8'
+    , "i_qnt"   : 'int8'
+    , "i_gsv"   : 'float64'
+    , "i_fic"   : 'float64'
     , "0.05"    : 'float64'
     , "0.1"     : 'float64'
     , "0.25"    : 'float64'
@@ -28,7 +48,6 @@ def get_data(key, path_to_data_directory):
 
     Parameters:
     -----------
-
         key : string
             The substring to search for in each file name.
 
