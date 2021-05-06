@@ -5,7 +5,8 @@
 
 MTR="WOP"
 VT_SPLIT="0.25"
-KFOLD="10"
+KFOLD="5"
+QNT="50"
 
 declare -a quantiles=("50" "75" "90")
 declare -a metrics=("POE" "WOP")
