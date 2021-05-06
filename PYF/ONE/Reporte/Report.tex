@@ -2,6 +2,7 @@
 \usepackage[utf8]{inputenc}
 \usepackage[letterpaper, margin=1in]{geometry}
 \usepackage{graphicx}
+\usepackage{subfig}
 \graphicspath{{/}}
 
 \title{MoNeT PYF Machine Learning}
@@ -94,13 +95,115 @@ most probable outcome bad, as the metric got lower when taking into account the 
 Also, as more simulations are taking into consideration, the variance is expected to be lowest for percentil 50 and highest for percentil 90.
 
 \subsection{Histograms}
-We made a histogram of each feature to get a sense of the possible values they can take and their distribution.
+\subsubsection{Features}
+After plotting each feature variable on it's own histogram in Fig. \ref{fig:feat_histograms}
+we can see that all values are integer and some values have more presence overall.
+After couting the frequency of each unique value for each feature we confirm that to 
+produce the dataset, certain values were given more weight by repeating it more times
+in simulation runs. For \emph{pop}, \emph{ren} and \emph{res}, just a few values had
+majority weight. However, both \emph{mad} and \emph{mat} shared same importance across
+multiples of 5 from $[0-50]$.
+\begin{figure}[h]
+    \centering
+    \subfloat[]{\includegraphics[width=0.32\textwidth]{hist_i_pop.png}} 
+    \subfloat[]{\includegraphics[width=0.32\textwidth]{hist_i_ren.png}} 
+    \subfloat[]{\includegraphics[width=0.32\textwidth]{hist_i_res.png}}
+    \hfil
+    \subfloat[]{\includegraphics[width=0.32\textwidth]{hist_i_mat.png}} 
+    \subfloat[]{\includegraphics[width=0.32\textwidth]{hist_i_mad.png}} 
+    \caption{(a) pop (b) ren (c) res (d) mad (e) mat}
+    \label{fig:feat_histograms}
+\end{figure}
+\subsubsection{Targets}
+Our targets are computed from aggregating multiple runs per configuration
+and are divided into 3 quantiles: 50\%, 75\%, 90\%. We then will plot the
+each target variable distribution for each quantile.
+\begin{figure}[h]
+    \centering
+    \subfloat[]{\includegraphics[width=0.32\textwidth]{hist_POE_50.png}} 
+    \subfloat[]{\includegraphics[width=0.32\textwidth]{hist_POE_75.png}} 
+    \subfloat[]{\includegraphics[width=0.32\textwidth]{hist_POE_90.png}}
+    \hfil 
+    \caption{(a) POE 50\% (b) POE 75\% (c) POE 90\%}
+    \label{fig:target_histopoe}
+\end{figure}
+
+We find from Fig. \ref{fig:target_histopoe} that probability of elimination
+is the same regardless the quantile matrics we are looking at.
+
+\begin{figure}[h]
+    \centering
+    \subfloat[]{\includegraphics[width=0.98\textwidth]{hist_wop_005.jpg}} 
+    \hfil
+    \subfloat[]{\includegraphics[width=0.98\textwidth]{hist_wop_005.jpg}} 
+    \hfil
+    \subfloat[]{\includegraphics[width=0.98\textwidth]{hist_wop_005.jpg}} 
+    \hfil
+    \subfloat[]{\includegraphics[width=0.98\textwidth]{hist_wop_005.jpg}} 
+    \hfil
+    \subfloat[]{\includegraphics[width=0.98\textwidth]{hist_wop_005.jpg}} 
+    \hfil
+    \subfloat[]{\includegraphics[width=0.98\textwidth]{hist_wop_005.jpg}} 
+    \hfil 
+    \caption{(a) ${WOP_{0.05}}$, (b) ${WOP_{0.10}}$, (c) ${WOP_{0.50}}$, (d) ${WOP_{0.75}}$, (e) ${WOP_{0.90}}$, (f) ${WOP_{0.95}}$}
+    \label{fig:target_histowop}
+\end{figure}
+
+
 \subsection{Correlations}
+\begin{figure}[h]
+    \centering
+    \subfloat[]{\includegraphics[width=0.32\textwidth]{corr_i_pop_POE.png}} 
+    \subfloat[]{\includegraphics[width=0.32\textwidth]{corr_i_ren_POE.png}} 
+    \subfloat[]{\includegraphics[width=0.32\textwidth]{corr_i_res_POE.png}}
+    \hfil 
+    \subfloat[]{\includegraphics[width=0.32\textwidth]{corr_i_mat_POE.png}}
+    \subfloat[]{\includegraphics[width=0.32\textwidth]{corr_i_mad_POE.png}}
+    \hfil 
+    \caption{(a) $pop - POE$ (b) $ren-POE$ (c) $res-POE$ (d) $mad-POE$ (e) $mat-POE$}
+    \label{fig:corr_poe}
+\end{figure}
+
+
 \subsection{Discretazing Target Variables}
+The results of this model will be used during brainstorm meetings and
+it are meant to loosely evaluate if some hypothesis are reasonable to explore.
+For that, we are expected to deliver categorical results. Instead of 
+a real interval of values, we ought to give ['LOW', 'MID', 'HIGH'] labels.
+
+To make easier our exploration analysis and training we discretized every target variable.
+We did so by dividing our target variable' ranges into 3 intervals all the points that
+lay within the same interval get assigned the same label. However, we did not uniformly 
+divide the ranges to obtain the intervals, instead, we decided the boundaries from what
+we observed in the target histograms.
+For the data exploration we decided on the following intervals:
+\begin{figure}[h]
+    \begin{center}
+    \begin{tabular}{c c c c}
+            \hline
+            Target & Low & Mid & High \\
+            \hline\hline
+            POE & $[0-0.6)$ & $[0.6-0.85)$ & $[0.85-1)$ \\
+            $WOP_i$ & $[0-250)$ & $[250-1500)$ & $[1500-2000)$ \\
+            \hline
+        \end{tabular}
+    \end{center}
+    \caption{Discretization intervals for data exploration}
+    \label{table:de_discreteintervals}
+\end{figure}
 \subsection{Understanding POE outcomes through decision trees}
+Our feature space is composed of discrete integer data and a low
+amount of unique values per features. Nonetheless, our relationships
+are far from linear, making it hard to analyze manually. At this point
+we tried to use a Decision Tree and analyze its' decision conditions to
+understand better the data.
+
+
 \subsection{Understanding WOP outcomes throught 3D plotting}
-%% Aqui van 5 histogramas, uno para cada variable
-%  Podemos especular como podria afectar cada variable
+
+
+
+
 %% Aqui va el histograma de POW y el de l
 
 
@@ -113,6 +216,9 @@ We made a histogram of each feature to get a sense of the possible values they c
 \subsection{NN Results}
 \section{Pipeline Integration}
 \section{Discussion}
+\begin{itemize}
+    \item Weight of specifics values for each feature might heavily influnce model training. Would be nice to verify results in interpolated points.
+\end{itemize}
 \section{Conclusion}
 \section{References}
 \end{document}
