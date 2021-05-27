@@ -17,7 +17,7 @@ class LWModel:
         x[2] /= 100
         x[3] /= 100
         x[4] /= 100
-        # x.append(x[1]*x[2])
+        x.append(x[1]*x[2])
 
         poe_preds = self.POE_CLF.predict(np.array([x]))
         poe_probs = self.POE_CLF.predict_proba(np.array([x]))
@@ -30,8 +30,9 @@ class LWModel:
             for qnt in QUANTILES:
                 target_name = 'WOP_{}_{}'.format(target, qnt)
                 target_preds = self.WOPS_CLFS[target_name].predict(np.array([x]))
-                target_probs = self.WOPS_CLFS[target_name].predict_proba(np.array([x]))
-
+                # if self.WOPS_CLFS[target_name].predict_proba
+                # target_probs = self.WOPS_CLFS[target_name].predict_proba(np.array([x]))
+                target_probs = np.array([1.0])
                 res = (target_preds[0], np.max(target_probs))
                 t_results[qnt] = res
             wop_results[target] = t_results

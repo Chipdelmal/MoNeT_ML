@@ -13,6 +13,8 @@ from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay
 from sklearn.neural_network import MLPClassifier
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.tree import DecisionTreeClassifier
+from sklearn.multiclass import OneVsOneClassifier
+from sklearn.svm import SVC, LinearSVC
 import joblib
 
 from PYF_Model import LWModel
@@ -36,7 +38,7 @@ LABELS = ['LOW', 'MID', 'HIGH']
 WOP_BINS = [-1, 250, 1500, 2000]
 POE_BINS = [-1, 0.333, 0.66, 2]
 
-MODEL_FILE_FMT = '{}.model'
+MODEL_FILE_FMT = '{}_{}.model'
 FILE_NAME_FMT = 'HLT_{0}_{1}_qnt.csv'
 BASE_DIR = LND
 CLN_DATA_DIR_PATH = path.join(BASE_DIR, 'Clean')
@@ -57,7 +59,7 @@ def d_discrete_error(conf_mat, class_labels, task):
   plt.figure(figsize=(16,14))
   disp.plot(values_format = '.5g')
   plt.title("{} Conf Matrix".format(task))
-  plt.savefig(path.join(GRAPHS_DIR_PATH, 'g_{}.jpg'.format(task)))
+  plt.savefig(path.join(GRAPHS_DIR_PATH, 'g_{}_{}.jpg'.format(USR, task)))
 
 def correct_classes(classes):
     list_classes = list(classes)
@@ -145,11 +147,12 @@ for qnt in QUANTILES:
         df[discrete_target] = pd.cut(df[target],
                                     bins = WOP_BINS,
                                     labels=LABELS)
-        dataX = df[['i_pop', 'i_ren' , 'i_res', 'i_mad', 'i_mat']].copy().to_numpy(np.float64)
+        dataX = df[['i_pop', 'i_ren' , 'i_res', 'i_mad', 'i_mat', 'i_nmosquitos']].copy().to_numpy(np.float64)
         dataY = df[discrete_target].copy().to_numpy()
         target_name = 'WOP_{}_{}'.format(target, qnt)
         clf = folds_training(dataX, dataY,
-                        lambda: KNeighborsClassifier(n_neighbors=3),
+                        # lambda: KNeighborsClassifier(n_neighbors=3),
+                        lambda: OneVsOneClassifier(LinearSVC(random_state=42)),
                         target_name, 'WOP[{}]_{}%'.format(target, qnt))
 
         WOPS_CLFS[target_name] = clf
@@ -164,7 +167,7 @@ discrete_target = target + '_D'
 df[discrete_target] = pd.cut(df[target],
                             bins = POE_BINS,
                             labels=LABELS)
-dataX = df[['i_pop', 'i_ren' , 'i_res', 'i_mad', 'i_mat']].copy().to_numpy(np.float64)
+dataX = df[['i_pop', 'i_ren' , 'i_res', 'i_mad', 'i_mat', 'i_nmosquitos']].copy().to_numpy(np.float64)
 dataY = df[discrete_target].copy().to_numpy()
 POE_CLF = folds_training(dataX, dataY,
                 lambda: DecisionTreeClassifier(random_state=42, max_depth=5),
@@ -183,6 +186,6 @@ if (not path.isdir(MODEL_DIR_PATH)):
     os.mkdir(MODEL_DIR_PATH)
 
 
-model_name = 'lw_pyf_model'
-model.save(path.join(MODEL_DIR_PATH, MODEL_FILE_FMT.format(model_name)))
-print('Model saved as: ' + MODEL_FILE_FMT.format(model_name))
+model_name = 'lw_pyf_model'.format(())
+model.save(path.join(MODEL_DIR_PATH, MODEL_FILE_FMT.format(USR, model_name)))
+print('Model saved as: ' + MODEL_FILE_FMT.format(USR, model_name))

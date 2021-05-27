@@ -26,8 +26,9 @@ if __name__ == "__main__":
 
     # Load Model
     BASE_DIR_PATH = sys.argv[1]
+    USR = sys.argv[2]
     MODELS_DIR_PATH = path.join(BASE_DIR_PATH, 'Model')
-    pyf_model = joblib.load(path.join(MODELS_DIR_PATH, 'lw_pyf_model.model'))
+    pyf_model = joblib.load(path.join(MODELS_DIR_PATH, '{}_lw_pyf_model.model'.format(USR)))
 
     
     while True:
