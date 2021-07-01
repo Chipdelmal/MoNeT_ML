@@ -1,4 +1,5 @@
 
+import STP_constants as cst
 from sys import argv
 import numpy as np
 import pandas as pd
@@ -10,14 +11,11 @@ from contextlib import redirect_stdout
 from sklearn.model_selection import train_test_split, cross_val_score
 from sklearn.ensemble import BaggingRegressor
 
-VT_SPLIT = .3
-TREES = 50
-DEPTH = 15
-KFOLD = 20
 
 MTR = argv[1]
-# On Disk -> JOB = 8, On Server -> JOB = 60
-JOB = 8
+(VT_SPLIT, TREES, DEPTH, KFOLD) = (
+    cst.VT_SPLIT, cst.TREES, cst.DEPTH, cst.KFOLD
+)
 
 ###############################################################################
 # Read CSV
