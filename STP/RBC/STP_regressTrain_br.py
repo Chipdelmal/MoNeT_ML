@@ -1,3 +1,5 @@
+
+from sys import argv
 import numpy as np
 import pandas as pd
 import seaborn as sns
@@ -9,10 +11,11 @@ from sklearn.model_selection import train_test_split, cross_val_score
 from sklearn.ensemble import BaggingRegressor
 
 VT_SPLIT = .3
-TREES = 100
+TREES = 50
 DEPTH = 15
 KFOLD = 20
-MTR = "POE"
+
+MTR = argv[1]
 # On Disk -> JOB = 8, On Server -> JOB = 60
 JOB = 8
 
@@ -24,7 +27,7 @@ DATA_REG = pd.read_csv('REG_HLT_50Q_10T.csv')
 DATA_CLS = pd.read_csv('CLS_HLT_50Q_10T.csv')
 
 frames = [DATA_SCA, DATA_REG, DATA_CLS]
-DATA = pd.concat(frames)
+DATA = frames[1] # pd.concat(frames)
 # Features and labels ---------------------------------------------------------
 COLS = list(DATA.columns)
 (FEATS, LABLS) = (
