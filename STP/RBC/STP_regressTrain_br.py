@@ -12,7 +12,9 @@ from sklearn.model_selection import train_test_split, cross_val_score
 from sklearn.ensemble import BaggingRegressor
 
 
-MTR = argv[1]
+# Launch with: python STP_regressTrain_br.py 'CPT'
+
+MTR = argv[1] # 'CPT'
 (VT_SPLIT, TREES, DEPTH, KFOLD) = (
     cst.VT_SPLIT, cst.TREES, cst.DEPTH, cst.KFOLD
 )
@@ -20,12 +22,7 @@ MTR = argv[1]
 ###############################################################################
 # Read CSV
 ###############################################################################
-DATA_SCA = pd.read_csv('SCA_HLT_50Q_10T.csv')
-DATA_REG = pd.read_csv('REG_HLT_50Q_10T.csv')
-DATA_CLS = pd.read_csv('CLS_HLT_50Q_10T.csv')
-
-frames = [DATA_SCA, DATA_REG, DATA_CLS]
-DATA = frames[1] # pd.concat(frames)
+DATA = pd.read_csv('REG_HLT_50Q_10T.csv')
 # Features and labels ---------------------------------------------------------
 COLS = list(DATA.columns)
 (FEATS, LABLS) = (
