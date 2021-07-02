@@ -3,7 +3,7 @@
 ## To think about and implement
 
 * Use the CLS dataset for classification and the REG for regression (do not concatenate)
-* SCA will probably need "one-hot" encoding for the SEX feature
+* REG will probably need "one-hot" encoding for the SEX feature
 * Check that the methods used for the ensembles should be subject to feature scaling and/or normalization
 * Use `sys.argv` for automation
 * Think about creating a wrapper script for classification and another one for regression (most of the code is the same across methods, the only changes are around the model used)
