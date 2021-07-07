@@ -1,0 +1,50 @@
+* Output Metric: CPT
+
+* Feats Order: ['i_sxm', 'i_sxg', 'i_sxn', 'i_ren', 'i_res', 'i_rsg', 'i_gsv', 'i_fcf', 'i_mfm', 'i_mft', 'i_hrm', 'i_hrt', 'i_grp', 'i_mig']
+* Train/Validate entries: 595476/595476 (1190952)
+* Cross-validation F1: 0.93 (+/-0.00)
+* Validation Accuracy: 0.93
+* Validation F1: 0.92 (0.93/0.93)
+* Jaccard: 0.88
+* Features Importance & Correlation
+	* i_sxm: 0.001, 0.072
+	* i_sxg: 0.000, -0.064
+	* i_sxn: 0.000, -0.008
+	* i_ren: 0.269, -0.477
+	* i_res: 0.272, -0.563
+	* i_rsg: 0.092, 0.003
+	* i_gsv: 0.111, 0.008
+	* i_fcf: 0.112, -0.035
+	* i_mfm: 0.056, -0.065
+	* i_mft: 0.070, -0.043
+	* i_hrm: 0.006, -0.137
+	* i_hrt: 0.010, -0.178
+	* i_grp: 0.000, nan
+	* i_mig: 0.000, nan
+* Drop-Cols & Permutation Features Importance
+	* i_sxm: 0.001, 0.001
+	* i_sxg: -0.001, -0.000
+	* i_sxn: 0.001, 0.000
+	* i_ren: 0.110, 0.205
+	* i_res: 0.132, 0.229
+	* i_rsg: 0.072, 0.104
+	* i_gsv: 0.117, 0.167
+	* i_fcf: 0.085, 0.146
+	* i_mfm: 0.039, 0.060
+	* i_mft: 0.041, 0.085
+	* i_hrm: 0.003, 0.003
+	* i_hrt: 0.003, 0.004
+	* i_grp: 0.001, 0.000
+	* i_mig: 0.001, 0.000
+* Class report: 
+              precision    recall  f1-score   support
+
+           0       0.86      0.98      0.92    169264
+           1       0.81      0.33      0.47     37694
+           2       0.96      0.95      0.95    212829
+           3       1.00      0.99      1.00    175689
+
+    accuracy                           0.93    595476
+   macro avg       0.91      0.81      0.83    595476
+weighted avg       0.93      0.93      0.92    595476
+

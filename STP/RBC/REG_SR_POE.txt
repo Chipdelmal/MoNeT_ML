@@ -1,9 +1,0 @@
-* Stacking Regressor
-* Output Metric: POE
-
-* Feats Order: ['i_sxm', 'i_sxg', 'i_sxn', 'i_ren', 'i_res', 'i_rsg', 'i_gsv', 'i_fcf', 'i_mfm', 'i_mft', 'i_hrm', 'i_hrt', 'i_grp', 'i_mig']
-* Train/Validate entries: 2500999/1071857 (3572856)
-* Cross-validation R2: 0.34 (+/-0.06)
-* R2 score: 0.36
-* Root Mean square error: 0.39
-* Mean absolute error: 0.21

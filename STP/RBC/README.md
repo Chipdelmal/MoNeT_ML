@@ -4,9 +4,8 @@
 
 * `CLS_HLT_50Q_10T.csv`
 * `REG_HLT_50Q_10T.csv`
-* `SCA_HLT_50Q_10T.csv`
 
-These datasets are then concatentated into one Pandas Dataframe for the classifiers/regressors to train and test on.
+`CLS` is used for training classifiers while`REG`is used for training regressors.
 
 ## Python Scripts Nomenclature
 
@@ -31,13 +30,21 @@ These datasets are then concatentated into one Pandas Dataframe for the classifi
 
 ## Running Classifiers/Regressors
 
-To run a classifier or regressor on the datasets, simply use the `py` or `python3` command on the script of your choice
-
-e.g. to run a Random Forest Regressor, run:
+To run classifiers on a certain metric, 
 
 ```bash
-py STP_regressTrain_rf.py
+./STP_clsTrain.sh $metric
 ```
+
+where `$metric` is the metric abbreviation of your choice in a string e.g. `./STP_clsTrain.sh 'POE'`
+
+To run regressors on a certain metric, 
+
+```bash
+./STP_regTrain.sh $metric
+```
+
+where `$metric` is the metric abbreviation of your choice in a string e.g. `./STP_regTrain.sh 'POE'`
 
 ## Result .txt Files
 
