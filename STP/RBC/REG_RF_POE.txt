@@ -1,8 +1,0 @@
-* Output Metric: POE
-
-* Feats Order: ['i_sxm', 'i_sxg', 'i_sxn', 'i_ren', 'i_res', 'i_rsg', 'i_gsv', 'i_fcf', 'i_mfm', 'i_mft', 'i_hrm', 'i_hrt', 'i_grp', 'i_mig']
-* Train/Validate entries: 595476/595476 (1190952)
-* Cross-validation R2: 0.85 (+/-0.01)
-* R2 score: 0.85
-* Root Mean square error: 0.13
-* Mean absolute error: 0.05
