@@ -2,49 +2,34 @@
 
 ## Datasets
 
+* `SCA_HLT_50Q_10T.csv`
 * `CLS_HLT_50Q_10T.csv`
 * `REG_HLT_50Q_10T.csv`
 
-`CLS` is used for training classifiers while`REG`is used for training regressors.
+`CLS` is used for training classifiers while `REG` and `SCA` are used for training regressors.
 
 ## Python Scripts Nomenclature
 
-`task` represents the type of machine learning task used on the datasets (either Classifier or Regressor).
-
 `model` represents which model used to execute the task on the datasets (e.g. using an Extra Trees model)
 
-* `STP_taskTrain_model.py`
-    * Replace `task` with: 
-        * `cls`: Classifier
-        * `regress`: Regressor
+* `STP_Train_model.py`    
     * Replace `model` with: 
-        * `bc`: Bagging Classifier
-        * `br`: Bagging Regressor
+        * `b`: Bagging Classifier/Regressor
         * `et`: Extra Trees
         * `gbt`: Gradient Boosted Trees
         * `rf`: Random Forest
-        * `sc`: Stacking Classifier
-        * `sr`: Stacking Regressor
-        * `vc`: Voting Classifier
-        * `vr`: Voting Regressor
+        * `s`: Stacking Classifier/Regressor
+        * `v`: Voting Classifier/Regressor
 
 ## Running Classifiers/Regressors
 
-To run classifiers on a certain metric, 
+To run classifiers on a certain dataset and metric, 
 
 ```bash
-./STP_clsTrain.sh $metric
+./STP_Train.sh $dataset $metric
 ```
 
-where `$metric` is the metric abbreviation of your choice in a string e.g. `./STP_clsTrain.sh 'POE'`
-
-To run regressors on a certain metric, 
-
-```bash
-./STP_regTrain.sh $metric
-```
-
-where `$metric` is the metric abbreviation of your choice in a string e.g. `./STP_regTrain.sh 'POE'`
+where `$metric` is the metric abbreviation of your choice in a string e.g. `./STP_Train.sh 'STP' 'POE'` to train a model on the `STP` dataset and fit on `POE` metric
 
 ## Result .txt Files
 
@@ -52,26 +37,24 @@ The above python scripts generate a report `.txt` file that shows meta-informati
 
 ## .txt Files Nomenclature
 
-`task` represents the type of machine learning task used on the datasets (either Classifier or Regressor).
+`set` represents which dataset was used to train the models on.
 
 `model` represents which model used to execute the task on the datasets (e.g. using an Extra Trees model)
 
 `metric` represents the outcome variable the model was tasked to fit on.
 
-* `task_model_metric.py`
-    * Replace `task` with: 
-        * `CLS`: Classifier
-        * `REG`: Regressor
+* `set_model_metric.txt`
+    * Replace `set` with: 
+        * `SCA`
+        * `CLS`
+        * `REG`
     * Replace `model` with: 
-        * `BC`: Bagging Classifier
-        * `BR`: Bagging Regressor
+        * `B`: Bagging Classifier/Regressor
         * `ET`: Extra Trees
         * `GBT`: Gradient Boosted Trees
         * `RF`: Random Forest
-        * `SC`: Stacking Classifier
-        * `SR`: Stacking Regressor
-        * `VC`: Voting Classifier
-        * `VR`: Voting Regressor
+        * `S`: Stacking Classifier/Regressor
+        * `V`: Voting Classifier/Regressor
     * Replace `metric` with:
         * `CPT`: Cumulative fraction of mosquitoes divided by time
         * `TTI`: Time to introgression
