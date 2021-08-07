@@ -26,10 +26,10 @@
 To run classifiers on a certain dataset and metric, 
 
 ```bash
-./STP_Train.sh $dataset $metric
+./STP_Train.sh $dataset $metric $path
 ```
 
-where `$metric` is the metric abbreviation of your choice in a string e.g. `./STP_Train.sh 'STP' 'POE'` to train a model on the `STP` dataset and fit on `POE` metric
+where `$dataset` is the three-letter abreviation of the dataset you're using, `$metric` is the metric abbreviation of your choice in a string, and `$path` is where the dataset csv files are and also where the output result files are saved to e.g. `./STP_Train.sh 'STP' 'POE' '/input_output'` to train a model on the `STP` dataset fitted on `POE` metric and the datasets are taken from the `/input_output` folder which is also where the result files are saved.
 
 ## Result .txt Files
 

@@ -10,8 +10,9 @@ from contextlib import redirect_stdout
 import rfpimp as rfp
 from sklearn import metrics, preprocessing
 from sklearn.model_selection import train_test_split, cross_val_score
+from os import path
 
-def wrapperSetup(metric, set):
+def wrapperSetup(metric, dataset, path_arg):
     MTR = metric # 'CPT'
     (VT_SPLIT, TREES, DEPTH, KFOLD, JOB) = (
         cst.VT_SPLIT, cst.TREES, cst.DEPTH, cst.KFOLD, cst.JOB
@@ -20,12 +21,12 @@ def wrapperSetup(metric, set):
     ###############################################################################
     # Read CSV
     ###############################################################################
-    if set == "REG":
-        DATA = pd.read_csv('REG_HLT_50Q_10T.csv')
-    elif set == "CLS": 
-        DATA = pd.read_csv('CLS_HLT_50Q_10T.csv')
-    elif set == "SCA":
-        DATA = pd.read_csv('A_SCA_HLT_50Q_10T.csv')
+    if dataset == "REG":
+        DATA = pd.read_csv(path.join(path_arg, 'REG_HLT_50Q_10T.csv'))
+    elif dataset == "CLS": 
+        DATA = pd.read_csv(path.join(path_arg, 'CLS_HLT_50Q_10T.csv'))
+    elif dataset == "SCA":
+        DATA = pd.read_csv(path.join(path_arg, 'A_SCA_HLT_50Q_10T.csv'))
     # Features and labels ---------------------------------------------------------
     COLS = list(DATA.columns)
     (FEATS, LABLS) = (
@@ -63,9 +64,9 @@ def wrapperSetup(metric, set):
     return [MTR, VT_SPLIT, TREES, DEPTH, KFOLD, JOB, DATA, FEATS, 
     LABLS, inputs, outputs, TRN_X, VAL_X, TRN_Y, VAL_Y, TRN_L, VAL_L, correlation]
 
-def wrapperTrain(clf, model, TRN_X, TRN_Y, KFOLD, VAL_X, VAL_Y, MTR, FEATS, TRN_L, VAL_L, LABLS, correlation, set):
+def wrapperTrain(clf, model, TRN_X, TRN_Y, KFOLD, VAL_X, VAL_Y, MTR, FEATS, TRN_L, VAL_L, LABLS, correlation, dataset, path_arg):
     #regression model
-    if set == "REG" or "SCA":
+    if dataset == "REG" or dataset == "SCA":
         # K-fold training -------------------------------------------------------------
         kScores = cross_val_score(
             clf, TRN_X, TRN_Y, 
@@ -88,8 +89,8 @@ def wrapperTrain(clf, model, TRN_X, TRN_Y, KFOLD, VAL_X, VAL_Y, MTR, FEATS, TRN_
         ###############################################################################
         # Statistics & Model Export
         ###############################################################################
-        dump(clf, set + '_' + model + '_' + MTR + '.joblib')
-        with open(set + '_' + model + '_' + MTR + '.txt', 'w') as f:
+        dump(clf, path.join(path_arg, dataset + '_' + model + '_' + MTR + '.joblib'))
+        with open(path.join(path_arg, dataset + '_' + model + '_' + MTR + '.txt'), 'w') as f:
             with redirect_stdout(f):
                 print('* Output Metric: ' + MTR)
                 print('')
@@ -124,7 +125,7 @@ def wrapperTrain(clf, model, TRN_X, TRN_Y, KFOLD, VAL_X, VAL_Y, MTR, FEATS, TRN_
             # display_labels=list(range(len(set(outputs[outputs.columns[0]])))),
             cmap=cm.Blues, normalize=None
         )
-        plt.savefig(set + '_' + model + '_' + MTR + '.png', dpi=300)
+        plt.savefig(path.join(path_arg, dataset + '_' + model + '_' + MTR + '.png'), dpi=300)
         # Features importance ---------------------------------------------------------
         try:
             featImportance = list(clf.feature_importances_)
@@ -139,8 +140,8 @@ def wrapperTrain(clf, model, TRN_X, TRN_Y, KFOLD, VAL_X, VAL_Y, MTR, FEATS, TRN_
         # Statistics & Model Export
         ###############################################################################
         # plt.savefig(modelPath+'_RF.jpg', dpi=300)
-        dump(clf, set + '_' + model + '_' + MTR + '.joblib')
-        with open(set + '_' + model + '_' + MTR + '.txt', 'w') as f:
+        dump(clf, path.join(path_arg, dataset + '_' + model + '_' + MTR + '.joblib'))
+        with open(path.join(path_arg, dataset + '_' + model + '_' + MTR + '.txt'), 'w') as f:
             with redirect_stdout(f):
                 print('* Output Metric: ' + MTR)
                 print('')
