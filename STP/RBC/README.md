@@ -23,7 +23,7 @@
 
 ## Running Classifiers/Regressors
 
-To run classifiers on a certain dataset and metric, 
+To run classifiers/regressors on a certain dataset and metric, 
 
 ```bash
 ./STP_Train.sh $dataset $metric $path
@@ -31,17 +31,28 @@ To run classifiers on a certain dataset and metric,
 
 where `$dataset` is the three-letter abreviation of the dataset you're using, `$metric` is the metric abbreviation of your choice in a string, and `$path` is where the dataset csv files are and also where the output result files are saved to e.g. `./STP_Train.sh 'STP' 'POE' '/input_output'` to train a model on the `STP` dataset fitted on `POE` metric and the datasets are taken from the `/input_output` folder which is also where the result files are saved.
 
-## Result .txt Files
+The `STP_Train.sh` file uses the given arguments on default models.
 
-The above python scripts generate a report `.txt` file that shows meta-information such as the features/input variables and summary statistics of the model used such as a R2 score for the regressors.
+If you want to use a specfic model, you can alter the `STP_Train.sh` file or run a specific python script as follows:
 
-## .txt Files Nomenclature
+```bash
+./STP_Train_model.py $dataset $metric $path
+```
+where the arguments are the same as above and the `model` in the python script name is replaced with one of the model abbreviations from the Python Scripts Nomenclature section.
+
+## Result Files
+
+The above python scripts generate a report `.txt` file that shows meta-information such as the features/input variables and summary statistics of the model used such as a R2 score for the regressors. `.joblib` files are also generated. `.png` files showing a confusion matrix of the model results are also generated when using the `CLS` dataset.
+
+## Result Files Nomenclature
 
 `set` represents which dataset was used to train the models on.
 
 `model` represents which model used to execute the task on the datasets (e.g. using an Extra Trees model)
 
 `metric` represents the outcome variable the model was tasked to fit on.
+
+`type` is either `.txt`, `.joblib`, or `.png`.
 
 * `set_model_metric.txt`
     * Replace `set` with: 
