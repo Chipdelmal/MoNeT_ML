@@ -31,9 +31,9 @@ clicked = st.sidebar.button('Folder Picker')
 if clicked:
     st.session_state.directory_name = st.text_input('Selected folder:', filedialog.askdirectory(master=root))
 
-st.session_state.dataset_name = st.sidebar.selectbox("Select Dataset", ("SCA", "CLS", "REG"))
+st.session_state.dataset_name = st.sidebar.selectbox("Select Dataset", ("", "SCA", "CLS", "REG"))
 
-st.session_state.model_name = st.sidebar.selectbox("Select Model", ("B", "ET", "GBT", "RF", "S", "V"))
+st.session_state.model_name = st.sidebar.selectbox("Select Model", ("", "B", "ET", "GBT", "RF", "S", "V"))
 
 st.sidebar.write("""
 ## Model Abbreviations:
@@ -45,7 +45,7 @@ st.sidebar.write("""
 * `v`: Voting Classifier/Regressor
 """)
 
-st.session_state.metric_name = st.sidebar.selectbox("Select Metric", ("CPT", "TTI", "TTO", "WOP", "POE", "MIN", "RAP"))
+st.session_state.metric_name = st.sidebar.selectbox("Select Metric", ("", "CPT", "TTI", "TTO", "WOP", "POE", "MIN", "RAP"))
 
 st.sidebar.write("""
 ## Metric Abbreviations:
@@ -96,145 +96,146 @@ def get_dataset(metric, dataset, path_arg):
 
     return TRN_X, TRN_Y
 
-TRN_X, TRN_Y = get_dataset(st.session_state.metric_name, st.session_state.dataset_name, st.session_state.directory_name)
+if st.session_state.metric_name and st.session_state.dataset_name and st.session_state.directory_name: 
+    TRN_X, TRN_Y = get_dataset(st.session_state.metric_name, st.session_state.dataset_name, st.session_state.directory_name)
 
-def add_parameter_ui():
-    params = []
+    def add_parameter_ui():
+        params = []
 
-    if st.session_state.dataset_name == "SCA":
-        FEATS = ['i_sex', 'i_ren', 'i_res', 'i_rsg', 'i_gsv', 'i_fch', 'i_fcb', 'i_fcr', 'i_hrm', 'i_hrf', 'i_grp', 'i_mig']
-    elif st.session_state.dataset_name == 'CLS' or st.session_state.dataset_name == 'REG':
-        FEATS = ['i_sxm', 'i_sxg', 'i_sxn', 'i_ren', 'i_res', 'i_rsg', 'i_gsv', 'i_fch', 'i_fcb', 'i_fcr', 'i_hrm', 'i_hrf', 'i_grp', 'i_mig']
+        if st.session_state.dataset_name == "SCA":
+            FEATS = ['i_sex', 'i_ren', 'i_res', 'i_rsg', 'i_gsv', 'i_fch', 'i_fcb', 'i_fcr', 'i_hrm', 'i_hrf', 'i_grp', 'i_mig']
+        elif st.session_state.dataset_name == 'CLS' or st.session_state.dataset_name == 'REG':
+            FEATS = ['i_sxm', 'i_sxg', 'i_sxn', 'i_ren', 'i_res', 'i_rsg', 'i_gsv', 'i_fch', 'i_fcb', 'i_fcr', 'i_hrm', 'i_hrf', 'i_grp', 'i_mig']
 
-    st.sidebar.write("Please choose inputs for features to make prediction on:")
+        st.sidebar.write("Please choose inputs for features to make prediction on:")
 
-    for feat in FEATS:
-        value = st.sidebar.text_input(feat)
-        params.append(value)
+        for feat in FEATS:
+            value = st.sidebar.text_input(feat)
+            params.append(value)
 
-    test = np.array(params)
-    test = test.reshape(1, -1)
-    return test
+        test = np.array(params)
+        test = test.reshape(1, -1)
+        return test
 
-params = add_parameter_ui()
+    params = add_parameter_ui()
 
-@st.cache
-def get_model(dataset, model):
-    # regression model
-    if dataset == "REG" or dataset == "SCA":
-        if model == 'B':
-            clf = BaggingRegressor(
-                n_estimators=TREES
-            )   
-        elif model == 'ET':
-            clf = ExtraTreesRegressor(
+    @st.cache
+    def get_model(dataset, model):
+        # regression model
+        if dataset == "REG" or dataset == "SCA":
+            if model == 'B':
+                clf = BaggingRegressor(
+                    n_estimators=TREES
+                )   
+            elif model == 'ET':
+                clf = ExtraTreesRegressor(
+                    n_estimators=TREES, max_depth=DEPTH,
+                    min_samples_split=5, min_samples_leaf=50,
+                    max_features=None, max_leaf_nodes=None,
+                    n_jobs=JOB
+                )
+            elif model == 'GBT':
+                clf = GradientBoostingRegressor(
+                    n_estimators=TREES,
+                    min_samples_split=5, min_samples_leaf=50,
+                    max_features=None, max_leaf_nodes=None
+                )
+            elif model == 'RF':
+                clf = RandomForestRegressor(
+                    n_estimators=TREES, max_depth=DEPTH,
+                    min_samples_split=5, min_samples_leaf=50,
+                    max_features=None, max_leaf_nodes=None,
+                    n_jobs=JOB
+                )
+            elif model == 'S':
+                rf = RandomForestRegressor(
                 n_estimators=TREES, max_depth=DEPTH,
                 min_samples_split=5, min_samples_leaf=50,
                 max_features=None, max_leaf_nodes=None,
                 n_jobs=JOB
-            )
-        elif model == 'GBT':
-            clf = GradientBoostingRegressor(
-                n_estimators=TREES,
-                min_samples_split=5, min_samples_leaf=50,
-                max_features=None, max_leaf_nodes=None
-            )
-        elif model == 'RF':
-            clf = RandomForestRegressor(
-                n_estimators=TREES, max_depth=DEPTH,
-                min_samples_split=5, min_samples_leaf=50,
-                max_features=None, max_leaf_nodes=None,
-                n_jobs=JOB
-            )
-        elif model == 'S':
-            rf = RandomForestRegressor(
-            n_estimators=TREES, max_depth=DEPTH,
-            min_samples_split=5, min_samples_leaf=50,
-            max_features=None, max_leaf_nodes=None,
-            n_jobs=JOB
-            )
-            estimators = [
-                ('svr', LinearSVR(random_state=42)),
-                ('lr', RidgeCV())
-            ]
-            clf = StackingRegressor(
-                estimators = estimators, final_estimator = rf,
-                n_jobs = JOB
-            )
-        elif model == 'V':
-            rf = RandomForestRegressor(
-                n_estimators=TREES, max_depth=DEPTH,
-                min_samples_split=5, min_samples_leaf=50,
-                max_features=None, max_leaf_nodes=None,
-                n_jobs=JOB
-            )
-            estimators = [('lr', LinearRegression()), ('rf', rf)]
-            clf = VotingRegressor(estimators=estimators, n_jobs=JOB)
-    # classifier model
-    else:
-        if model == 'B':
-            clf = BaggingClassifier(
-                n_estimators=TREES
-            )
-        elif model == 'ET':
-            clf = ExtraTreesClassifier(
-                n_estimators=TREES, max_depth=DEPTH, criterion='entropy',
-                min_samples_split=5, min_samples_leaf=50,
-                max_features=None, max_leaf_nodes=None,
-                n_jobs=JOB, bootstrap=True
-            )
-        elif model == 'GBT':
-            clf = GradientBoostingClassifier(
-                n_estimators=TREES, max_depth=DEPTH,
-                min_samples_split=5, min_samples_leaf=50,
-                max_features=None, max_leaf_nodes=None
-            )
-        elif model == 'RF':
-            clf = RandomForestClassifier(
-                n_estimators=TREES, max_depth=DEPTH, criterion='entropy',
-                min_samples_split=5, min_samples_leaf=50,
-                max_features=None, max_leaf_nodes=None,
-                n_jobs=JOB, bootstrap=True
-            )
-        elif model == 'S':
-            rf = RandomForestClassifier(
-                n_estimators=TREES, max_depth=DEPTH, criterion='entropy',
-                min_samples_split=5, min_samples_leaf=50,
-                max_features=None, max_leaf_nodes=None,
-                n_jobs=JOB
-            )
-            estimators = [('rf', rf), ('svr', make_pipeline(StandardScaler(), LinearSVC(random_state=42)))]
-            clf = StackingClassifier(
-                estimators = estimators, n_jobs = JOB
-            )
-        elif model == 'V':
-            rf = RandomForestClassifier(
-                n_estimators=TREES, max_depth=DEPTH, criterion='entropy',
-                min_samples_split=5, min_samples_leaf=50,
-                max_features=None, max_leaf_nodes=None,
-                n_jobs=JOB
-            )
-            v_estimators = [('rf', rf), 
-            ('lr', LogisticRegression(multi_class='multinomial', random_state = 1)),
-            ('gnb', GaussianNB())
-            ]
-            clf = VotingClassifier(estimators=v_estimators, voting='hard', n_jobs=JOB)
+                )
+                estimators = [
+                    ('svr', LinearSVR(random_state=42)),
+                    ('lr', RidgeCV())
+                ]
+                clf = StackingRegressor(
+                    estimators = estimators, final_estimator = rf,
+                    n_jobs = JOB
+                )
+            elif model == 'V':
+                rf = RandomForestRegressor(
+                    n_estimators=TREES, max_depth=DEPTH,
+                    min_samples_split=5, min_samples_leaf=50,
+                    max_features=None, max_leaf_nodes=None,
+                    n_jobs=JOB
+                )
+                estimators = [('lr', LinearRegression()), ('rf', rf)]
+                clf = VotingRegressor(estimators=estimators, n_jobs=JOB)
+        # classifier model
+        else:
+            if model == 'B':
+                clf = BaggingClassifier(
+                    n_estimators=TREES
+                )
+            elif model == 'ET':
+                clf = ExtraTreesClassifier(
+                    n_estimators=TREES, max_depth=DEPTH, criterion='entropy',
+                    min_samples_split=5, min_samples_leaf=50,
+                    max_features=None, max_leaf_nodes=None,
+                    n_jobs=JOB, bootstrap=True
+                )
+            elif model == 'GBT':
+                clf = GradientBoostingClassifier(
+                    n_estimators=TREES, max_depth=DEPTH,
+                    min_samples_split=5, min_samples_leaf=50,
+                    max_features=None, max_leaf_nodes=None
+                )
+            elif model == 'RF':
+                clf = RandomForestClassifier(
+                    n_estimators=TREES, max_depth=DEPTH, criterion='entropy',
+                    min_samples_split=5, min_samples_leaf=50,
+                    max_features=None, max_leaf_nodes=None,
+                    n_jobs=JOB, bootstrap=True
+                )
+            elif model == 'S':
+                rf = RandomForestClassifier(
+                    n_estimators=TREES, max_depth=DEPTH, criterion='entropy',
+                    min_samples_split=5, min_samples_leaf=50,
+                    max_features=None, max_leaf_nodes=None,
+                    n_jobs=JOB
+                )
+                estimators = [('rf', rf), ('svr', make_pipeline(StandardScaler(), LinearSVC(random_state=42)))]
+                clf = StackingClassifier(
+                    estimators = estimators, n_jobs = JOB
+                )
+            elif model == 'V':
+                rf = RandomForestClassifier(
+                    n_estimators=TREES, max_depth=DEPTH, criterion='entropy',
+                    min_samples_split=5, min_samples_leaf=50,
+                    max_features=None, max_leaf_nodes=None,
+                    n_jobs=JOB
+                )
+                v_estimators = [('rf', rf), 
+                ('lr', LogisticRegression(multi_class='multinomial', random_state = 1)),
+                ('gnb', GaussianNB())
+                ]
+                clf = VotingClassifier(estimators=v_estimators, voting='hard', n_jobs=JOB)
 
-    return clf
+        return clf
 
-clf = get_model(st.session_state.dataset_name, st.session_state.model_name)
+    clf = get_model(st.session_state.dataset_name, st.session_state.model_name)
 
-def predict(clf, TRN_X, TRN_Y, params, metric):
-    clf.fit(TRN_X, TRN_Y)
-    output = clf.predict(params)
-    st.write("""
-    ## Predicted Output for
-    """)
-    st.write(metric)
-    st.write(output[0])
+    def predict(clf, TRN_X, TRN_Y, params, metric):
+        clf.fit(TRN_X, TRN_Y)
+        output = clf.predict(params)
+        st.write("""
+        ## Predicted Output for
+        """)
+        st.write(metric)
+        st.write(output[0])
 
-# Run functions
-run_clicked = st.sidebar.button('Run model')
+    # Run functions
+    run_clicked = st.sidebar.button('Run model')
 
-if run_clicked: 
-    predict(clf, TRN_X, TRN_Y, params, st.session_state.metric_name)
+    if run_clicked: 
+        predict(clf, TRN_X, TRN_Y, params, st.session_state.metric_name)
