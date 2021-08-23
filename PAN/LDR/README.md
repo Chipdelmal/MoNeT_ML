@@ -5,7 +5,7 @@ This dataset contains around 1M factorial experiments for a replacement drive to
 
 ## Goal and Variables Description
 
-The objective of this workflow is to train independent classification and regression models for each one of the dependent variables, so that we can evaluate them upon the inputs of our model. These models should be exported to disk and we should be able to evaluate them on arbitrary features labels to test their performance. Reports of the training process and summary statistics should be provided too (confusion matrix, R-squared, features importance, etcetera).
+The objective of this workflow is to train independent classification and regression models for each one of the dependent variables, so that users can input values for the features and get an approximation of the behaviour we would expect from running the original MGDrivE simulation (which generated these datasets). These models should be exported to disk (as joblib objects), and we should be able to evaluate them on arbitrary features labels to test their performance. Reports of the training process and summary statistics should be provided too (confusion matrix, R-squared, features importance, etcetera).
 
 ### Independent (features)
 
