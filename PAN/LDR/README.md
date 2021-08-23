@@ -9,21 +9,21 @@ The objective of this workflow is to train independent classification and regres
 
 ### Independent (features)
 
-* i_sex: Type of the releases
-	* i_smx (1): Male-only
-	* i_sxg (2): Male and non-gravid females
-	* i_sxn (3): Male and gravid females
-* i_rsg: Resistance allele generation rate
-* i_ren: Number of weekly releases
-* i_res: Releases sizes (as a fraction of the total population)
-* i_hrm: Homing rate on males
-* i_hrf: Homing rate on females
-* i_gsv: Resistant alleles due to standing genetic variation
-* i_fch: Fitness cost on the H allele
-* i_fcb: Fitness cost on the B allele
-* i_fcr: Fitness cost on the R allele
-* i_mig: Unused (it's always 0)
-* i_grp: Unused (it's always 0)
+* i_sex (categorical): Type of the releases
+	* i_smx (1 bool): Male-only
+	* i_sxg (2 bool): Male and non-gravid females
+	* i_sxn (3 bool): Male and gravid females
+* i_rsg (float linear): Resistance allele generation rate
+* i_ren (int linear): Number of weekly releases
+* i_res (float linear): Releases sizes (as a fraction of the total population)
+* i_hrm (float linear): Homing rate on males
+* i_hrf (float linear): Homing rate on females
+* i_gsv (float log): Resistant alleles due to standing genetic variation
+* i_fch (float linear): Fitness cost on the H allele
+* i_fcb (float linear): Fitness cost on the B allele
+* i_fcr (float linear): Fitness cost on the R allele
+* i_mig (NA): Unused (it's always 0)
+* i_grp (NA): Unused (it's always 0)
 
 ### Dependent (labels)
 
