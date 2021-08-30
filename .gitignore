@@ -1,5 +1,6 @@
 # Datasets
 *.csv
+*.txt
 *.joblib
 
 # Result files
