@@ -1,1 +1,1 @@
-tkinter
+python3-tk
