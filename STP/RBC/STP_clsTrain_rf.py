@@ -3,8 +3,11 @@ import STP_wrapper
 from sys import argv
 from sklearn.ensemble import RandomForestClassifier
 
-(MTR, VT_SPLIT, TREES, DEPTH, KFOLD, JOB, DATA, FEATS, 
-    LABLS, inputs, outputs, TRN_X, VAL_X, TRN_Y, VAL_Y, TRN_L, VAL_L, correlation) = STP_wrapper.wrapperSetup(argv[1], reg=False)
+(
+    MTR, VT_SPLIT, TREES, DEPTH, KFOLD, 
+    JOB, DATA, FEATS, LABLS, inputs, outputs, 
+    TRN_X, VAL_X, TRN_Y, VAL_Y, TRN_L, VAL_L, correlation
+) = STP_wrapper.wrapperSetup(argv[1], reg=False)
 
 ###############################################################################
 # Training Model - Random Forest
