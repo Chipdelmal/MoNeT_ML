@@ -60,13 +60,10 @@ These datasets were generated as part of a larger publication on the effects of 
 * Auto-generate ML reports for the trained models (R-squared, confusion matrix, etc).
 * Think about interpretability whenever making decisions on the models.
 
+<img src="../../media/MoNeT.jpg" style="width:100%;"><br>
+
 ## Team Roster
 
-* Lillian Weng
-* Joanna Yoo
-* Xingli Yu
-* Ayden Salazar
-* Héctor M. Sánchez C.
-## Former Team
-
-* Elijah Bartolome, Christopher De Leon
+Active: Lillian Weng, Joanna Yoo, Xingli Yu, Ayden Salazar
+Related Projects: [Elijah Bartolome](https://share.streamlit.io/elijahbartolome/monet_ml/main/STP/RBC/web_ui.py), [Christopher De Leon](https://mgdrive.herokuapp.com/)
+Lead: [Héctor M. Sánchez C.](https://chipdelmal.github.io/blog/)
