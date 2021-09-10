@@ -2,76 +2,70 @@
 
 ## Datasets
 
+* `SCA_HLT_50Q_10T.csv`
 * `CLS_HLT_50Q_10T.csv`
 * `REG_HLT_50Q_10T.csv`
 
-`CLS` is used for training classifiers while`REG`is used for training regressors.
+`CLS` is used for training classifiers while `REG` and `SCA` are used for training regressors.
 
 ## Python Scripts Nomenclature
 
-`task` represents the type of machine learning task used on the datasets (either Classifier or Regressor).
-
 `model` represents which model used to execute the task on the datasets (e.g. using an Extra Trees model)
 
-* `STP_taskTrain_model.py`
-    * Replace `task` with: 
-        * `cls`: Classifier
-        * `regress`: Regressor
+* `STP_Train_model.py`    
     * Replace `model` with: 
-        * `bc`: Bagging Classifier
-        * `br`: Bagging Regressor
+        * `b`: Bagging Classifier/Regressor
         * `et`: Extra Trees
         * `gbt`: Gradient Boosted Trees
         * `rf`: Random Forest
-        * `sc`: Stacking Classifier
-        * `sr`: Stacking Regressor
-        * `vc`: Voting Classifier
-        * `vr`: Voting Regressor
+        * `s`: Stacking Classifier/Regressor
+        * `v`: Voting Classifier/Regressor
 
 ## Running Classifiers/Regressors
 
-To run classifiers on a certain metric, 
+To run classifiers/regressors on a certain dataset and metric, 
 
 ```bash
-./STP_clsTrain.sh $metric
+./STP_Train.sh $dataset $metric $path
 ```
 
-where `$metric` is the metric abbreviation of your choice in a string e.g. `./STP_clsTrain.sh 'POE'`
+where `$dataset` is the three-letter abreviation of the dataset you're using, `$metric` is the metric abbreviation of your choice in a string, and `$path` is where the dataset csv files are and also where the output result files are saved to e.g. `./STP_Train.sh 'STP' 'POE' '/input_output'` to train a model on the `STP` dataset fitted on `POE` metric and the datasets are taken from the `/input_output` folder which is also where the result files are saved.
 
-To run regressors on a certain metric, 
+The `STP_Train.sh` file uses the given arguments on default models.
+
+If you want to use a specfic model, you can alter the `STP_Train.sh` file or run a specific python script as follows:
 
 ```bash
-./STP_regTrain.sh $metric
+./STP_Train_model.py $dataset $metric $path
 ```
+where the arguments are the same as above and the `model` in the python script name is replaced with one of the model abbreviations from the Python Scripts Nomenclature section.
 
-where `$metric` is the metric abbreviation of your choice in a string e.g. `./STP_regTrain.sh 'POE'`
+## Result Files
 
-## Result .txt Files
+The above python scripts generate a report `.txt` file that shows meta-information such as the features/input variables and summary statistics of the model used such as a R2 score for the regressors. `.joblib` files are also generated. `.png` files showing a confusion matrix of the model results are also generated when using the `CLS` dataset.
 
-The above python scripts generate a report `.txt` file that shows meta-information such as the features/input variables and summary statistics of the model used such as a R2 score for the regressors.
+## Result Files Nomenclature
 
-## .txt Files Nomenclature
-
-`task` represents the type of machine learning task used on the datasets (either Classifier or Regressor).
+`set` represents which dataset was used to train the models on.
 
 `model` represents which model used to execute the task on the datasets (e.g. using an Extra Trees model)
 
 `metric` represents the outcome variable the model was tasked to fit on.
 
-* `task_model_metric.py`
-    * Replace `task` with: 
-        * `CLS`: Classifier
-        * `REG`: Regressor
+`type` is either `.txt`, `.joblib`, or `.png`.
+
+* `set_model_metric.txt`
+    * Replace `set` with: 
+        * `SCA`
+        * `CLS`
+        * `REG`
     * Replace `model` with: 
-        * `BC`: Bagging Classifier
-        * `BR`: Bagging Regressor
+        * `B`: Bagging Classifier/Regressor
         * `ET`: Extra Trees
         * `GBT`: Gradient Boosted Trees
         * `RF`: Random Forest
-        * `SC`: Stacking Classifier
-        * `SR`: Stacking Regressor
-        * `VC`: Voting Classifier
-        * `VR`: Voting Regressor
+        * `S`: Stacking Classifier/Regressor
+        * `V`: Voting Classifier/Regressor
     * Replace `metric` with:
         * `CPT`: Cumulative fraction of mosquitoes divided by time
         * `TTI`: Time to introgression
