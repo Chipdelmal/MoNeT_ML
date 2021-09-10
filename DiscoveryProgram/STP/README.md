@@ -4,14 +4,20 @@ Our group has been generating datasets on the expected results on deploying gene
 
 ## Goals
 
-### Datasets Description
+1. To provide a report on the data exploration for the gene drive datasets provided.
+   1. Correlation analysis
+   2. Data distributions
+2. To train various version of regression and classification models for the datasets.
+3. To create and upload a GUI with the models and predictions, so that other teams can explore the responses.
+
+## Datasets Description
 
 These datasets were generated as part of a larger publication on the effects of simulating the releases of CRISPR/Cas9 linked and split drive genetic modifications in the islands of São Tomé and Príncipe in equatorial Africa. In these versions of the dataset, we consider the landscape as a fully-mixing panmictic population to focus on the inherent properties of the drives, without the spatial component of the migration of the mosquitos.
 
 
 <img src="../../media/centrality.jpg" style="width:25%;"><br>
 
-#### Inputs (Features)
+### Inputs (Features)
 
 * **i_sex**: Sex-sorting of the released transgenic mosquitos
 * **i_ren**: Number of releases (weekly)
@@ -26,7 +32,7 @@ These datasets were generated as part of a larger publication on the effects of 
 * **i_grp**: Group (unused)
 * **i_mig**: Migration rate (unused)
 
-#### Outputs (Labels)
+### Outputs (Labels)
 
 * **TTI**: Time to Introgression
 * **TTO**: Time to Outrogression
@@ -41,6 +47,7 @@ These datasets were generated as part of a larger publication on the effects of 
 ## Rules
 
 * Push your work often to the repo!
+* Work on the designated folder of the repo (the one in which this README file is located at).
 * Do not push datasets or models to the repo! (only code).
 * Always think about what others will think when they read your code.
 * Export your models as [joblib](https://joblib.readthedocs.io/en/latest/generated/joblib.dump.html) objects.
@@ -49,6 +56,7 @@ These datasets were generated as part of a larger publication on the effects of 
 * Have separate files for: data cleaning, training, testing, evaluation (pipelines).
 * Have input/output paths as clearly stated variables that can be changed easily.
 * Auto-generate ML reports for the trained models (R-squared, confusion matrix, etc).
+* Think about interpretability whenever making decisions on the models.
 
 ## Team Roster
 
@@ -57,3 +65,6 @@ These datasets were generated as part of a larger publication on the effects of 
 * Xingli Yu
 * Ayden Salazar
 * Héctor M. Sánchez C.
+## Former Team
+
+* Elijah Bartolome, Christopher De Leon
