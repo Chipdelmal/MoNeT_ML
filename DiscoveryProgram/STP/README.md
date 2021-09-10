@@ -19,18 +19,20 @@ These datasets were generated as part of a larger publication on the effects of 
 
 ### Inputs (Features)
 
-* **i_sex**: Sex-sorting of the released transgenic mosquitos
-* **i_ren**: Number of releases (weekly)
-* **i_res**: Release size (fraction of the total population)
-* **i_rsg**: Resistance generation rate
-* **i_gsv**: Genetic standing variation
-* **i_fch**: Fitness cost on the H alleles (homing)
-* **i_fcb**: Fitness cost on the B alleles (out-of-frame resistant)
-* **i_fcr**: Fitness cost on the R alleles (in-frame resistant)
-* **i_hrm**: Homing rate on males
-* **i_hrf**: Homing rate on females
-* **i_grp**: Group (unused)
-* **i_mig**: Migration rate (unused)
+* **i_sex** [1, 2, 3]: Sex-sorting of the released transgenic mosquitos [1]
+* **i_ren** [0 _to_ 24]: Number of releases (weekly) [12]
+* **i_res** [0 _to_ 1]: Release size (fraction of the total population) [0.5]
+* **i_rsg** [0 _to_ 0.1185]: Resistance generation rate [0.079]
+* **i_gsv** [0 _to_ 1e-2]: Genetic standing variation [1e-2]
+* **i_fch** [0 _to_ 1]: Fitness cost on the H alleles (homing) [0.175]
+* **i_fcb** [0 _to_ 1]: Fitness cost on the B alleles (out-of-frame resistant) [0.117]
+* **i_fcr** [0 _to_ 1]: Fitness cost on the R alleles (in-frame resistant) [0]
+* **i_hrm** [0 _to_ 1]: Homing rate on males [1]
+* **i_hrf** [0 _to_ 1]: Homing rate on females [0.956]
+* **i_grp** [0]: Group (unused)
+* **i_mig** [0]: Migration rate (unused)
+
+
 
 ### Outputs (Labels)
 
