@@ -5,10 +5,19 @@ Our group has been generating datasets on the expected results on deploying gene
 ## Goals
 
 1. To provide a report on the data exploration for the gene drive datasets provided.
-   1. Correlation analysis
-   2. Data distributions
+   *  Correlation analysis
+   *  Data distributions
+   *  PCA
+   *  Encoding
+   *  Speedup DICE plots*
+   *  Comparison between LDR/SDR
 2. To train various version of regression and classification models for the datasets.
+   * Check for overfits
+   * Training/Validation
+   * Auto-generate ML reports for the trained models (R-squared, confusion matrix, mean squared error, etc)
 3. To create and upload a GUI with the models and predictions, so that other teams can explore the responses.
+   * Check previous drafts by [Chris De Leon](https://mgdrive.herokuapp.com/) and [Elijah Bartolome](https://share.streamlit.io/elijahbartolome/monet_ml/main/STP/RBC/web_ui.py)
+   * Explore alternatives
 
 ## Datasets Description
 
@@ -48,7 +57,10 @@ These datasets were generated as part of a larger publication on the effects of 
 
 ## Rules
 
+* Document your work constantly!
+* Document the reasons behind the decisions made.
 * Push your work often to the repo!
+* Think about interpretability whenever making decisions on the models.
 * Work on the designated folder of the repo (the one in which this README file is located at).
 * Do not push datasets or models to the repo! (only code).
 * Always think about what others will think when they read your code.
@@ -58,12 +70,12 @@ These datasets were generated as part of a larger publication on the effects of 
 * Have separate files for: data cleaning, training, testing, evaluation (pipelines).
 * Have input/output paths as clearly stated variables that can be changed easily.
 * Auto-generate ML reports for the trained models (R-squared, confusion matrix, etc).
-* Think about interpretability whenever making decisions on the models.
+
 
 <img src="../../media/MoNeT.jpg" style="width:100%;"><br>
 
 ## Team Roster
 
-Active: Lillian Weng, Joanna Yoo, Xingli Yu, Ayden Salazar
-Related Projects: [Elijah Bartolome](https://share.streamlit.io/elijahbartolome/monet_ml/main/STP/RBC/web_ui.py), [Christopher De Leon](https://mgdrive.herokuapp.com/)
-Lead: [Héctor M. Sánchez C.](https://chipdelmal.github.io/blog/)
+* Active: Lillian Weng, Joanna Yoo, Xingli Yu, Ayden Salazar
+* Related Projects: [Elijah Bartolome](https://share.streamlit.io/elijahbartolome/monet_ml/main/STP/RBC/web_ui.py), [Christopher De Leon](https://mgdrive.herokuapp.com/)
+* Lead: [Héctor M. Sánchez C.](https://chipdelmal.github.io/blog/)
