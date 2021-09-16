@@ -62,6 +62,7 @@ The summary statistics marked with '*' are not relevant for these datasets, or n
 * Document your work constantly!
 * Document the reasons behind the decisions made.
 * Push your work often to the repo!
+* Write reasonable commit messages.
 * Always think about what others will think when they read your code.
 * Think about interpretability whenever making decisions on the models.
 * Work on the designated folder of the repo (the one in which this README file is located at).
