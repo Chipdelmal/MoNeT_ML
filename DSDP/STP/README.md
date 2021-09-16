@@ -16,8 +16,8 @@ Our group has been generating datasets on the expected results on deploying gene
    * Training/Validation
    * Auto-generate ML reports for the trained models (R-squared, confusion matrix, mean squared error, etc)
 3. To create and upload a GUI with the models and predictions, so that other teams can explore the responses.
-   * Check previous drafts by [Chris De Leon](https://mgdrive.herokuapp.com/) and [Elijah Bartolome](https://share.streamlit.io/elijahbartolome/monet_ml/main/STP/RBC/web_ui.py)
-   * Explore alternatives
+   * Check previous drafts by [Chris De Leon](https://mgdrive.herokuapp.com/) and [Elijah Bartolome](https://share.streamlit.io/elijahbartolome/monet_ml/main/STP/RBC/web_ui.py) show the basics of our endgoal (with rougher datasets and lighter explorations)
+   * Explore alternatives and improve upon them
 
 ## Datasets Description
 
