@@ -60,13 +60,14 @@ The summary statistics marked with '*' are not relevant for these datasets, or n
 ## Rules
 
 * Document your work constantly!
+* Push your work to the repo often!
 * Document the reasons behind the decisions made.
-* Push your work often to the repo!
 * Write reasonable commit messages.
 * Always think about what others will think when they read your code.
 * Think about interpretability whenever making decisions on the models.
 * Work on the designated folder of the repo (the one in which this README file is located at).
-* Do not push datasets or models to the repo! (only code).
+* Do not push datasets, images or models to the repo! (only code).
+* Sync images, datasets, and models using google drive!
 * Export your models as [joblib](https://joblib.readthedocs.io/en/latest/generated/joblib.dump.html) objects.
 * You can use [Jupyter](https://jupyter.org/) code for development and exploration, but the end product must be a set pt **.py** files that can be called in series from the terminal (they will be run on a server).
 * Functions definitions should have their own separate file(s).
