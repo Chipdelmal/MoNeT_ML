@@ -29,7 +29,6 @@ Machine Learning regression and classification for mosquito gene drive datasets 
 * Have a file with the re-scaling constants
 * Return some type of uncertainty estimate
 
-![](https://chipdelmal.github.io/MGDrivE_Presentations/STP2021/images/DICE_LDR.png)
 
 ## Authors
 
