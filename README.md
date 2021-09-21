@@ -4,6 +4,10 @@ Machine Learning regression and classification for mosquito gene drive datasets 
 
 ![](https://camo.githubusercontent.com/50833f4f806f91ce6b69f0aae56810e58f655c0f6f76716bed9ce4c1e4f93b8d/68747470733a2f2f6368697064656c6d616c2e6769746875622e696f2f4d4744726976455f50726573656e746174696f6e732f4d4d43323032302f696d672f6d6f73717569746f2e706e67)
 
+<hr>
+
+## Index
+
 * [DSDP](./DSDP): Data Scholars Discovery Programm
 * [PYF](https://github.com/Chipdelmal/MoNeT_DA/tree/main/PYF/ONE): Onetahi pgSIT
 * [tGD](https://github.com/Chipdelmal/MoNeT_DA/tree/main/PAN/tGD): Second iteration of the tGD
@@ -12,7 +16,7 @@ Machine Learning regression and classification for mosquito gene drive datasets 
 
 ![](https://raw.githubusercontent.com/Chipdelmal/MoNeT/master/docs/media/MoNeT.png)
 
-# Authors
+## Authors
 
 <img src="https://raw.githubusercontent.com/Chipdelmal/pyMSync/master/media/pusheen.jpg" height="130px" align="middle"><br>
 
