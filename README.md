@@ -8,7 +8,7 @@ Machine Learning regression and classification for mosquito gene drive datasets 
 
 ## Index
 
-* [DSDP](./DSDP): Data Scholars Discovery Programm
+* [DSDP](./DSDP): Data Scholars Discovery Program
 * [PYF](https://github.com/Chipdelmal/MoNeT_DA/tree/main/PYF/ONE): Onetahi pgSIT
 * [tGD](https://github.com/Chipdelmal/MoNeT_DA/tree/main/PAN/tGD): Second iteration of the tGD
 * [STP](https://github.com/Chipdelmal/MoNeT_DA/tree/main/STP/SvR): São Tomé and Príncipe linked drive
