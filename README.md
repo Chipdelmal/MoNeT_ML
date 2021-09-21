@@ -14,7 +14,8 @@ Machine Learning regression and classification for mosquito gene drive datasets 
 <img src="https://raw.githubusercontent.com/Chipdelmal/pyMSync/master/media/pusheen.jpg" height="130px" align="middle"><br>
 
 * Lead: [Héctor M. Sánchez C.](https://github.com/Chipdelmal)
-* Contributors: Christopher De Leon, Elijah Bartolome, Ana L. Dueñas C., Juán J. Olivera L., Guillermo O. Cota M.
+* Contributors: Elijah Bartolome, Ana L. Dueñas C., Xingli Yu, Lillian Weng, Joanna Yoo, Ayden Salazar
+* Former Contributors: Christopher De Leon, Juán J. Olivera L., Guillermo O. Cota M.
 * PI: John M. Marshall
 
 <br>
