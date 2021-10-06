@@ -29,18 +29,31 @@ These datasets were generated as part of a larger publication on the effects of 
 ### Inputs (Features)
 
 * **i_sex** [1, 2, 3]: Sex-sorting of the released transgenic mosquitos [1]
+  * **i_smx**: Male-only
+  * **i_sxg**: Male and non-gravid females
+  * **i_sxn**: Male and gravid females
 * **i_ren** [0 _to_ 24]: Number of releases (weekly) [12]
+  * _Number of weekly releases that take place._
 * **i_res** [0 _to_ 1]: Release size (fraction of the total population) [0.5]
-* **i_rsg** [0 _to_ 0.1185]: Resistance generation rate [0.079]
-* **i_gsv** [0 _to_ 1e-2]: Genetic standing variation [1e-2]
+  * _Size of the weekly releases._
 * **i_fch** [0 _to_ 1]: Fitness cost on the H alleles (homing) [0.175]
+  * _Fitness cost on the presence of H alleles in mosquitos (fertility and mating)._
 * **i_fcb** [0 _to_ 1]: Fitness cost on the B alleles (out-of-frame resistant) [0.117]
+  * _Fitness cost on the presence of H alleles in mosquitos (fertility and mating)._
 * **i_fcr** [0 _to_ 1]: Fitness cost on the R alleles (in-frame resistant) [0]
+  * _Fitness cost on the presence of H alleles in mosquitos (fertility and mating)._
 * **i_hrm** [0 _to_ 1]: Homing rate on males [1]
+  * _Rate at which the drive correctly replaces a snip of the DNA in males (no R or B)._
 * **i_hrf** [0 _to_ 1]: Homing rate on females [0.956]
+  * _Rate at which the drive correctly replaces a snip of the DNA in females (no R or B)._
+* **i_rsg** [0 _to_ 0.1185]: Resistance generation rate [0.079]
+  * _Rate at which failed homing becomes R rather than B in the eggs laid by H mosquitos._
+* **i_gsv** [0 _to_ 1e-2]: Genetic standing variation [1e-2]
+  * _Inherent resistance (R) present in the population prior to the start of the releases of H mosquitos._
 * **i_grp** [0]: Group (unused)
+  * _Spatial aggregation group._
 * **i_mig** [0]: Migration rate (unused)
-
+  * _Migration rate in abstract landscapes._
 
 
 ### Outputs (Labels)
