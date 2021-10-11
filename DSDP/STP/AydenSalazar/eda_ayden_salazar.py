@@ -59,3 +59,24 @@ ax.contourf(xi, yi, zi, linewidths=.5, alpha=1, cmap='Blues')
 sns.scatterplot(data=df, x='i_res', y='WOP', hue='i_res')
 
 # %%
+from itertools import combinations
+
+comb = combinations(df.columns, 2)
+print(len(list(comb)))
+i = 1
+for x, y in comb:
+    plt.subplot(2,2,i)
+    print(x, y)
+    sns.scatterplot(data=df, x=x, y=y)
+    i += 1
+
+
+# %%
+interesting_features = ['i_ren', 'i_res', 'TTI', 'TTO', 'CPT', 'WOP']
+comb = combinations(interesting_features, 2)
+i = 1
+for x, y in comb:
+    plt.subplot(2,3,i)
+    print(x, y)
+    sns.scatterplot(data=df, x=x, y=y)
+    i += 1
