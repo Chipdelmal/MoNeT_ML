@@ -61,14 +61,14 @@ sns.scatterplot(data=df, x='i_res', y='WOP', hue='i_res')
 # %%
 from itertools import combinations
 
-comb = combinations(df.columns, 2)
-print(len(list(comb)))
-i = 1
-for x, y in comb:
-    plt.subplot(2,2,i)
-    print(x, y)
-    sns.scatterplot(data=df, x=x, y=y)
-    i += 1
+# comb = combinations(df.columns, 2)
+# print(len(list(comb)))
+# i = 1
+# for x, y in comb:
+#     plt.subplot(2,2,i)
+#     print(x, y)
+#     sns.scatterplot(data=df, x=x, y=y)
+#     i += 1
 
 
 # %%
@@ -76,7 +76,47 @@ interesting_features = ['i_ren', 'i_res', 'TTI', 'TTO', 'CPT', 'WOP']
 comb = combinations(interesting_features, 2)
 i = 1
 for x, y in comb:
+    if i==7:
+        break
     plt.subplot(2,3,i)
     print(x, y)
     sns.scatterplot(data=df, x=x, y=y)
     i += 1
+# %%
+# using Keras to create neural network
+from sklearn.model_selection import train_test_split
+from keras.models import Sequential
+from keras.layers import Dense
+from sklearn import preprocessing
+from sklearn.metrics import mean_squared_error
+# male:1 male and non-pregnant females: 2 males and pregnant females: 3
+# Do normalize your data! 
+X = df.iloc[:, 0:12]
+y = df.iloc[:, [17]] # 17 for CPT
+X = np.array(X)
+y = np.array(y)
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.25, random_state=42)
+
+# %%
+model = Sequential()
+model.add(Dense(30, input_dim=12, activation='relu')) #Densely connected: Each neuron is connected all the neurons in the next layer
+model.add(Dense(5, activation='relu'))
+model.add(Dense(1, activation='sigmoid'))
+
+model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
+
+model.summary()
+
+model.fit(X_train, y_train, epochs=100)
+
+print('RMSE on training---')
+y_pred_train=model.predict(X_train)
+print(mean_squared_error(y_train,y_pred_train))
+
+print('RMSE  on test---')
+y_pred_test=model.predict(X_test)
+print(mean_squared_error(y_test,y_pred_test))
+
+# %%
+y_train,y_pred_train
+# %%
