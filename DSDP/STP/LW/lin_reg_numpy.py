@@ -62,15 +62,6 @@ sns.scatterplot(data=df, x='i_res', y='WOP', hue='i_res')
 ###############################################################################
 # Basic lin reg using built in sklearn function
 ###############################################################################
-# selected = DATA[['i_sex', 'i_ren', 'i_res', 'i_gsv', "i_fch", 'i_fcb', 'i_fcr' ,'i_hrf', 'WOP', "CPT"]]
-# cleanedDATA = clean_DATA = DATA[['i_sex', 'i_ren', 'i_res', 'i_gsv', "i_fch", 'i_fcb', 'i_fcr' ,'i_hrf', "WOP", 'CPT']]
-## need to figure out how to clean the i_sex column
-# getdummiesish = {
-#     'i_sex_1': 1 * (clean_DATA.column('i_sex') == 1),
-#     'i_sex_2': 1 * (clean_DATA.column('i_sex') == 2),
-#     'i_sex_3': 1 * (clean_DATA.column('i_sex') == 3)}
-# clean_DATA.head()
-# cleanedDATA.loc[df['i_sex']]
 
 #%%
 ## Old values from the first iteration of my program 
@@ -161,5 +152,4 @@ print("the CPT r2 is: " + str(CPT_r2))
 print("the WOP rmse is: " +  str(WOP_rmse))
 print ("the CPT rmse is: " + str(CPT_rmse))
 # %%
-
 # writing a function to make my life easier 
