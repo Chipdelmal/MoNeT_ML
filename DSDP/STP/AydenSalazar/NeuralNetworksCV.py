@@ -236,3 +236,50 @@ combos_list
 mse_k_fold_no_feat(5, [1], mean_squared_error, X, y, 2021)
 
 # %%
+for i in range(0, 4):
+    print("yee")
+# %%
+def fit_model(trainX, trainy, testX, testy, n_batch):
+	
+    # normalize the data
+    sc=preprocessing.MinMaxScaler()
+    trainX = sc.fit_transform(trainX)
+
+    sc=preprocessing.MinMaxScaler()
+    testX  = sc.fit_transform(testX)
+
+    # Initialize the model
+    model = Sequential()
+
+    # Initialize layers
+    num_dim = trainX.shape[1]
+    print("Num dim:", num_dim)
+
+    model.add(Dense(30, input_dim=num_dim, activation='relu')) 
+    model.add(Dense(5, activation='relu'))
+    model.add(Dense(1, activation='sigmoid'))
+    
+    opt = SGD(lr=0.01, momentum=0.9)
+
+
+    model.compile(loss='binary_crossentropy', optimizer=opt, metrics=['accuracy'])
+
+    history = model.fit(trainX, trainy, validation_data=(testX, testy), epochs=100, batch_size= n_batch)
+    plt.plot(history.history['accuracy'], label='train')
+    plt.plot(history.history['val_accuracy'], label='test')
+    plt.title('batch='+str(n_batch), pad=-40)
+
+# %%
+from tensorflow.keras.optimizers import SGD
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.25, random_state=42)
+
+batch_sizes = [1, 8, 16, 32, 64, 128, 256, 450]
+for i in range(len(batch_sizes)):
+	# determine the plot number
+	plot_no = 420 + (i+1)
+	plt.subplot(plot_no)
+	# fit model and plot learning curves for a batch size
+	fit_model(X_train, y_train, X_test, y_test, batch_sizes[i])
+# show learning curves
+plt.show()
+# %%
