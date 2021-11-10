@@ -5,7 +5,7 @@ from posixpath import normcase
 import numpy as np
 from numpy.core.fromnumeric import mean
 import pandas as pd
-from scipy.sparse.construct import rand
+from scipy.sparse.construct import rand, random
 import seaborn as sns
 import matplotlib.pyplot as plt
 from scipy.interpolate import griddata
@@ -15,6 +15,8 @@ from sklearn.linear_model import LinearRegression
 from sklearn.model_selection import train_test_split
 from sklearn.model_selection import KFold
 from sklearn import preprocessing
+from sklearn.metrics import r2_score
+from sklearn.metrics import mean_squared_error
 
 GDRIVE = 'LDR'
 FILE_NAME = 'SCA_HLT_50Q_10T.csv'
@@ -58,11 +60,6 @@ sns.scatterplot(data=df, x='i_res', y='WOP', hue='i_res')
 # sns.scatterplot(data=DATA, x='i_sex', y="WOP", hue='i_sex')
 # sns.scatterplot(data=DATA, x='i_res', y="CPT", hue='i_sex')
 
-# %%
-###############################################################################
-# Basic lin reg using built in sklearn function
-###############################################################################
-
 #%%
 ## Old values from the first iteration of my program 
 old_WOP_r2 = 0.7442248508814753
@@ -72,7 +69,7 @@ old_CPT_rmse = 0.16631627860089154
 
 # %%
 ###############################################################################
-# clean dataset (one hot encoding, noramlize)
+# clean dataset (one hot encoding, normalize)
 ###############################################################################
 necessaryVars = DATA[['i_sex', 'i_ren', 'i_res', 'i_gsv', "i_fch", 'i_fcb', 'i_fcr' ,'i_hrf', "WOP", 'CPT']]
 oneHotEncoding = pd.get_dummies(necessaryVars['i_sex'])
@@ -84,6 +81,18 @@ normalize = (cleaned - cleaned.mean()) / cleaned.std()
 independent_vars = normalize.drop(columns=['WOP', 'CPT'])
 WOP_var = normalize["WOP"]
 CPT_var = normalize['CPT']
+
+#%%
+## function for lin reg
+def linregression(indep_train, indep_test, dep_train, dep_test):
+    """Returns the r2 and rmse values."""
+    LR = LinearRegression()
+    LR.fit(indep_train, dep_train)
+    predicted = LR.predict(indep_test)
+    r2 = r2_score(dep_test, predicted)
+    rmse = np.sqrt(mean_squared_error(dep_test, predicted))
+    return r2, rmse
+
 # %%
 ###############################################################################
 # split dataset
@@ -94,62 +103,61 @@ z_train, z_test, CPT_train, CPT_test = train_test_split(independent_vars, CPT_va
 ###############################################################################
 # apply linear regression using sklearn's LinearRegression class
 ###############################################################################
-LR_WOP = LinearRegression()
-LR_WOP.fit(x_train, WOP_train)
-WOP_predict = LR_WOP.predict(x_test)
+WOP_r2, WOP_rmse = linregression(x_train, x_test, WOP_train, WOP_test)
+CPT_r2, CPT_rmse = linregression(z_train, z_test, CPT_train, CPT_test)
 
-LR_CPT = LinearRegression()
-LR_CPT.fit(z_train, CPT_train)
-CPT_predict = LR_CPT.predict(z_test)
-
-# %%
-from sklearn.metrics import r2_score
-from sklearn.metrics import mean_squared_error
-
-WOP_r2 = r2_score(WOP_test, WOP_predict)
-CPT_r2 = r2_score(CPT_test, CPT_predict)
-WOP_rmse = np.sqrt(mean_squared_error(WOP_test, WOP_predict))
-CPT_rmse = np.sqrt(mean_squared_error(CPT_test, CPT_predict))
-
+## show results 
+print("the WOP r2 is: " + str(WOP_r2))
+print("the CPT r2 is: " + str(CPT_r2))
+print("the WOP rmse is: " +  str(WOP_rmse))
+print ("the CPT rmse is: " + str(CPT_rmse))
 #%%
 results = pd.DataFrame(data={'removed':['none'], 'WOPr2':[WOP_r2], 'CPTr2':[CPT_r2], 'WOPrmse':[WOP_rmse], 'CPTrmse':[CPT_rmse]})
 results
 
-#%%
-x_train.drop(columns=['i_ren'])
 # %%
 ###############################################################################
-# take out individual variables to see if it helps
+# take out individual variables to see if it helps (doesn't lol)
 ###############################################################################
 indep_var_names = ['i_ren', 'i_res', 'i_gsv', 'i_fch', 'i_fcb', 'i_fcr', 'i_hrf']
 for var in indep_var_names:
     # WOP prediction
     wop_var = x_train.drop(columns=[var])
     wop_test = x_test.drop(columns=[var])
-    linreg_wop = LinearRegression()
-    linreg_wop.fit(wop_var, WOP_train)
-    predicted_wop = linreg_wop.predict(wop_test)
-    wop_r2 = r2_score(WOP_test, predicted_wop)
-    wop_rmse = np.sqrt(mean_squared_error(WOP_test, predicted_wop))
+    wop_r2, wop_rmse = linregression(wop_var, wop_test, WOP_train, WOP_test)
+
     # CPT prediction 
     cpt_var = z_train.drop(columns=[var])
     cpt_test = z_test.drop(columns=[var])
-    linreg_cpt = LinearRegression()
-    linreg_cpt.fit(cpt_var, CPT_train)
-    predicted_cpt = linreg_cpt.predict(cpt_test)
-    cpt_r2 = r2_score(CPT_test, predicted_cpt)
-    cpt_rmse = np.sqrt(mean_squared_error(CPT_test, predicted_cpt))
+    cpt_r2, cpt_rmse = linregression(cpt_var, cpt_test, CPT_train, CPT_test)
     df = pd.DataFrame(data={'removed':[var], 'WOPr2':[wop_r2], 'CPTr2':[cpt_r2], 'WOPrmse':[wop_rmse], 'CPTrmse':[cpt_rmse]})
     results = results.append(df)
 
 i_sex_vars = ['i_sex_1', 'i_sex_2', 'i_sex_3']
 
 results
+
 #%%
-## show results 
-print("the WOP r2 is: " + str(WOP_r2))
-print("the CPT r2 is: " + str(CPT_r2))
-print("the WOP rmse is: " +  str(WOP_rmse))
-print ("the CPT rmse is: " + str(CPT_rmse))
+###############################################################################
+# K Fold
+###############################################################################
+kfold_results = pd.DataFrame(columns=["WOP_r2", 'CPT_r2', "WOP_rmse", "CPT_rmse"])
+k = 10
+kf_WOP = KFold(n_splits=k)
+#switch train data into numpy arrays 
+wop_x = x_train.to_numpy()
+wop_y = WOP_train.to_numpy()
+cpt_x = z_train.to_numpy()
+cpt_y = CPT_train.to_numpy()
+for train_index, test_index in kf_WOP.split(x_train):
+    wop_x_train, wop_x_test = wop_x[train_index], wop_x[test_index]
+    wop_y_train, wop_y_test = wop_y[train_index], wop_y[test_index]
+    cpt_x_train, cpt_x_test = cpt_x[train_index], cpt_x[test_index]
+    cpt_y_train, cpt_y_test = cpt_y[train_index], cpt_y[test_index]
+    wop_r2, wop_rmse = linregression(wop_x_train, wop_x_test, wop_y_train, wop_y_test)
+    cpt_r2, cpt_rmse = linregression(cpt_x_train, cpt_x_test, cpt_y_train, cpt_y_test)
+    df = pd.DataFrame({"WOP_r2":[wop_r2], 'CPT_r2':[cpt_r2], "WOP_rmse":[wop_rmse], "CPT_rmse":[cpt_rmse]})
+    kfold_results = pd.concat([kfold_results, df], ignore_index = True, axis=0)
+
+kfold_results
 # %%
-# writing a function to make my life easier 
