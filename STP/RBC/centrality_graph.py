@@ -9,8 +9,8 @@ import math
 ###############################################################################
 # Setup paths and filenames
 ###############################################################################
-psi = np.genfromtxt('LRG_01-350-HOM_MX.csv', delimiter=',')
-bq_xy = np.genfromtxt('LRG_01-350-HOM_XY.csv', delimiter=',')
+psi = np.genfromtxt('LRG_01-250-HET_MX.csv', delimiter=',')
+bq_xy = np.genfromtxt('LRG_01-250-HET_XY.csv', delimiter=',')
 shape_options = ['s', 'o', 'd']
 color_options = ['#e0c3fc', '#caffbf', '#a0c4ff']
 ##############################################################################
@@ -75,4 +75,4 @@ for width in edge_sizes:
                         edge_color='black',
                         alpha=min(default_alpha, math.log(1+ea*width)))
 
-plt.savefig("350-HOM_centrality2.png", bbox_inches='tight', pad_inches=0)
+plt.savefig("250-HET_centrality.png", bbox_inches='tight', pad_inches=0, dpi=300, frameon=False)
