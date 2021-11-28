@@ -153,14 +153,12 @@ model.add(Dense(1, activation='relu'))
 # compile model
 opt = SGD(lr=0.01, momentum=0.9)
 # model.compile(loss='binary_crossentropy', optimizer=opt, metrics=['accuracy']) 
-model.compile(loss='Huber', optimizer=opt, metrics=['accuracy']) # huber loss works good 
+model.compile(loss='huber', optimizer=opt, metrics=['accuracy']) # huber loss works good 
 
 # fit model
 print("LEN of X_TRAIN:", X_test.shape, "len of y_train:", y_test.shape)
-history = model.fit(X_train, y_train, validation_data=(X_test, y_test), epochs=100, batch_size=500) # works well with 500 batch size
+history = model.fit(X_train, y_train, validation_data=(X_test, y_test), epochs=10, batch_size=100) # works well with 500 batch size
 
-# %%
-y_pred
 # %%
 y_pred = model.predict(X_test)
 mean_squared_error(y_pred, y_test)  
