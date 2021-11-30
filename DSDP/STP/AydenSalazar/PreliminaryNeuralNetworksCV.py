@@ -13,6 +13,11 @@ from sklearn import preprocessing
 from sklearn.metrics import mean_squared_error
 from sklearn.model_selection import KFold
 from sklearn.preprocessing import MinMaxScaler
+from tensorflow.keras.optimizers import SGD
+from sklearn.datasets import make_blobs
+from tensorflow.keras.layers import Dense
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.utils import to_categorical
 
 df_list = []
 for gdrive in ['LDR', 'SDR']:
@@ -209,7 +214,7 @@ def powerset(iterable):
     return chain.from_iterable(combinations(s, r) for r in range(len(s)+1))
 
 # %%
-# Let's hone in on the df_sdr_sca dataset. First, let's identify a X, y set. 
+# Let's hone in on the df_sdr_sca dataset. First, let's identify a X, y set with target CPT
 
 
 X = df_sdr_sca.loc[:, ['i_ren', 'i_res', 'i_rsg', 'i_gsv', 'i_fch', 'i_fcb', 'i_fcr', 'i_hrm', 'i_hrf',	'i_grp', 'i_mig', 'i_sex_1', 'i_sex_2', 'i_sex_3']] # features i_ren => i_sex_3
@@ -231,13 +236,6 @@ combos_list = list(combos)[1:]
 
 combos_list
 
-# %%
-# run 5 fold cross validation
-mse_k_fold_no_feat(5, [1], mean_squared_error, X, y, 2021)
-
-# %%
-for i in range(0, 4):
-    print("yee")
 # %%
 def fit_model(trainX, trainy, testX, testy, n_batch):
 	
@@ -270,16 +268,108 @@ def fit_model(trainX, trainy, testX, testy, n_batch):
     plt.title('batch='+str(n_batch), pad=-40)
 
 # %%
-from tensorflow.keras.optimizers import SGD
+# minibatch gradient descent for CPT
+
+# split into train and test
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.25, random_state=42)
 
-batch_sizes = [1, 8, 16, 32, 64, 128, 256, 450]
-for i in range(len(batch_sizes)):
-	# determine the plot number
-	plot_no = 420 + (i+1)
-	plt.subplot(plot_no)
-	# fit model and plot learning curves for a batch size
-	fit_model(X_train, y_train, X_test, y_test, batch_sizes[i])
-# show learning curves
-plt.show()
+sc=preprocessing.MinMaxScaler()
+X_train = sc.fit_transform(X_train)
+
+sc=preprocessing.MinMaxScaler()
+X_test = sc.fit_transform(X_test)
+
+
+n_train = 500
+
+# define model
+
+num_dim = X_train.shape[1]
+print("Num dim:", num_dim)
+model = Sequential()
+model.add(Dense(30, input_dim=num_dim, activation='relu')) 
+model.add(Dense(5, activation='relu'))
+model.add(Dense(1, activation='sigmoid'))
+
+
+# compile model
+opt = SGD(lr=0.01, momentum=0.9)
+model.compile(loss='binary_crossentropy', optimizer=opt, metrics=['accuracy']) # optimizer adam works
+
+# fit model
+print("LEN of X_TRAIN:", X_test.shape, "len of y_train:", y_test.shape)
+history = model.fit(X_train, y_train, validation_data=(X_test, y_test), epochs=100, batch_size=500) # works well with 500 batch size
+
+
+# %%
+y_pred = model.predict(X_test)
+mean_squared_error(y_pred, y_test)  
+# %%
+plt.xlabel("Actual CPT")
+plt.ylabel("Predicted CPT")
+plt.title("Actual vs Predicted CPT using Batch-Trained Neural Network on All Features")
+plt.scatter(y_test, y_pred, s=.1)
+plt.plot(y_test, y_test, color = 'red', label="Actual = Predicted")
+plt.legend()
+plt.axes().set_aspect(1.0/plt.axes().get_data_ratio(), adjustable='box')
+
+# %%
+# Let's hone in on the df_sdr_sca dataset. First, let's identify a X, y set with targe = window of protection
+
+
+X = df_sdr_sca.loc[:, ['i_ren', 'i_res', 'i_rsg', 'i_gsv', 'i_fch', 'i_fcb', 'i_fcr', 'i_hrm', 'i_hrf',	'i_grp', 'i_mig', 'i_sex_1', 'i_sex_2', 'i_sex_3']] # features i_ren => i_sex_3
+#X = pd.concat([X, df_sdr_sca[['i_sex_1', 'i_sex_2', 'i_sex_3']]])
+y = df_sdr_sca.iloc[:, [13]] # index 16 is CPT
+
+# # leave X a dataframe (function will convert it to array)
+y = np.array(y)
+
+print(X.shape)
+print(y.shape)
+
+# %%
+# minibatch gradient descent for WOP
+
+# split into train and test
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.25, random_state=42)
+
+sc=preprocessing.MinMaxScaler()
+X_train = sc.fit_transform(X_train)
+
+sc=preprocessing.MinMaxScaler()
+X_test = sc.fit_transform(X_test)
+
+
+n_train = 500
+
+# define model
+
+num_dim = X_train.shape[1]
+print("Num dim:", num_dim)
+model = Sequential()
+model.add(Dense(30, input_dim=num_dim, activation='relu')) 
+model.add(Dense(5, activation='relu'))
+model.add(Dense(1, activation='sigmoid'))
+
+# compile model
+opt = SGD(lr=0.01, momentum=0.9)
+model.compile(loss='binary_crossentropy', optimizer=opt, metrics=['accuracy']) # optimizer adam works
+
+# fit model
+print("LEN of X_TRAIN:", X_test.shape, "len of y_train:", y_test.shape)
+history = model.fit(X_train, y_train, validation_data=(X_test, y_test), epochs=100, batch_size=500) # works well with 500 batch size
+
+# %%
+y_pred = model.predict(X_test)
+mean_squared_error(y_pred, y_test)  
+# %%
+plt.xlabel("Actual WOP")
+plt.ylabel("Predicted WOP")
+plt.title("Actual vs Predicted WOP using Batch-Trained Neural Network on All Features")
+plt.scatter(y_test, y_pred, s=.1)
+plt.plot(y_test, y_test, color = 'red', label="Actual = Predicted")
+plt.legend()
+plt.set_aspect('equal')
+# %%
+
 # %%
