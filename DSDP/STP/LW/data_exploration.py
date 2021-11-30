@@ -87,7 +87,10 @@ CPT_var = normalize['CPT']
 #%%
 ## function for lin reg
 def linregression(indep_train, indep_test, dep_train, dep_test):
-    """Takes in 4 dataframes and returns the r2 and rmse values."""
+    """Takes in 4 dataframes and trains the linear regression model 
+    based on indep_train and dep_train, testing its accuracy with 
+    indep_test and dep_test. 
+    Returns the r2 and rmse values as a tuple."""
     LR = LinearRegression()
     LR.fit(indep_train, dep_train)
     predicted = LR.predict(indep_test)
@@ -115,7 +118,6 @@ print("the WOP rmse is: " +  str(WOP_rmse))
 print ("the CPT rmse is: " + str(CPT_rmse))
 #%%
 results = pd.DataFrame(data={'removed':['none'], 'WOPr2':[WOP_r2], 'CPTr2':[CPT_r2], 'WOPrmse':[WOP_rmse], 'CPTrmse':[CPT_rmse]})
-results
 
 # %%
 ###############################################################################
@@ -147,7 +149,9 @@ cpt_r2, cpt_rmse = linregression(cpt_var, cpt_test, CPT_train, CPT_test)
 df = pd.DataFrame(data={'removed':['i_sex'], 'WOPr2':[wop_r2], 'CPTr2':[cpt_r2], 'WOPrmse':[wop_rmse], 'CPTrmse':[cpt_rmse]})
 results = results.append(df)
 
-results
+#%%
+## display dataframe after systmatically removing one independent variable 
+results.style.set_caption("Results after removing each variable and recalculating")
 
 #%%
 ###############################################################################
@@ -171,7 +175,9 @@ for train_index, test_index in kf_WOP.split(x_train):
     df = pd.DataFrame({"WOP_r2":[wop_r2], 'CPT_r2':[cpt_r2], "WOP_rmse":[wop_rmse], "CPT_rmse":[cpt_rmse]})
     kfold_results = pd.concat([kfold_results, df], ignore_index = True, axis=0)
 
-kfold_results
+#%%
+## display dataframe for K Fold results 
+kfold_results.style.set_caption("K Fold Results")
 # %%
 ###############################################################################
 # Final Model
@@ -184,121 +190,71 @@ final_cpt_alg.fit(z_train, CPT_train)
 predicted_cpt= final_cpt_alg.predict(z_test) # numpy array 
 
 #%%
-## plot results in normal units 
+## table with actual vs predicted WOP and CPT values 
 plot_results_df = pd.DataFrame()
 plot_results_df['wop_actual'] = WOP_test.to_list()
 plot_results_df['wop_predict'] = predicted_wop
 plot_results_df['cpt_actual'] = CPT_test.to_list()
 plot_results_df['cpt_predict'] = predicted_cpt
+
+#%%
+## plot WOP predicted vs actual
 sns.scatterplot(data=plot_results_df, x='wop_predict', y='wop_actual').set(title="WOP Predicted vs. Actual")
 
 #%%
+## plot CPT predicted vs actual
 sns.scatterplot(data=plot_results_df, x='cpt_predict', y='cpt_actual').set(title="CPT Predicted vs. Actual")
 
+#%%
+## table of the coefficients determined by sci-kit learn's Linear Regression 
+coefficients = pd.DataFrame(final_wop_alg.coef_, x_test.columns, columns=["WOP Coefficients"])
+coefficients["CPT Coefficients"] = final_cpt_alg.coef_
+coefficients.style.set_caption("Coefficients")
 #%% 
+adjustment_results = pd.DataFrame(data={'WOP adjustment':['no change'], 'WOPr2':[WOP_r2], 'WOPrmse':[WOP_rmse], 'CPT adjustment':['no change'], 'CPTr2':[CPT_r2], 'CPTrmse':[CPT_rmse]})
+
+def r2_and_rmse(actual, predicted):
+    return r2_score(actual, predicted), np.sqrt(mean_squared_error(actual, predicted))
+
+#%%
 ## making predictions better match actual
 adjust_results_df = plot_results_df.copy(deep=True)
 ## WOP predicted that are greater than 1 are changed to 1
 adjust_results_df.loc[(adjust_results_df.wop_predict >= 1), "wop_predict"] = 1
 ## CPT predicted that are less than -1 are changed to -1
 adjust_results_df.loc[(adjust_results_df.cpt_predict <= -1), "cpt_predict"] = -1
+wopr2, woprmse = r2_and_rmse(adjust_results_df["wop_predict"], plot_results_df["wop_actual"])
+cptr2, cptrmse = r2_and_rmse(adjust_results_df["cpt_predict"], plot_results_df["cpt_actual"])
+dict = {'WOP adjustment':'if > 1, change to 1', 'WOPr2':wopr2, 'WOPrmse':woprmse, 'CPT adjustment':'if < -1, change to -1', 'CPTr2':cptr2, 'CPTrmse':cptrmse}
+adjustment_results = adjustment_results.append(dict, ignore_index=True)
+adjustment_results
 
-adjust_results_df["wop_predict"] = np.exp(adjust_results_df["wop_predict"]) ## this makes r2 better
-# adjust_results_df["cpt_predict"] = np.log(adjust_results_df["cpt_predict"] + 2) ## this makes r2 worse (0.76 --> 0.39)
+#%%
+## plot WOP after adjusting 
+sns.scatterplot(data=adjust_results_df, x='wop_predict', y='wop_actual').set(title="WOP Adjusted Predicted vs. Actual")
+#%%
+## plot CPT after adjusting 
+sns.scatterplot(data=adjust_results_df, x='cpt_predict', y='cpt_actual').set(title="CPT Adjusted Predicted vs. Actual")
 
-# sns.scatterplot(data=adjust_results_df, x='wop_predict', y='wop_actual').set(title="WOP Predicted vs. Actual")
+#%%
+## exponentialize WOP
+adjust_results_df["wop_predict"] = np.exp(adjust_results_df["wop_predict"])
+## log CPT
+adjust_results_df["cpt_predict"] = np.log(adjust_results_df["cpt_predict"] + 2) ## this makes r2 worse (0.76 --> 0.39)
+wopr2, woprmse = r2_and_rmse(adjust_results_df["wop_predict"], plot_results_df["wop_actual"])
+cptr2, cptrmse = r2_and_rmse(adjust_results_df["cpt_predict"], plot_results_df["cpt_actual"])
+dict = {'WOP adjustment':'exponentialize', 'WOPr2':wopr2, 'WOPrmse':woprmse, 'CPT adjustment':'log', 'CPTr2':cptr2, 'CPTrmse':cptrmse}
+adjustment_results = adjustment_results.append(dict, ignore_index=True)
+adjustment_results
+#%%
+## plot exponentialized WOp
+sns.scatterplot(data=adjust_results_df, x='wop_predict', y='wop_actual').set(title="WOP Predicted vs. Actual")
+#%% 
+## plot logged CPT 
 sns.scatterplot(data=adjust_results_df, x='cpt_predict', y='cpt_actual').set(title="CPT Predicted vs. Actual")
 
 #%%
 plot_results_df['adjusted_wop_predict'] = adjust_results_df["wop_predict"]
 plot_results_df["adjusted_cpt_predict"] = adjust_results_df["cpt_predict"]
-
+plot_results_df.style.set_caption('Predictions vs Actual of Final Algorithm')
 plot_results_df
-#%%
-## final 
-# WOPr2 = r2_score(adjust_results_df["wop_predict"], adjust_results_df["wop_actual"])
-WOPr2 = np.mean(np.std(adjust_results_df["wop_predict"]) * np.std(adjust_results_df["wop_actual"]))
-WOPrmse = np.sqrt(mean_squared_error(adjust_results_df["wop_actual"], adjust_results_df["wop_predict"]))
-# CPTr2 = r2_score(adjust_results_df["cpt_predict"], adjust_results_df["cpt_actual"])
-CPTr2 = np.mean(np.std(adjust_results_df["cpt_predict"] * np.std(adjust_results_df["cpt_actual"])))
-CPTrmse = np.sqrt(mean_squared_error(adjust_results_df["cpt_actual"], adjust_results_df["cpt_predict"]))
-print("WOP r2: " + str(WOPr2) + "\nWOP RMSE: " + str(WOPrmse) + "\nCPT r2: " + str(CPTr2) + "\nCPT RMSE: " + str(CPTrmse))
-#%%
-## plot predicted vs actual WOP and CPT
-
-#%%
-def predict(list):
-    """ Takes in a list of integers in the order: ['i_sex', 'i_ren', 'i_res', 'i_gsv', 'i_fch', 'i_fcb', 'i_fcr', 'i_hrf'].
-        Normalizes the data before running it thorugh the algorithm.
-        Returns predicted WOP and CPT value in original units. """
-    
-    ## make list input into a dataframe
-    input_df = pd.DataFrame(columns = ['i_sex', 'i_ren', 'i_res', 'i_gsv', "i_fch", 'i_fcb', 'i_fcr' ,'i_hrf'])
-    input_df.loc[0] = list
-    ## one hot encoding
-    oneHotEncoding = pd.get_dummies(input_df['i_sex'])
-    input_df = input_df.drop('i_sex', axis = 1)
-    input_df = input_df.join(oneHotEncoding)
-    input_df = input_df.rename(columns={1:"i_sex_1", 2:"i_sex_2", 3:"i_sex_3"})
-    cleaned_dropped = cleaned.drop(columns=["CPT", "WOP"])
-    input_df = (input_df - cleaned_dropped.mean()) / cleaned_dropped.std()
-    input_df = input_df.fillna(x_test["i_sex_1"].to_list()[0])
-    input_df = input_df.reindex(sorted(input_df.columns), axis=1)
-    ## normalize data using cleaned table from above 
-    predict_wop = final_wop_alg.predict(input_df)
-    if predict_wop > 1:
-        predict_wop = 1
-    predict_wop =  np.exp(predict_wop)
-    predict_cpt = final_cpt_alg.predict(input_df)
-    if predict_cpt < -1:
-        predict_cpt = -1
-    ## turn back into origianl units 
-    return predict_wop * cleaned["WOP"].std() + cleaned["WOP"].mean(), predict_cpt * cleaned["CPT"].std() + cleaned["CPT"].mean()
-
-#%%
-## testing the final function
-# test_list = independent_vars[]
-testing_df = DATA[['i_sex', 'i_ren', 'i_res', 'i_gsv', "i_fch", 'i_fcb', 'i_fcr' ,'i_hrf']]
-test_wop, test_cpt = predict(testing_df.loc[437275].to_list())
-
-#%%
-# testing_df.loc[88333]
-# predicted_wop
-# cleaned
-# predicted_wop
-# final_wop_alg.predict(x_test.head(1))
-x_test.head(1)
-
-# x_test.head(1)
-# %%
-
-## make list input into a dataframe
-list = testing_df.loc[437275].to_list()
-input_df = pd.DataFrame(columns = ['i_sex', 'i_ren', 'i_res', 'i_gsv', "i_fch", 'i_fcb', 'i_fcr' ,'i_hrf'])
-input_df.loc[0] = list
-## one hot encoding
-oneHotEncoding = pd.get_dummies(input_df['i_sex'])
-input_df = input_df.drop('i_sex', axis = 1)
-input_df = input_df.join(oneHotEncoding)
-input_df = input_df.rename(columns={1:"i_sex_1", 2:"i_sex_2", 3:"i_sex_3"})
-# # normalize data using cleaned table from above 
-cleaned_dropped = cleaned.drop(columns=["CPT", "WOP"])
-input_df = (input_df - cleaned_dropped.mean()) / cleaned_dropped.std()
-input_df = input_df.fillna(x_test["i_sex_1"].to_list()[0])
-input_df = input_df.reindex(sorted(input_df.columns), axis=1)
-input_df
-input_df.equals(x_test.head(1))
-# predict_wop = final_wop_alg.predict(input_df)
-# predict_wop
-# if predict_wop > 1:
-#     predict_wop = 1
-# predict_wop =  np.exp(predict_wop)
-# predict_cpt = final_cpt_alg.predict(input_df).item(0)
-# predict_cpt
-# if predict_cpt < -1:
-#     predict_cpt = -1
-# ## turn back into origianl units 
-# wop, cpt =  predict_wop * cleaned["WOP"].std() + cleaned["WOP"].mean(), predict_cpt * cleaned["CPT"].std() + cleaned["CPT"].mean()
-# print(str(predict_wop) + str(predicted_cpt))
-# print(str(wop) + str(cpt))
-# %%
