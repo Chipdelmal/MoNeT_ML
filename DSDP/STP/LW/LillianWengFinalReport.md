@@ -56,7 +56,7 @@ DISPLAY THE TABLE
 From Figure 1, it seems that removing each variable decreased the r2 score and RMSE, and the most accurate model kept all seven independent variables.
 
 
-To ascertain the results of the model, I performed a K Fold test using sci-kit learn's model selection package. 
+To ascertain the results of the model, I performed a K Fold test using sci-kit learn's model selection package and k=10. 
 ```
 kfold_results = pd.DataFrame(columns=["WOP_r2", 'CPT_r2', "WOP_rmse", "CPT_rmse"])
 k = 10
@@ -72,4 +72,22 @@ for train_index, test_index in kf_WOP.split(x_train):
     kfold_results = pd.concat([kfold_results, df], ignore_index = True, axis=0)
 ```
 DISPLAY THE TABLE
-As can be seen in Figure 2, the r2 scores and RMSE values did not fluctuate significantly, leading to the conclusion that the results are not random. 
+As can be seen in Figure 2, the r2 scores and RMSE values did not fluctuate significantly, leading to the conclusion that the results are not random and can be trusted. 
+
+Given this information, I decided to use the Linear Regression model as is without deleting any columns
+
+### Tweaking Model 
+The final model with all seven independent variables included resulted in the following 2 scatterplots: 
+DISPLAY SCATTERPLOTS
+
+#### Tails
+For the WOP values, there seems to be a tail at the far right end, so I tried adjusting the values so that any predicted WOP values greater than 1 would map to 1.0. 
+```
+adjust_results_df.loc[(adjust_results_df.wop_predict >= 1), "wop_predict"] = 1
+```
+
+For the CPT values, there seems to be a tail at the bottom left end, so I tried adjusting the values so that any predicted CPT values below -1 mapped to -1.0
+```
+adjust_results_df.loc[(adjust_results_df.cpt_predict <= -1), "cpt_predict"] = -1
+```
+The resulting scatterplots are shown below: DISPLAY SCATTERPLOTS
