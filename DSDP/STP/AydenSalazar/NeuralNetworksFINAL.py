@@ -18,6 +18,9 @@ from sklearn.datasets import make_blobs
 from tensorflow.keras.layers import Dense
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.utils import to_categorical
+import joblib
+import pickle
+from keras.models import load_model
 
 df_list = []
 for gdrive in ['LDR', 'SDR']:
@@ -98,6 +101,11 @@ model.compile(loss='binary_crossentropy', optimizer=opt, metrics=['accuracy']) #
 print("LEN of X_TRAIN:", X_test.shape, "len of y_train:", y_test.shape)
 history = model.fit(X_train, y_train, validation_data=(X_test, y_test), epochs=100, batch_size=500) # works well with 500 batch size
 
+# save the model to disk
+#filename = 'SDR_CPT_model.sav'
+# with open('model.pkl', 'wb') as f:
+#   pickle.dump(model, f)
+model.save('SDR_CPT_model.h5')
 
 # %%
 y_pred = model.predict(X_test)
@@ -159,6 +167,10 @@ model.compile(loss='huber', optimizer=opt, metrics=['accuracy']) # huber loss wo
 print("LEN of X_TRAIN:", X_test.shape, "len of y_train:", y_test.shape)
 history = model.fit(X_train, y_train, validation_data=(X_test, y_test), epochs=10, batch_size=100) # works well with 500 batch size
 
+# save the model to disk
+# filename = 'SDR_WOP_model.sav'
+# joblib.dump(model, open(filename, 'wb'))
+model.save('SDR_WOP_model.h5')
 # %%
 y_pred = model.predict(X_test)
 mean_squared_error(y_pred, y_test)  
@@ -215,6 +227,10 @@ model.compile(loss='binary_crossentropy', optimizer=opt, metrics=['accuracy']) #
 print("LEN of X_TRAIN:", X_test.shape, "len of y_train:", y_test.shape)
 history = model.fit(X_train, y_train, validation_data=(X_test, y_test), epochs=100, batch_size=500) # works well with 500 batch size
 
+# save the model to disk
+# filename = 'LDR_CPT_model.sav'
+# joblib.dump(model, open(filename, 'wb'))
+model.save('LDR_CPT_model.h5')
 # %%
 y_pred = model.predict(X_test)
 mean_squared_error(y_pred, y_test)  
@@ -269,6 +285,10 @@ model.compile(loss='huber', optimizer=opt, metrics=['accuracy']) # huber loss wo
 print("LEN of X_TRAIN:", X_test.shape, "len of y_train:", y_test.shape)
 history = model.fit(X_train, y_train, validation_data=(X_test, y_test), epochs=10, batch_size=100) # works well with 500 batch size
 
+# save the model to disk
+# filename = 'LDR_WOP_model.sav'
+# joblib.dump(model, open(filename, 'wb'))
+model.save('LDR_WOP_model.h5')
 # %%
 y_pred = model.predict(X_test)
 mean_squared_error(y_pred, y_test)  
