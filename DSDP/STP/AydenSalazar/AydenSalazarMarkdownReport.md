@@ -4,7 +4,7 @@
 
 ## Abstract
 
-Across the last year, the UC Berkeley School of Public Health's Marshall Lab has generated datasets on simulations of the deployment of CRISPR/Cas9 genetically-modified mosquitos in the islands of São Tomé and Príncipe in equatorial Africa for research on mosquito borne illnesses.
+Across the last year, the UC Berkeley School of Public Health's Marshall Lab has generated datasets on simulations of the deployment of CRISPR/Cas9 genetically-modified mosquitos in the islands of São Tomé and Príncipe in equatorial Africa for research on mosquito-borne illnesses.
 
 ## Objectives
 
