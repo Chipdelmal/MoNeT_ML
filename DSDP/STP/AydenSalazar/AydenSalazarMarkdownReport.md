@@ -81,4 +81,15 @@ plt.scatter(y_test, y_pred, s=.1)
 plt.plot(y_test, y_test, color = 'red', label="Actual = Predicted")
 plt.legend()
 ```
-![This is an image](https://myoctocat.com/assets/images/base-octocat.svg)
+
+#### Actual vs Predicted CPT using Batch-Trained Neural Network on All SDR Features
+![This is an image](https://github.com/Chipdelmal/MoNeT_ML/blob/main/DSDP/STP/AydenSalazar/DataVisualizationsAydenSalazar/SDR_CPT.jpg)
+
+#### Actual vs Predicted WOP using Batch-Trained Neural Network on All SDR Features
+![This is an image](https://github.com/Chipdelmal/MoNeT_ML/blob/main/DSDP/STP/AydenSalazar/DataVisualizationsAydenSalazar/SDR_WOP.jpg)
+
+#### Actual vs Predicted CPT using Batch-Trained Neural Network on All LDR Features
+![This is an image](https://github.com/Chipdelmal/MoNeT_ML/blob/main/DSDP/STP/AydenSalazar/DataVisualizationsAydenSalazar/LDR_CPT.jpg)
+
+#### Actual vs Predicted WOP using Batch-Trained Neural Network on All LDR Features
+![This is an image](https://github.com/Chipdelmal/MoNeT_ML/blob/main/DSDP/STP/AydenSalazar/DataVisualizationsAydenSalazar/LDR_WOP.jpg)
