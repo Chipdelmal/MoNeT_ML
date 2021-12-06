@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 from scipy.interpolate import griddata
 from itertools import chain, combinations
 from sklearn.model_selection import train_test_split
-from keras.models import Sequential
+from keras.models import Sequential 
 from keras.layers import Dense
 from sklearn import preprocessing
 from sklearn.metrics import mean_squared_error
@@ -18,6 +18,9 @@ from sklearn.datasets import make_blobs
 from tensorflow.keras.layers import Dense
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.utils import to_categorical
+import joblib
+import pickle
+from keras.models import load_model
 
 df_list = []
 for gdrive in ['LDR', 'SDR']:
@@ -98,6 +101,11 @@ model.compile(loss='binary_crossentropy', optimizer=opt, metrics=['accuracy']) #
 print("LEN of X_TRAIN:", X_test.shape, "len of y_train:", y_test.shape)
 history = model.fit(X_train, y_train, validation_data=(X_test, y_test), epochs=100, batch_size=500) # works well with 500 batch size
 
+# save the model to disk
+#filename = 'SDR_CPT_model.sav'
+# with open('model.pkl', 'wb') as f:
+#   pickle.dump(model, f)
+model.save('SDR_CPT_model.h5')
 
 # %%
 y_pred = model.predict(X_test)
@@ -105,7 +113,7 @@ mean_squared_error(y_pred, y_test)
 # %%
 plt.xlabel("Actual CPT")
 plt.ylabel("Predicted CPT")
-plt.title("Actual vs Predicted CPT using Batch-Trained Neural Network on All Features")
+plt.title("Actual vs Predicted CPT using Batch-Trained Neural Network on All SDR Features")
 plt.scatter(y_test, y_pred, s=.1)
 plt.plot(y_test, y_test, color = 'red', label="Actual = Predicted")
 plt.legend()
@@ -159,16 +167,135 @@ model.compile(loss='huber', optimizer=opt, metrics=['accuracy']) # huber loss wo
 print("LEN of X_TRAIN:", X_test.shape, "len of y_train:", y_test.shape)
 history = model.fit(X_train, y_train, validation_data=(X_test, y_test), epochs=10, batch_size=100) # works well with 500 batch size
 
+# save the model to disk
+# filename = 'SDR_WOP_model.sav'
+# joblib.dump(model, open(filename, 'wb'))
+model.save('SDR_WOP_model.h5')
 # %%
 y_pred = model.predict(X_test)
 mean_squared_error(y_pred, y_test)  
 # %%
 plt.xlabel("Actual WOP")
 plt.ylabel("Predicted WOP")
-plt.title("Actual vs Predicted WOP using Batch-Trained Neural Network on All Features")
+plt.title("Actual vs Predicted WOP using Batch-Trained Neural Network on All SDR Features")
 plt.scatter(y_test, y_pred, s=.1)
 plt.plot(y_test, y_test, color = 'red', label="Actual = Predicted")
 plt.legend()
 #plt.set_aspect('equal')
 
 # %%
+# Now we're going to shift our focus to the df_ldr_sca dataset
+X = df_ldr_sca.loc[:, ['i_ren', 'i_res', 'i_rsg', 'i_gsv', 'i_fch', 'i_fcb', 'i_fcr', 'i_hrm', 'i_hrf',	'i_grp', 'i_mig', 'i_sex_1', 'i_sex_2', 'i_sex_3']] # features i_ren => i_sex_3
+#X = pd.concat([X, df_sdr_sca[['i_sex_1', 'i_sex_2', 'i_sex_3']]])
+y = df_ldr_sca.iloc[:, [16]] # index 16 is CPT
+
+# leave X a dataframe (function will convert it to array)
+y = np.array(y)
+
+print(X.shape)
+print(y.shape)
+# %%
+# minibatch gradient descent for CPT
+
+# split into train and test
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.25, random_state=42)
+
+sc=preprocessing.MinMaxScaler()
+X_train = sc.fit_transform(X_train)
+
+sc=preprocessing.MinMaxScaler()
+X_test = sc.fit_transform(X_test)
+
+
+n_train = 500
+
+# define model
+
+num_dim = X_train.shape[1]
+print("Num dim:", num_dim)
+model = Sequential()
+model.add(Dense(30, input_dim=num_dim, activation='relu')) 
+model.add(Dense(5, activation='relu'))
+model.add(Dense(1, activation='sigmoid'))
+
+
+# compile model
+opt = SGD(lr=0.01, momentum=0.9)
+model.compile(loss='binary_crossentropy', optimizer=opt, metrics=['accuracy']) # optimizer adam works
+
+# fit model
+print("LEN of X_TRAIN:", X_test.shape, "len of y_train:", y_test.shape)
+history = model.fit(X_train, y_train, validation_data=(X_test, y_test), epochs=100, batch_size=500) # works well with 500 batch size
+
+# save the model to disk
+# filename = 'LDR_CPT_model.sav'
+# joblib.dump(model, open(filename, 'wb'))
+model.save('LDR_CPT_model.h5')
+# %%
+y_pred = model.predict(X_test)
+mean_squared_error(y_pred, y_test)  
+# %%
+plt.xlabel("Actual CPT")
+plt.ylabel("Predicted CPT")
+plt.title("Actual vs Predicted CPT using Batch-Trained Neural Network on All LDR Features")
+plt.scatter(y_test, y_pred, s=.1)
+plt.plot(y_test, y_test, color = 'red', label="Actual = Predicted")
+plt.legend()
+# %%
+# final iteration; doing WOP now for df_ldr_sca
+X = df_ldr_sca.loc[:, ['i_ren', 'i_res', 'i_rsg', 'i_gsv', 'i_fch', 'i_fcb', 'i_fcr', 'i_hrm', 'i_hrf',	'i_grp', 'i_mig', 'i_sex_1', 'i_sex_2', 'i_sex_3']] # features i_ren => i_sex_3
+#X = pd.concat([X, df_sdr_sca[['i_sex_1', 'i_sex_2', 'i_sex_3']]])
+y = df_ldr_sca.iloc[:, [13]] # index 13 is WOP
+
+# # leave X a dataframe (function will convert it to array)
+y = np.array(y)
+
+print(X.shape)
+print(y.shape)
+# %%
+# minibatch gradient descent for WOP
+
+# split into train and test
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.25, random_state=42)
+
+sc=preprocessing.MinMaxScaler()
+X_train = sc.fit_transform(X_train)
+
+sc=preprocessing.MinMaxScaler()
+X_test = sc.fit_transform(X_test)
+
+
+n_train = 500
+
+# define model
+
+num_dim = X_train.shape[1]
+print("Num dim:", num_dim)
+model = Sequential()
+model.add(Dense(30, input_dim=num_dim, activation='relu')) 
+model.add(Dense(5, activation='relu'))
+model.add(Dense(1, activation='relu'))
+
+# compile model
+opt = SGD(lr=0.01, momentum=0.9)
+# model.compile(loss='binary_crossentropy', optimizer=opt, metrics=['accuracy']) 
+model.compile(loss='huber', optimizer=opt, metrics=['accuracy']) # huber loss works good 
+
+# fit model
+print("LEN of X_TRAIN:", X_test.shape, "len of y_train:", y_test.shape)
+history = model.fit(X_train, y_train, validation_data=(X_test, y_test), epochs=10, batch_size=100) # works well with 500 batch size
+
+# save the model to disk
+# filename = 'LDR_WOP_model.sav'
+# joblib.dump(model, open(filename, 'wb'))
+model.save('LDR_WOP_model.h5')
+# %%
+y_pred = model.predict(X_test)
+mean_squared_error(y_pred, y_test)  
+# %%
+plt.xlabel("Actual WOP")
+plt.ylabel("Predicted WOP")
+plt.title("Actual vs Predicted WOP using Batch-Trained Neural Network on All LDR Features")
+plt.scatter(y_test, y_pred, s=.1)
+plt.plot(y_test, y_test, color = 'red', label="Actual = Predicted")
+plt.legend()

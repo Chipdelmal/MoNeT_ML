@@ -1,10 +1,10 @@
 # Discovery Program: Using Deep Learning to Predict Window of Protection and Cumulative Potential for Transmission for Mosquito Gene Drive
 
+## By: Ayden Salazar
+
 ## Abstract
 
-## Project Background
-
-Across the last year, the UC Berkeley School of Public Health's Marshall Lab has generated datasets on simulations of the deployment of CRISPR/Cas9 genetically-modified mosquitos in the islands of São Tomé and Príncipe in equatorial Africa for research on mosquito borne illnesses.
+Across the last year, the UC Berkeley School of Public Health's Marshall Lab has generated datasets on simulations of the deployment of CRISPR/Cas9 genetically-modified mosquitos in the islands of São Tomé and Príncipe in equatorial Africa for research on mosquito-borne illnesses.
 
 ## Objectives
 
@@ -27,7 +27,7 @@ for i, df in enumerate(df_list):
         df_list[i] = new_df
 ```
 
-We also want to split the data into training and testing sets and normalize the input values. Here, I use the scikit-learn MinMaxScaler() to normalize.
+We also want to split the data into training and testing sets and normalize the input values. Here, I use the scikit-learn function MinMaxScaler() to normalize.
 
 ```
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.25, random_state=42)
@@ -39,26 +39,57 @@ sc=preprocessing.MinMaxScaler()
 X_test = sc.fit_transform(X_test)
 ```
 
+# Construction of Neural Network
+
+To construct the neural network, I used the Tensorflow/Keras Python deep learning library.
 
 
-
-Our group has been generating datasets on the expected results on deploying genetically-modified mosquitoes over the last year. One of the challenges, however, is to share our results with collaborators and stakeholders
-
-These datasets were generated as part of a larger publication on the effects of simulating the releases of CRISPR/Cas9 linked and split drive genetic modifications in the islands of São Tomé and Príncipe in equatorial Africa. In these versions of the dataset, we consider the landscape as a fully-mixing panmictic population to focus on the inherent properties of the drives, without the spatial component of the migration of the mosquitos.
-
-this is some text yeah
-
-Some basic Git commands are:
+For predicting the CPT, I created a hidden layer of size 30 with an ReLu activation function, one other hidden layer of size 5 (also with ReLu), and an output layer with a Sigmoid activation function. This setup brought the best results:
 ```
-git status
-git add
-git commit
+num_dim = X_train.shape[1]
+print("Num dim:", num_dim)
+model = Sequential()
+model.add(Dense(30, input_dim=num_dim, activation='relu'))
+model.add(Dense(5, activation='relu'))
+model.add(Dense(1, activation='sigmoid'))
 ```
 
-This site was built using [GitHub Pages](https://pages.github.com/).
+Next, I set the optimizer for the neural network to be stochastic gradient descent with a learning rate of .01. I then fit the model to the training data with 100 epochs and a batch size of 500 for the hyperparameters.
 
-![This is an image](https://myoctocat.com/assets/images/base-octocat.svg)
+```
+# compile model
+opt = SGD(lr=0.01, momentum=0.9)
+model.compile(loss='binary_crossentropy', optimizer=opt, metrics=['accuracy']) # optimizer adam works
 
-- George Washington
-- John Adams
-- Thomas Jefferson
+# fit model
+print("LEN of X_TRAIN:", X_test.shape, "len of y_train:", y_test.shape)
+history = model.fit(X_train, y_train, validation_data=(X_test, y_test), epochs=100, batch_size=500) # works well with 500 batch size
+```
+
+# Results/Data Visualizations
+
+Finally, I plotted the results. The results for the actual y values vs predicted y value for both CPT and WOP are below, as well as the code:
+
+```
+y_pred = model.predict(X_test)
+mean_squared_error(y_pred, y_test)  
+# %%
+plt.xlabel("Actual CPT")
+plt.ylabel("Predicted CPT")
+plt.title("Actual vs Predicted CPT using Batch-Trained Neural Network on All Features")
+plt.scatter(y_test, y_pred, s=.1)
+plt.plot(y_test, y_test, color = 'red', label="Actual = Predicted")
+plt.legend()
+```
+
+#### Actual vs Predicted CPT using Batch-Trained Neural Network on All SDR Features
+![This is an image](https://github.com/Chipdelmal/MoNeT_ML/blob/main/DSDP/STP/AydenSalazar/DataVisualizationsAydenSalazar/SDR_CPT.jpg)
+
+#### Actual vs Predicted WOP using Batch-Trained Neural Network on All SDR Features
+![This is an image](https://github.com/Chipdelmal/MoNeT_ML/blob/main/DSDP/STP/AydenSalazar/DataVisualizationsAydenSalazar/SDR_WOP.jpg)
+
+#### Actual vs Predicted CPT using Batch-Trained Neural Network on All LDR Features
+![This is an image](https://github.com/Chipdelmal/MoNeT_ML/blob/main/DSDP/STP/AydenSalazar/DataVisualizationsAydenSalazar/LDR_CPT.jpg)
+
+#### Actual vs Predicted WOP using Batch-Trained Neural Network on All LDR Features
+![This is an image](https://github.com/Chipdelmal/MoNeT_ML/blob/main/DSDP/STP/AydenSalazar/DataVisualizationsAydenSalazar/LDR_WOP.jpg)
