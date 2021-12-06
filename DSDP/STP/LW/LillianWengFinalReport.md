@@ -53,7 +53,7 @@ for var in indep_var_names:
 ```
 
 DISPLAY THE TABLE
-From Figure 1, it seems that removing each variable decreased the r2 score and RMSE, and the most accurate model kept all seven independent variables.
+From Figure 1, removing each variable decreased the r2 score and RMSE, and the most accurate model kept all seven independent variables.
 
 
 To ascertain the results of the model, I performed a K Fold test using sci-kit learn's model selection package and k=10. 
@@ -78,7 +78,7 @@ Given this information, I decided to use the Linear Regression model as is witho
 
 ### Tweaking Model 
 The final model with all seven independent variables included resulted in the following 2 scatterplots: 
-DISPLAY SCATTERPLOTS
+DISPLAY SCATTERPLOTS Figure 3
 
 #### Tails
 For the WOP values, there seems to be a tail at the far right end, so I tried adjusting the values so that any predicted WOP values greater than 1 would map to 1.0. 
@@ -90,4 +90,4 @@ For the CPT values, there seems to be a tail at the bottom left end, so I tried 
 ```
 adjust_results_df.loc[(adjust_results_df.cpt_predict <= -1), "cpt_predict"] = -1
 ```
-The resulting scatterplots are shown below: DISPLAY SCATTERPLOTS
+The resulting scatterplots are shown below: DISPLAY SCATTERPLOTS Figure 4

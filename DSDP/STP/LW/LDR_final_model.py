@@ -95,6 +95,10 @@ def predict(list):
     ## turn back into origianl units 
     return predict_wop * cleaned["WOP"].std() + cleaned["WOP"].mean(), predict_cpt * cleaned["CPT"].std() + cleaned["CPT"].mean()
 
+## keep the if >1 and <-1 stuff 
+
+#%%
+x_test
 
 #%%
 ###############################################################################
@@ -105,12 +109,16 @@ testing_df = DATA[['i_sex', 'i_ren', 'i_res', 'i_gsv', "i_fch", 'i_fcb', 'i_fcr'
 test_wop, test_cpt = predict(testing_df.loc[437275].to_list())
 print("wop: " + str(test_wop) + " \ncpt: " + str(test_cpt))
 
-# x_test.head(1)
 # %%
 x_test
+cleaned.loc[437275]
 
+#%%
+x_train
+predicted_wop.item(0)
+#%%
 ## make list input into a dataframe
-list = testing_df.loc[437275].to_list()
+list = DATA[['i_sex', 'i_ren', 'i_res', 'i_gsv', "i_fch", 'i_fcb', 'i_fcr' ,'i_hrf']].loc[437275].to_list()
 input_df = pd.DataFrame(columns = ['i_sex', 'i_ren', 'i_res', 'i_gsv', "i_fch", 'i_fcb', 'i_fcr' ,'i_hrf'])
 input_df.loc[0] = list
 ## one hot encoding
@@ -122,16 +130,15 @@ input_df = input_df.rename(columns={1:"i_sex_1", 2:"i_sex_2", 3:"i_sex_3"})
 cleaned_dropped = cleaned.drop(columns=["CPT", "WOP"])
 input_df = (input_df - cleaned_dropped.mean()) / cleaned_dropped.std()
 input_df = input_df.fillna(x_test["i_sex_1"].to_list()[0])
-input_df = input_df.reindex(sorted(input_df.columns), axis=1)
-input_df
-# input_df.equals(x_test.head(1))
+input_df = input_df.reindex(sorted(input_df.columns), axis=1) ## input_df stuff all looks fine
+# input_df
 # predict_wop = final_wop_alg.predict(input_df)
-# predict_wop
+# predict_wop.item(0) ## why is this 128027.71426319 even though the values are the same as the x_test values?
 # if predict_wop > 1:
 #     predict_wop = 1
 # predict_wop =  np.exp(predict_wop)
-# predict_cpt = final_cpt_alg.predict(input_df).item(0)
-# predict_cpt
+predict_cpt = final_cpt_alg.predict(input_df).item(0)
+predict_cpt
 # if predict_cpt < -1:
 #     predict_cpt = -1
 # ## turn back into origianl units 
