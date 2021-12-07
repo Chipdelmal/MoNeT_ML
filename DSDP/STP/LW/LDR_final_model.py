@@ -66,6 +66,12 @@ final_cpt_alg.fit(z_train, CPT_train)
 predicted_cpt= final_cpt_alg.predict(z_test) # numpy array 
 
 #%%
+# coefficients = pd.DataFrame(final_wop_alg.coef_, x_test.columns, columns=["WOP Coefficients"])
+# coefficients["CPT Coefficients"] = final_cpt_alg.coef_
+
+wop_coef = final_wop_alg.coef_
+cpt_coef = final_cpt_alg.coef_
+#%%
 def predict(list):
     """ Takes in a list of integers in the order: ['i_sex', 'i_ren', 'i_res', 'i_gsv', 'i_fch', 'i_fcb', 'i_fcr', 'i_hrf'].
         Normalizes the data before running it thorugh the algorithm.
@@ -109,14 +115,13 @@ testing_df = DATA[['i_sex', 'i_ren', 'i_res', 'i_gsv', "i_fch", 'i_fcb', 'i_fcr'
 test_wop, test_cpt = predict(testing_df.loc[437275].to_list())
 print("wop: " + str(test_wop) + " \ncpt: " + str(test_cpt))
 
-# %%
-x_test
-cleaned.loc[437275]
-
 #%%
+## what the predicted WOP is supposed to be: 0.6174995841247563
 x_train
 predicted_wop.item(0)
+
 #%%
+## step through the function line by line
 ## make list input into a dataframe
 list = DATA[['i_sex', 'i_ren', 'i_res', 'i_gsv', "i_fch", 'i_fcb', 'i_fcr' ,'i_hrf']].loc[437275].to_list()
 input_df = pd.DataFrame(columns = ['i_sex', 'i_ren', 'i_res', 'i_gsv', "i_fch", 'i_fcb', 'i_fcr' ,'i_hrf'])
@@ -131,14 +136,18 @@ cleaned_dropped = cleaned.drop(columns=["CPT", "WOP"])
 input_df = (input_df - cleaned_dropped.mean()) / cleaned_dropped.std()
 input_df = input_df.fillna(x_test["i_sex_1"].to_list()[0])
 input_df = input_df.reindex(sorted(input_df.columns), axis=1) ## input_df stuff all looks fine
-# input_df
+x_test.loc[0] = input_df.to_numpy().tolist()[0]
+x_test.sort_index
+# np.sum((input_df.to_numpy() * wop_coef)[0][:7])
+
+
 # predict_wop = final_wop_alg.predict(input_df)
 # predict_wop.item(0) ## why is this 128027.71426319 even though the values are the same as the x_test values?
 # if predict_wop > 1:
 #     predict_wop = 1
 # predict_wop =  np.exp(predict_wop)
-predict_cpt = final_cpt_alg.predict(input_df).item(0)
-predict_cpt
+# predict_cpt = final_cpt_alg.predict(input_df).item(0)
+# predict_cpt
 # if predict_cpt < -1:
 #     predict_cpt = -1
 # ## turn back into origianl units 

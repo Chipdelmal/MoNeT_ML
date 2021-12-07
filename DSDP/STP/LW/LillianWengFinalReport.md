@@ -1,7 +1,7 @@
 # Data Science Discovery Program: Using Linear Regression to Predict the Window of Protection and Cumulative Potential for Transmission for Genetically Modified Mosquitos
 ### Abstract
 ### Objective:
-Train a machine learning model to predict the effectiveness of genetially modified mosquitoes in decreasing the frequency of mosquito-transmitted diseases like malaria and dengue feaver. Summary statistics were provided by UC Berkeley School of Public Health's Marshall Lab. More specifically, I chose linear regression to train 2 separate models for predicting the Window of Protection (WOP) and the CUmulative Potential for Transmission (CPT) using the LDR dataset provided by the lab. 
+Train a machine learning model to predict the effectiveness of genetially modified mosquitoes in decreasing the frequency of mosquito-transmitted diseases like malaria and dengue feaver. Summary statistics were provided by UC Berkeley School of Public Health's Marshall Lab. More specifically, I chose linear regression to train 2 separate models for predicting the Window of Protection (WOP) and the CUmulative Potential for Transmission (CPT) using the LDR and SDR datasets provided by the lab. The analysis are based mainly off the SCA data.
 ### Data Cleaning 
 Since the "i_sex" column designating the gender of the released mosquitos was a categorical variable, I first converted it to a quantitative value using one-hot encoding then normalized the data.
 ```
@@ -19,22 +19,9 @@ z_train, z_test, CPT_train, CPT_test = train_test_split(independent_vars, CPT_va
 ```
 
 ### Exploration 
-To determine the effectiveness of the models I test, I wrote the following function that returns the r2 score and root mean squared error (RMSE) calculated using sci-kit learn's metrics package.  
-```
-def linregression(indep_train, indep_test, dep_train, dep_test):
-    """Takes in 4 dataframes and trains the linear regression model 
-    based on indep_train and dep_train, testing its accuracy with 
-    indep_test and dep_test. 
-    Returns the r2 and rmse values as a tuple."""
-    LR = LinearRegression()
-    LR.fit(indep_train, dep_train)
-    predicted = LR.predict(indep_test)
-    # r2 = r2_score(dep_test, predicted)
-    r2 = rSquared(dep_test, predicted)
-    rmse = np.sqrt(mean_squared_error(dep_test, predicted))
-    return r2, rmse
-```
-I started by systematically removing one of the independent variables i_sex, i_ren, i_res, i_gsv, i_fch, i_fcb, i_fcr, and i_hrf. If the r2 score or rmse dropped significantly with its removal, that indicated the variable is significant and should be kept. 
+To determine the effectiveness of the models I test, I used the r-squared adjusted value and the root mean squared error.
+
+I began by systematically removing one of the independent variables i_sex, i_ren, i_res, i_gsv, i_fch, i_fcb, i_fcr, and i_hrf. A significant drop in the r-squared adjusted or rmse values indicates that it should be kept in the final model.  
 
 ```
 indep_var_names = ['i_ren', 'i_res', 'i_gsv', 'i_fch', 'i_fcb', 'i_fcr', 'i_hrf']
