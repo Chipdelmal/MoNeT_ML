@@ -114,7 +114,7 @@ results = results.append(df)
 
 #%%
 ## display dataframe after systmatically removing one independent variable 
-results.style.set_caption("Results After Removing Each Variable")
+results.style.set_caption("SDR: Results After Removing Each Variable")
 
 #%%
 ###############################################################################
@@ -140,7 +140,7 @@ for train_index, test_index in kf_WOP.split(x_train):
 
 #%%
 ## display dataframe for K Fold results 
-kfold_results.style.set_caption("K Fold Results")
+kfold_results.style.set_caption("SDR: K Fold Results")
 
 # %%
 ###############################################################################
@@ -163,11 +163,11 @@ plot_results_df['cpt_predict'] = predicted_cpt
 
 #%%
 ## plot WOP predicted vs actual
-sns.scatterplot(data=plot_results_df, x='wop_predict', y='wop_actual').set(title="WOP Predicted vs. Actual")
+sns.scatterplot(data=plot_results_df, x='wop_predict', y='wop_actual').set(title="SDR: WOP Predicted vs. Actual")
 
 #%%
 ## plot CPT predicted vs actual
-sns.scatterplot(data=plot_results_df, x='cpt_predict', y='cpt_actual').set(title="CPT Predicted vs. Actual")
+sns.scatterplot(data=plot_results_df, x='cpt_predict', y='cpt_actual').set(title="SDR: CPT Predicted vs. Actual")
 
 #%% 
 adjustment_results = pd.DataFrame(data={'WOP adjustment':['no change'], 'WOPr2':[WOP_r2], 'WOPrmse':[WOP_rmse], 'CPT adjustment':['no change'], 'CPTr2':[CPT_r2], 'CPTrmse':[CPT_rmse]})
@@ -193,10 +193,10 @@ adjustment_results
 
 #%%
 ## plot WOP after adjusting 
-sns.scatterplot(data=adjust_results_df, x='wop_predict', y='wop_actual').set(title="WOP Adjusted Predicted vs. Actual")
+sns.scatterplot(data=adjust_results_df, x='wop_predict', y='wop_actual').set(title="SDR: WOP Adjusted 1 vs. Actual")
 #%%
 ## plot CPT after adjusting 
-sns.scatterplot(data=adjust_results_df, x='cpt_predict', y='cpt_actual').set(title="CPT Adjusted Predicted vs. Actual")
+sns.scatterplot(data=adjust_results_df, x='cpt_predict', y='cpt_actual').set(title="SDR: CPT Adjusted 1 vs. Actual")
 
 #%%
 ## exponentialize WOP
@@ -210,7 +210,7 @@ adjustment_results = adjustment_results.append(dict, ignore_index=True)
 adjustment_results
 #%%
 ## plot exponentialized WOp
-sns.scatterplot(data=adjust_results_df, x='wop_predict', y='wop_actual').set(title="WOP Predicted vs. Actual")
+sns.scatterplot(data=adjust_results_df, x='wop_predict', y='wop_actual').set(title="SDR: WOP Adjusted 2 vs. Actual")
 #%% 
 ## plot logged CPT 
-sns.scatterplot(data=adjust_results_df, x='cpt_predict', y='cpt_actual').set(title="CPT Predicted vs. Actual")
+sns.scatterplot(data=adjust_results_df, x='cpt_predict', y='cpt_actual').set(title="SDR: CPT Adjusted 2 vs. Actual")

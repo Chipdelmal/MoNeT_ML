@@ -39,6 +39,7 @@ oneHotEncoding = pd.get_dummies(necessaryVars['i_sex'])
 necessaryVars = necessaryVars.drop('i_sex', axis = 1)
 necessaryVars = necessaryVars.join(oneHotEncoding)
 cleaned = necessaryVars.rename(columns={1:"i_sex_1", 2:"i_sex_2", 3:"i_sex_3"})
+cleaned_dropped = cleaned.drop(columns=["CPT", "WOP"])
 # normalize = preprocessing.Normalizer() 
 normalize = (cleaned - cleaned.mean()) / cleaned.std()
 independent_vars = normalize.drop(columns=['WOP', 'CPT'])
@@ -53,7 +54,6 @@ CPT_var = normalize['CPT']
 x_train, x_test, WOP_train, WOP_test = train_test_split(independent_vars, WOP_var, test_size=0.2, random_state=50)
 z_train, z_test, CPT_train, CPT_test = train_test_split(independent_vars, CPT_var, test_size=0.2, random_state=50)
 
-
 # %%
 ###############################################################################
 # Final Model
@@ -66,9 +66,6 @@ final_cpt_alg.fit(z_train, CPT_train)
 predicted_cpt= final_cpt_alg.predict(z_test) # numpy array 
 
 #%%
-# coefficients = pd.DataFrame(final_wop_alg.coef_, x_test.columns, columns=["WOP Coefficients"])
-# coefficients["CPT Coefficients"] = final_cpt_alg.coef_
-
 wop_coef = final_wop_alg.coef_
 cpt_coef = final_cpt_alg.coef_
 #%%
@@ -85,7 +82,7 @@ def predict(list):
     input_df = input_df.drop('i_sex', axis = 1)
     input_df = input_df.join(oneHotEncoding)
     input_df = input_df.rename(columns={1:"i_sex_1", 2:"i_sex_2", 3:"i_sex_3"})
-    cleaned_dropped = cleaned.drop(columns=["CPT", "WOP"])
+    
      ## normalize data using cleaned table from above 
     input_df = (input_df - cleaned_dropped.mean()) / cleaned_dropped.std()
     input_df = input_df.fillna(x_test["i_sex_1"].to_list()[0])
@@ -100,8 +97,6 @@ def predict(list):
         predict_cpt = -1
     ## turn back into origianl units 
     return predict_wop * cleaned["WOP"].std() + cleaned["WOP"].mean(), predict_cpt * cleaned["CPT"].std() + cleaned["CPT"].mean()
-
-## keep the if >1 and <-1 stuff 
 
 #%%
 x_test
@@ -136,8 +131,8 @@ cleaned_dropped = cleaned.drop(columns=["CPT", "WOP"])
 input_df = (input_df - cleaned_dropped.mean()) / cleaned_dropped.std()
 input_df = input_df.fillna(x_test["i_sex_1"].to_list()[0])
 input_df = input_df.reindex(sorted(input_df.columns), axis=1) ## input_df stuff all looks fine
-x_test.loc[0] = input_df.to_numpy().tolist()[0]
-x_test.sort_index
+# x_test.loc[0] = input_df.to_numpy().tolist()[0]
+# x_test.sort_index
 # np.sum((input_df.to_numpy() * wop_coef)[0][:7])
 
 
@@ -154,5 +149,3 @@ x_test.sort_index
 # wop, cpt =  predict_wop * cleaned["WOP"].std() + cleaned["WOP"].mean(), predict_cpt * cleaned["CPT"].std() + cleaned["CPT"].mean()
 # print(str(predict_wop) + str(predicted_cpt))
 # print(str(wop) + str(cpt))
-# %%
-# %%
