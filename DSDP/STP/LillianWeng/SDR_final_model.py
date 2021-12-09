@@ -18,7 +18,7 @@ from sklearn import preprocessing
 from sklearn.metrics import r2_score
 from sklearn.metrics import mean_squared_error
 
-GDRIVE = 'LDR'
+GDRIVE = 'SDR'
 FILE_NAME = 'SCA_HLT_50Q_10T.csv'
 BASE_PATH = '/Users/lillianweng/Desktop/DSDP/mosquito_raw_data/'
 ###############################################################################
@@ -69,7 +69,7 @@ predicted_cpt= final_cpt_alg.predict(z_test) # numpy array
 wop_coef = final_wop_alg.coef_
 cpt_coef = final_cpt_alg.coef_
 #%%
-def predict_LDR(list):
+def predict_SDR(list):
     """ Takes in a list of integers in the order: ['i_sex', 'i_ren', 'i_res', 'i_gsv', 'i_fch', 'i_fcb', 'i_fcr', 'i_hrf'].
         Normalizes the data before running it thorugh the algorithm.
         Returns predicted WOP and CPT value in original units. """
@@ -107,18 +107,18 @@ x_test
 ###############################################################################
 # test_list = independent_vars[]
 testing_df = DATA[['i_sex', 'i_ren', 'i_res', 'i_gsv', "i_fch", 'i_fcb', 'i_fcr' ,'i_hrf']]
-test_wop, test_cpt = predict_LDR(testing_df.loc[437275].to_list())
+test_wop, test_cpt = predict_SDR(testing_df.loc[8112].to_list())
 print("wop: " + str(test_wop) + " \ncpt: " + str(test_cpt))
 
 #%%
-## what the predicted WOP is supposed to be: 0.6174995841247563
+## what the predicted WOP is supposed to be: -0.15884896138347057
 x_train
 predicted_wop.item(0)
 
 #%%
 ## step through the function line by line
 ## make list input into a dataframe
-list = DATA[['i_sex', 'i_ren', 'i_res', 'i_gsv', "i_fch", 'i_fcb', 'i_fcr' ,'i_hrf']].loc[437275].to_list()
+list = DATA[['i_sex', 'i_ren', 'i_res', 'i_gsv', "i_fch", 'i_fcb', 'i_fcr' ,'i_hrf']].loc[8112].to_list()
 input_df = pd.DataFrame(columns = ['i_sex', 'i_ren', 'i_res', 'i_gsv', "i_fch", 'i_fcb', 'i_fcr' ,'i_hrf'])
 input_df.loc[0] = list
 ## one hot encoding
@@ -131,6 +131,7 @@ cleaned_dropped = cleaned.drop(columns=["CPT", "WOP"])
 input_df = (input_df - cleaned_dropped.mean()) / cleaned_dropped.std()
 input_df = input_df.fillna(x_test["i_sex_1"].to_list()[0])
 input_df = input_df.reindex(sorted(input_df.columns), axis=1) ## input_df stuff all looks fine
+input_df
 # x_test.loc[0] = input_df.to_numpy().tolist()[0]
 # x_test.sort_index
 # np.sum((input_df.to_numpy() * wop_coef)[0][:7])
@@ -149,3 +150,5 @@ input_df = input_df.reindex(sorted(input_df.columns), axis=1) ## input_df stuff 
 # wop, cpt =  predict_wop * cleaned["WOP"].std() + cleaned["WOP"].mean(), predict_cpt * cleaned["CPT"].std() + cleaned["CPT"].mean()
 # print(str(predict_wop) + str(predicted_cpt))
 # print(str(wop) + str(cpt))
+
+# %%

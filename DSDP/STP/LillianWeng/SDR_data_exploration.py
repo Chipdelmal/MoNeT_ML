@@ -181,9 +181,9 @@ def r2_and_rmse(actual, predicted):
 ###############################################################################
 ## making predictions better match actual
 adjust_results_df = plot_results_df.copy(deep=True)
-## WOP predicted that are greater than 1 are changed to 1
+## WOP predicted that are greater than 0.8 are changed to 2.255
 adjust_results_df.loc[(adjust_results_df.wop_predict > 0.8), "wop_predict"] = max(WOP_test.to_list())
-## CPT predicted that are less than -1 are changed to -1
+## CPT predicted that are less than -0.8 are changed to -0.689
 adjust_results_df.loc[(adjust_results_df.cpt_predict < -0.8), "cpt_predict"] = min(CPT_test.to_list())
 wopr2, woprmse = r2_and_rmse(adjust_results_df["wop_predict"], plot_results_df["wop_actual"])
 cptr2, cptrmse = r2_and_rmse(adjust_results_df["cpt_predict"], plot_results_df["cpt_actual"])

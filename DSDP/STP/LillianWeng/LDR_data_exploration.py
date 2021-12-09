@@ -188,7 +188,7 @@ def r2_and_rmse(actual, predicted):
     return r2_score(actual, predicted), np.sqrt(mean_squared_error(actual, predicted))
 
 #%%
-##### 0th index change -- looks like it helps
+##### 1st change -- looks like it helps
 ## making predictions better match actual
 adjust_results_df = plot_results_df.copy(deep=True)
 ## WOP predicted that are greater than 1 are changed to 1
@@ -209,7 +209,7 @@ sns.scatterplot(data=adjust_results_df, x='wop_predict', y='wop_actual').set(tit
 sns.scatterplot(data=adjust_results_df, x='cpt_predict', y='cpt_actual').set(title="LDR: CPT Adjusted 1 vs. Actual")
 
 #%%
-#### 1st index -- does not look like it helps 
+#### 2nd change -- does not look like it helps 
 ## exponentialize WOP
 adjust_results_df["wop_predict"] = np.exp(adjust_results_df["wop_predict"])
 ## log CPT

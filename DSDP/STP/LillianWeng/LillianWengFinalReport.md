@@ -99,3 +99,28 @@ The final model with all seven independent variables included resulted in the fo
 
 ![This is an image](https://github.com/Chipdelmal/MoNeT_ML/blob/main/DSDP/STP/LillianWeng/figures/figure7_originalplots.jpg)
 
+Like the LDR data, both scatterplots had tails that I corrected with the following code: 
+
+```
+## WOP predicted that are greater than 0.8 are changed to 2.255
+adjust_results_df.loc[(adjust_results_df.wop_predict > 0.8), "wop_predict"] = max(WOP_test.to_list())
+## CPT predicted that are less than -0.8 are changed to -0.689
+adjust_results_df.loc[(adjust_results_df.cpt_predict < -0.8), "cpt_predict"] = min(CPT_test.to_list())
+```
+![This is an image](https://github.com/Chipdelmal/MoNeT_ML/blob/main/DSDP/STP/LillianWeng/figures/figure8_adjusted1.jpg)
+
+Both scatterplots looked considerably more linear than their LDR counterparts. Despite the decrease in r-squared adjusted values for both WOP and CPT, I decided to keep this adjustment since it looked more accurate visually, and the root mean squared error decreased.  
+
+Just out of curiosity, I again exponentialized the WOP predicted values and logged the CPT predicted values. As can be seen below, neither graphs looked better, as supported by the negative r-squared adjusted values. 
+
+![This is an image](https://github.com/Chipdelmal/MoNeT_ML/blob/main/DSDP/STP/LillianWeng/figures/figure9_adjusted2.jpg)
+
+![This is an image](https://github.com/Chipdelmal/MoNeT_ML/blob/main/DSDP/STP/LillianWeng/figures/figure10_adjustedtable.jpg)
+
+Like before, I decided to keep the first adjustment and drop the second one in the final model as per Dr. Sanchez's suggestions. 
+
+### Final Models
+
+![This is an image](https://github.com/Chipdelmal/MoNeT_ML/blob/main/DSDP/STP/LillianWeng/figures/figure4_adj1.jpg)
+
+![This is an image](https://github.com/Chipdelmal/MoNeT_ML/blob/main/DSDP/STP/LillianWeng/figures/figure8_adjusted1.jpg)
