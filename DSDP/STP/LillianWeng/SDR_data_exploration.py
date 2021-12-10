@@ -1,22 +1,14 @@
 #%%
-from collections import defaultdict
 from os import path
-from posixpath import normcase
 import numpy as np
-from numpy.core.fromnumeric import mean
 import pandas as pd
-from scipy.sparse.construct import rand, random
 import seaborn as sns
-import matplotlib.pyplot as plt
-from scipy.interpolate import griddata
-from seaborn.utils import _normalize_kwargs
-from sklearn import linear_model
 from sklearn.linear_model import LinearRegression
 from sklearn.model_selection import train_test_split
 from sklearn.model_selection import KFold
-from sklearn import preprocessing
 from sklearn.metrics import r2_score
 from sklearn.metrics import mean_squared_error
+from sklearn.preprocessing import StandardScaler
 
 GDRIVE = 'SDR'
 FILE_NAME = 'SCA_HLT_50Q_10T.csv'

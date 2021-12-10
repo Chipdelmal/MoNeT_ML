@@ -1,24 +1,15 @@
 
 #%%
-from collections import defaultdict
 from os import path
-from posixpath import normcase
 import numpy as np
-from numpy.core.fromnumeric import mean
 import pandas as pd
-from scipy.sparse.construct import rand, random
 import seaborn as sns
-import matplotlib.pyplot as plt
-from scipy.interpolate import griddata
-from seaborn.utils import _normalize_kwargs
-from sklearn import linear_model
 from sklearn.linear_model import LinearRegression
 from sklearn.model_selection import train_test_split
 from sklearn.model_selection import KFold
-from sklearn import preprocessing
 from sklearn.metrics import r2_score
 from sklearn.metrics import mean_squared_error
-from scipy import stats
+from sklearn.preprocessing import StandardScaler
 
 GDRIVE = 'LDR'
 FILE_NAME = 'SCA_HLT_50Q_10T.csv'
@@ -48,7 +39,7 @@ oneHotEncoding = pd.get_dummies(necessaryVars['i_sex'])
 necessaryVars = necessaryVars.drop('i_sex', axis = 1)
 necessaryVars = necessaryVars.join(oneHotEncoding)
 cleaned = necessaryVars.rename(columns={1:"i_sex_1", 2:"i_sex_2", 3:"i_sex_3"})
-# normalize = preprocessing.Normalizer() 
+# normalize = preprocessing.StandardScaler() 
 normalize = (cleaned - cleaned.mean()) / cleaned.std()
 independent_vars = normalize.drop(columns=['WOP', 'CPT'])
 independent_vars = independent_vars.reindex(sorted(independent_vars.columns), axis=1)
