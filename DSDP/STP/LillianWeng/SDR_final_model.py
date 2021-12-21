@@ -1,24 +1,14 @@
 #%%
-from collections import defaultdict
+
 from os import path
-from posixpath import normcase
 import numpy as np
-from numpy.core.fromnumeric import mean
 import pandas as pd
-from scipy.sparse.construct import rand, random
-import seaborn as sns
-import matplotlib.pyplot as plt
-from scipy.interpolate import griddata
-from seaborn.utils import _normalize_kwargs
-from sklearn import linear_model
 from sklearn.linear_model import LinearRegression
 from sklearn.model_selection import train_test_split
-from sklearn.model_selection import KFold
-from sklearn import preprocessing
-from sklearn.metrics import r2_score
-from sklearn.metrics import mean_squared_error
+from sklearn.preprocessing import StandardScaler
+import marshal
 
-GDRIVE = 'LDR'
+GDRIVE = 'SDR'
 FILE_NAME = 'SCA_HLT_50Q_10T.csv'
 BASE_PATH = '/Users/lillianweng/Desktop/DSDP/mosquito_raw_data/'
 ###############################################################################
@@ -39,7 +29,9 @@ oneHotEncoding = pd.get_dummies(necessaryVars['i_sex'])
 necessaryVars = necessaryVars.drop('i_sex', axis = 1)
 necessaryVars = necessaryVars.join(oneHotEncoding)
 cleaned = necessaryVars.rename(columns={1:"i_sex_1", 2:"i_sex_2", 3:"i_sex_3"})
-# normalize = preprocessing.Normalizer() 
+cleaned_dropped = cleaned.drop(columns=["CPT", "WOP"])
+scaler = StandardScaler()
+scaler.fit(cleaned_dropped)
 normalize = (cleaned - cleaned.mean()) / cleaned.std()
 independent_vars = normalize.drop(columns=['WOP', 'CPT'])
 independent_vars = independent_vars.reindex(sorted(independent_vars.columns), axis=1)
@@ -53,7 +45,6 @@ CPT_var = normalize['CPT']
 x_train, x_test, WOP_train, WOP_test = train_test_split(independent_vars, WOP_var, test_size=0.2, random_state=50)
 z_train, z_test, CPT_train, CPT_test = train_test_split(independent_vars, CPT_var, test_size=0.2, random_state=50)
 
-
 # %%
 ###############################################################################
 # Final Model
@@ -66,13 +57,12 @@ final_cpt_alg.fit(z_train, CPT_train)
 predicted_cpt= final_cpt_alg.predict(z_test) # numpy array 
 
 #%%
-# coefficients = pd.DataFrame(final_wop_alg.coef_, x_test.columns, columns=["WOP Coefficients"])
-# coefficients["CPT Coefficients"] = final_cpt_alg.coef_
-
 wop_coef = final_wop_alg.coef_
 cpt_coef = final_cpt_alg.coef_
+wop_tail = max(WOP_test.to_list())
+cpt_tail = min(CPT_test.to_list())
 #%%
-def predict(list):
+def predict_SDR(list):
     """ Takes in a list of integers in the order: ['i_sex', 'i_ren', 'i_res', 'i_gsv', 'i_fch', 'i_fcb', 'i_fcr', 'i_hrf'].
         Normalizes the data before running it thorugh the algorithm.
         Returns predicted WOP and CPT value in original units. """
@@ -80,79 +70,33 @@ def predict(list):
     ## make list input into a dataframe
     input_df = pd.DataFrame(columns = ['i_sex', 'i_ren', 'i_res', 'i_gsv', "i_fch", 'i_fcb', 'i_fcr' ,'i_hrf'])
     input_df.loc[0] = list
+
     ## one hot encoding
     oneHotEncoding = pd.get_dummies(input_df['i_sex'])
     input_df = input_df.drop('i_sex', axis = 1)
     input_df = input_df.join(oneHotEncoding)
     input_df = input_df.rename(columns={1:"i_sex_1", 2:"i_sex_2", 3:"i_sex_3"})
-    cleaned_dropped = cleaned.drop(columns=["CPT", "WOP"])
+    
      ## normalize data using cleaned table from above 
     input_df = (input_df - cleaned_dropped.mean()) / cleaned_dropped.std()
     input_df = input_df.fillna(x_test["i_sex_1"].to_list()[0])
     input_df = input_df.reindex(sorted(input_df.columns), axis=1)
+
     # predict values 
     predict_wop = final_wop_alg.predict(input_df)
-    if predict_wop > 1:
-        predict_wop = 1
+    if predict_wop > 0.8:
+        predict_wop = wop_tail
     predict_wop =  np.exp(predict_wop)
     predict_cpt = final_cpt_alg.predict(input_df)
-    if predict_cpt < -1:
-        predict_cpt = -1
+    if predict_cpt < -0.8:
+        predict_cpt = cpt_tail
+
     ## turn back into origianl units 
     return predict_wop * cleaned["WOP"].std() + cleaned["WOP"].mean(), predict_cpt * cleaned["CPT"].std() + cleaned["CPT"].mean()
 
-## keep the if >1 and <-1 stuff 
-
 #%%
-x_test
-
-#%%
-###############################################################################
-## testing the final function
-###############################################################################
-# test_list = independent_vars[]
-testing_df = DATA[['i_sex', 'i_ren', 'i_res', 'i_gsv', "i_fch", 'i_fcb', 'i_fcr' ,'i_hrf']]
-test_wop, test_cpt = predict(testing_df.loc[437275].to_list())
-print("wop: " + str(test_wop) + " \ncpt: " + str(test_cpt))
-
-#%%
-## what the predicted WOP is supposed to be: 0.6174995841247563
-x_train
-predicted_wop.item(0)
-
-#%%
-## step through the function line by line
-## make list input into a dataframe
-list = DATA[['i_sex', 'i_ren', 'i_res', 'i_gsv', "i_fch", 'i_fcb', 'i_fcr' ,'i_hrf']].loc[437275].to_list()
-input_df = pd.DataFrame(columns = ['i_sex', 'i_ren', 'i_res', 'i_gsv', "i_fch", 'i_fcb', 'i_fcr' ,'i_hrf'])
-input_df.loc[0] = list
-## one hot encoding
-oneHotEncoding = pd.get_dummies(input_df['i_sex'])
-input_df = input_df.drop('i_sex', axis = 1)
-input_df = input_df.join(oneHotEncoding)
-input_df = input_df.rename(columns={1:"i_sex_1", 2:"i_sex_2", 3:"i_sex_3"})
-# # normalize data using cleaned table from above 
-cleaned_dropped = cleaned.drop(columns=["CPT", "WOP"])
-input_df = (input_df - cleaned_dropped.mean()) / cleaned_dropped.std()
-input_df = input_df.fillna(x_test["i_sex_1"].to_list()[0])
-input_df = input_df.reindex(sorted(input_df.columns), axis=1) ## input_df stuff all looks fine
-x_test.loc[0] = input_df.to_numpy().tolist()[0]
-x_test.sort_index
-# np.sum((input_df.to_numpy() * wop_coef)[0][:7])
-
-
-# predict_wop = final_wop_alg.predict(input_df)
-# predict_wop.item(0) ## why is this 128027.71426319 even though the values are the same as the x_test values?
-# if predict_wop > 1:
-#     predict_wop = 1
-# predict_wop =  np.exp(predict_wop)
-# predict_cpt = final_cpt_alg.predict(input_df).item(0)
-# predict_cpt
-# if predict_cpt < -1:
-#     predict_cpt = -1
-# ## turn back into origianl units 
-# wop, cpt =  predict_wop * cleaned["WOP"].std() + cleaned["WOP"].mean(), predict_cpt * cleaned["CPT"].std() + cleaned["CPT"].mean()
-# print(str(predict_wop) + str(predicted_cpt))
-# print(str(wop) + str(cpt))
-# %%
-# %%
+### serialize model -- comment it out if you don't need to serialize function 
+bytes = marshal.dumps(predict_SDR.__code__)
+f = open("./SDR_serialized", "wb")
+f.write(bytes)
+f.close() 
