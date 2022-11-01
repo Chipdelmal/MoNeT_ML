@@ -15,3 +15,16 @@ def get_marks(start, end, step, norm=None):
         else:
             marks[i] = str(i)
     return marks
+
+###############################################################################
+# Releases Scheme
+###############################################################################
+rer_div = html.Div([
+    html.H5('Release Size (res):'),
+    dcc.Slider(
+        id='res-slider',
+        min=0, max=50,
+        step=5, value=30,
+        marks=get_marks(0, 50, 1)
+    )
+])
