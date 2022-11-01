@@ -1,6 +1,5 @@
-FROM python:3.10-slim
+FROM python:3.8-slim-buster
 LABEL maintainer="Hector M. Sanchez C. <sanchez.hmsc@berkeley.edu>"
-
 
 ###############################################################################
 # Update and install linux packages
