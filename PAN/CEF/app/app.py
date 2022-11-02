@@ -63,22 +63,25 @@ app.layout = html.Div([
     ),
     dbc.Row([
         dbc.Col(
-            dbc.Container([
+            html.Div([
                 lay.ren_div, lay.res_div, lay.rei_div,
                 dbc.Col(html.Hr()),
                 lay.pct_div, lay.pmd_div,
                 dbc.Col(html.Hr()),
                 lay.mtf_div, 
                 dbc.Col(html.Hr()),
-                lay.fvb_div, lay.mfr_div, 
-                dbc.Col(html.Hr()),
-            ])
+                lay.fvb_div, lay.mfr_div
+            ]), 
+            width=8,
+            style={'margin-left':'10px'}
         ),
         dbc.Col(
-            dbc.Container([
+            html.Div([
                 html.H3('WOP Prediciton', style={'textAlign':'left'}),
                 lay.wop_gauge
-            ])
+            ]), 
+            width=3,
+            style={'margin-left':'10px'}
         )
     ])
 ])
