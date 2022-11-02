@@ -17,34 +17,17 @@ import layouts as lay
 import auxiliary as aux
 
 
-RF = aux.loadModel('HLT', '0.1', 'WOP')
+RF = {
+    'WOP': aux.loadModel('HLT', '0.1', 'WOP'),
+    'TTI': aux.loadModel('HLT', '0.1', 'TTI'),
+    'CPT': aux.loadModel('HLT', '0.1', 'CPT'),
+}
 ###############################################################################
 # Setup Dash App
 ###############################################################################
 app = Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
 server = app.server
 app.title = 'pgSIT Cost Effectiveness'
-
-###############################################################################
-# Run Model
-###############################################################################
-probe = (
-    ('ren', 30),
-    ('rer', 30),
-    ('rei', 7),
-    ('pct', 1),
-    ('pmd', 1),
-    ('mfr', 0),
-    ('mtf', 1),
-    ('fvb', 0),
-)
-FEATS = [i[0] for i in probe]
-# Evaluate models at probe point ----------------------------------------------
-vct = np.array([[i[1] for i in probe]])
-# (prediction, bias, contributions) = ti.predict(rf, vct)
-# pred = int(prediction[0][0])
-(prediction, bias, contributions) = (RF.predict(vct), None, None)
-pred = prediction[0]
 
 ###############################################################################
 # Generate Layout
@@ -72,70 +55,38 @@ app.layout = html.Div([
                 dbc.Col(html.Hr()),
                 lay.fvb_div, lay.mfr_div
             ]), 
-            width=8,
+            width=7,
             style={'margin-left':'10px'}
         ),
         dbc.Col(
             html.Div([
-                html.H3('WOP Prediciton', style={'textAlign':'left'}),
-                lay.wop_gauge
+                dbc.Row(
+                    [
+                        dbc.Col(html.Div(lay.wop_gauge)), 
+                        dbc.Col(html.Div(lay.cpt_gauge))
+                    ]
+                ),
+                dbc.Row(
+                    [
+                        dbc.Col(html.Div(lay.tti_gauge)),
+                        dbc.Col(html.Div(lay.tto_gauge))
+                    ]
+                )
             ]), 
             width=3,
-            style={'margin-left':'10px'}
+            style={'margin-left':'3px'}
         )
     ])
 ])
 
-
-# app.layout = dbc.Container([ 
-#     dbc.Row(
-#         dbc.Col(
-#             dbc.Container([ 
-#                 html.H2("psSIT Cost Effectiveness"),
-#                 dbc.Col(html.Hr())
-#             ]),
-#             width={'size':12, 'offset':0, 'order':0}
-#         ), style={'textAlign':'center', 'paddingBottom':'1%', 'paddingTop':'2%'}
-#     ),
-#     dbc.Row(   
-#         html.Div([     
-#             dbc.Col(
-#                 html.Div([
-#                     lay.ren_div, lay.res_div, lay.rei_div,
-#                     dbc.Col(html.Hr()),
-#                     lay.pct_div, lay.pmd_div,
-#                     dbc.Col(html.Hr()),
-#                     lay.mtf_div, 
-#                     dbc.Col(html.Hr()),
-#                     lay.fvb_div, lay.mfr_div, 
-#                     dbc.Col(html.Hr()),
-#                 ]),
-#                 width={'size':8, 'offset': 0, 'order': 0, 'display': 'inline-block'}
-#             ),
-#             dbc.Col(
-#                 html.Div([
-#                     html.H2('WOP Prediciton:', style={'display': 'inline-block'}),
-#                     html.H2(id='wop-out', style={'display':'inline-block', 'margin-left':'10px'}),
-#                     lay.wop_gauge
-#                 ], style={'display': 'inline-block', 'paddingBottom': '1%'}),
-#                 width={'size':4, 'offset':0, 'order':0, 'display': 'inline-block'}
-#             )
-#         ])
-#     )
-    # dbc.Row(        
-    #     dbc.Col(
-    #         html.Div([
-    #             html.H2('WOP Prediciton:', style={'display': 'inline-block'}),
-    #             html.H2(id='wop-out', style={'display':'inline-block', 'margin-left':'10px'}),
-    #             lay.wop_gauge
-    #         ], style={'display': 'inline-block', 'paddingBottom': '1%'}),
-    #         width={'size':12, 'offset':0, 'order':0}
-    #     ), style = {'textAlign':'center', 'paddingBottom':'1%'}
-    # )
-# ])
-
+###############################################################################
+# Callbacks
+###############################################################################
 @app.callback(
     Output('wop-gauge', 'value'),
+    Output('tti-gauge', 'value'),
+    Output('tto-gauge', 'value'),
+    Output('cpt-gauge', 'value'),
     Input('ren-slider', 'value'),
     Input('res-slider', 'value'),
     Input('rei-slider', 'value'),
@@ -152,11 +103,14 @@ def update_prediction(ren, res, rei, pct, pmd, mfr, mtf, fvb):
         ('mfr', float(mfr)), ('mtf', float(mtf)), ('fvb', float(fvb))
     )
     vct = np.array([[i[1] for i in probe]])
-    # (prediction, bias, contributions) = ti.predict(RF, vct)
-    # pred = int(prediction[0][0])
-    (prediction, bias, contributions) = (RF.predict(vct), None, None)
-    pred = int(prediction[0])
-    return pred
+    # Evaluate models --------------------------------------------------------
+    (wop, tti, cpt) = (
+        int(RF['WOP'].predict(vct)[0]),
+        int(RF['TTI'].predict(vct)[0]),
+        float(RF['CPT'].predict(vct)[0])
+    )
+    tto = wop + tti
+    return (wop, tti, tto, cpt)
 
 
 ###############################################################################

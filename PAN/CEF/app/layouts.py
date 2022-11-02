@@ -128,7 +128,54 @@ wop_gauge = daq.Gauge(
             "#FFFFFF": [6*365, 10*365]
         }
     },
-    value=0,
-    min=0, max=365*10,
+    size=150,
+    label='WOP',
+    value=0, min=0, max=365*10,
+    showCurrentValue=False, units="days"
 )
+tti_gauge = daq.Gauge(
+    id='tti-gauge',
+    color={
+        "gradient": True,
+        "ranges": {
+            "#FF006E": [0,      3*365], 
+            "#ABE2FB": [3*365,  6*365], 
+            "#FFFFFF": [6*365, 10*365]
+        }
+    },
+    size=150,
+    label='TTI',
+    value=0, min=0, max=365*10,
+    showCurrentValue=False, units="day"
+)
+tto_gauge = daq.Gauge(
+    id='tto-gauge',
+    color={
+        "gradient": True,
+        "ranges": {
+            "#FF006E": [0,      3*365], 
+            "#ABE2FB": [3*365,  6*365], 
+            "#FFFFFF": [6*365, 10*365]
+        }
+    },
+    size=150,
+    label='TTO',
+    value=0, min=0, max=365*10,
+    showCurrentValue=False, units="day"
+)
+cpt_gauge = daq.Gauge(
+    id='cpt-gauge',
+    color={
+        "gradient": True,
+        "ranges": {
+            "#FFFFFF": [0,  .75],
+            "#FF006E": [.75,  1]
+        }
+    },
+    size=150,
+    label='CPT',
+    value=0, min=0, max=1,
+    showCurrentValue=False, units=""
+)
+
 
