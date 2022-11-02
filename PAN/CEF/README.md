@@ -16,7 +16,7 @@ To run the image, run the following command in the terminal:
 docker run -p 8050:8050 -v "$(pwd)"/app:/app --rm chipdelmal/monet-cef:TAG_NUMBER
 ```
 
-Again, replacing the `TAG_NUMBER` with the version downloaded in the previous step.
+Again, replacing the `TAG_NUMBER` with the version downloaded in the previous step (eg. `docker run -p 8050:8050 -v "$(pwd)"/app:/app --rm chipdelmal/monet-cef:0.1.1`).
 
 Finally, open the following address on your favorite browser:
 
