@@ -5,3 +5,6 @@ condaFreeze:
 dockerBuild:
 	- docker rmi monet_cef:dev -f
 	- docker build -t monet_cef:dev .
+
+dockerRun:
+	- docker run monet_cef:dev

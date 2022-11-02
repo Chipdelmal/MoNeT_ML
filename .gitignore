@@ -1,3 +1,6 @@
+# Serialized files
+*.pkl
+
 # Datasets
 *.csv
 *.txt
