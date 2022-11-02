@@ -49,17 +49,19 @@ pred = prediction[0]
 ###############################################################################
 # Generate Layout
 ###############################################################################
-app.layout = dbc.Container([ 
+app.layout = html.Div([
     dbc.Row(
         dbc.Col(
-            dbc.Container([ 
+            html.Div([ 
                 html.H2("psSIT Cost Effectiveness"),
                 dbc.Col(html.Hr())
-            ]),
-            width={'size':12, 'offset':0, 'order':0}
-        ), style={'textAlign':'center', 'paddingBottom':'1%', 'paddingTop':'2%'}
+            ])
+        ), style={
+            'textAlign':'center',
+            'paddingBottom':'1%', 'paddingTop':'2%'
+        }
     ),
-    dbc.Row(        
+    dbc.Row([
         dbc.Col(
             dbc.Container([
                 lay.ren_div, lay.res_div, lay.rei_div,
@@ -70,21 +72,64 @@ app.layout = dbc.Container([
                 dbc.Col(html.Hr()),
                 lay.fvb_div, lay.mfr_div, 
                 dbc.Col(html.Hr()),
-            ]),
-            width={'size':8, 'offset': 0, 'order': 0}
-        ), style = {'textAlign': 'left', 'paddingBottom': '1%'}
-    ),
-    dbc.Row(        
+            ])
+        ),
         dbc.Col(
-            html.Div([
-                html.H2('WOP Prediciton:', style={'display': 'inline-block'}),
-                html.H2(id='wop-out', style={'display':'inline-block', 'margin-left':'10px'}),
+            dbc.Container([
+                html.H3('WOP Prediciton', style={'textAlign':'left'}),
                 lay.wop_gauge
-            ], style={'display': 'inline-block', 'paddingBottom': '1%'}),
-            width={'size':12, 'offset':0, 'order':0}
-        ), style = {'textAlign':'center', 'paddingBottom':'1%'}
-    )
+            ])
+        )
+    ])
 ])
+
+
+# app.layout = dbc.Container([ 
+#     dbc.Row(
+#         dbc.Col(
+#             dbc.Container([ 
+#                 html.H2("psSIT Cost Effectiveness"),
+#                 dbc.Col(html.Hr())
+#             ]),
+#             width={'size':12, 'offset':0, 'order':0}
+#         ), style={'textAlign':'center', 'paddingBottom':'1%', 'paddingTop':'2%'}
+#     ),
+#     dbc.Row(   
+#         html.Div([     
+#             dbc.Col(
+#                 html.Div([
+#                     lay.ren_div, lay.res_div, lay.rei_div,
+#                     dbc.Col(html.Hr()),
+#                     lay.pct_div, lay.pmd_div,
+#                     dbc.Col(html.Hr()),
+#                     lay.mtf_div, 
+#                     dbc.Col(html.Hr()),
+#                     lay.fvb_div, lay.mfr_div, 
+#                     dbc.Col(html.Hr()),
+#                 ]),
+#                 width={'size':8, 'offset': 0, 'order': 0, 'display': 'inline-block'}
+#             ),
+#             dbc.Col(
+#                 html.Div([
+#                     html.H2('WOP Prediciton:', style={'display': 'inline-block'}),
+#                     html.H2(id='wop-out', style={'display':'inline-block', 'margin-left':'10px'}),
+#                     lay.wop_gauge
+#                 ], style={'display': 'inline-block', 'paddingBottom': '1%'}),
+#                 width={'size':4, 'offset':0, 'order':0, 'display': 'inline-block'}
+#             )
+#         ])
+#     )
+    # dbc.Row(        
+    #     dbc.Col(
+    #         html.Div([
+    #             html.H2('WOP Prediciton:', style={'display': 'inline-block'}),
+    #             html.H2(id='wop-out', style={'display':'inline-block', 'margin-left':'10px'}),
+    #             lay.wop_gauge
+    #         ], style={'display': 'inline-block', 'paddingBottom': '1%'}),
+    #         width={'size':12, 'offset':0, 'order':0}
+    #     ), style = {'textAlign':'center', 'paddingBottom':'1%'}
+    # )
+# ])
 
 @app.callback(
     Output('wop-gauge', 'value'),
