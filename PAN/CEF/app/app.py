@@ -17,7 +17,7 @@ import layouts as lay
 import auxiliary as aux
 
 
-# debug = False if os.environ["DASH_DEBUG_MODE"] == "False" else True
+RF = aux.loadModel('HLT', '0.1', 'WOP')
 ###############################################################################
 # Setup Dash App
 ###############################################################################
@@ -28,7 +28,6 @@ app.title = 'pgSIT Cost Effectiveness'
 ###############################################################################
 # Run Model
 ###############################################################################
-RF = aux.loadModel('HLT', '0.1', 'WOP')
 probe = (
     ('ren', 30),
     ('rer', 30),
@@ -75,9 +74,11 @@ app.layout = dbc.Container([
             dbc.Container([
                 dbc.Col(html.Hr()),
                 dbc.Col(
-                    html.H2("WOP Prediction: {}".format(str(pred)))
+                    html.H2('WOP Prediciton: ')
                 ),
-                html.Div(id='my-output')
+                dbc.Col(
+                    html.H2(id='wop-out')
+                )
             ]),
             width={'size': 12, 'offset': 0, 'order': 0}
         ), style = {'textAlign': 'center', 'paddingBottom': '1%'}
@@ -85,7 +86,7 @@ app.layout = dbc.Container([
 ])
 
 @app.callback(
-    Output(component_id='my-output', component_property='children'),
+    Output(component_id='wop-out', component_property='children'),
     Input('ren-slider', 'value'),
     Input('res-slider', 'value'),
     Input('rei-slider', 'value')
@@ -100,7 +101,7 @@ def update_prediction(ren, res, rei):
     # (prediction, bias, contributions) = ti.predict(RF, vct)
     # pred = int(prediction[0][0])
     (prediction, bias, contributions) = (RF.predict(vct), None, None)
-    pred = prediction[0]
+    pred = int(prediction[0])
     return pred
 
 
