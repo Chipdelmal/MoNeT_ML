@@ -27,6 +27,8 @@ localhost:8050
 ## Sources
 
 * https://github.com/yaojiach/docker-dash
-* https://github.com/conducive333/mgdrive-fdml-app
 * https://www.devcoons.com/how-to-deploy-your-plotly-dash-dashboard-using-docker/
 * https://github.com/atheo89/dashboard-deployment
+  
+
+Special thanks to Chris De Leon as this UI is based on [his work](https://github.com/conducive333/mgdrive-fdml-app) as part of his undergraduate projects with the lab.
