@@ -1,6 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
+import os
 from dash import Dash
 from flask import Flask
 import dash_bootstrap_components as dbc
@@ -12,11 +13,12 @@ from treeinterpreter import treeinterpreter as ti
 import auxiliary as aux
 
 
+debug = False if os.environ["DASH_DEBUG_MODE"] == "False" else True
 ###############################################################################
 # Setup Dash App
 ###############################################################################
-server = Flask(__name__)
-app = Dash(server=server, external_stylesheets=[dbc.themes.FLATLY])
+app = Dash(__name__, external_stylesheets=[dbc.themes.FLATLY])
+server = app.server
 app.title = 'pgSIT Cost Effectiveness'
 
 ###############################################################################
@@ -53,8 +55,5 @@ app.layout = dbc.Container([
 
 # @app.callback()
 
-if __name__=='__main__':
-    app.run_server()
-    
-#     fig = px.bar(contributions[0])
-#     fig.write_html(path.join(PATH_BASE, 'bars.html'))
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port="8050", debug=debug)
