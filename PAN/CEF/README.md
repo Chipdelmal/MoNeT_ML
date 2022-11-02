@@ -26,8 +26,7 @@ localhost:8050
 
 ## Acknowledgments
 
-Thanks to [Tomás León](https://tomasleon.com/) and [Jared Bennett](https://www.linkedin.com/in/jared-bennett-21a7a9a0) for their thorough feedback and help in brainstorming many of the ideas developed in this project. Also, special thanks to Chris De Leon as this UI is based on [his work](https://github.com/conducive333/mgdrive-fdml-app) as part of his undergraduate projects with the lab.
-
+Thanks to [Tomás León](https://tomasleon.com/) and [Jared Bennett](https://www.linkedin.com/in/jared-bennett-21a7a9a0) for their thorough feedback and help in brainstorming many of the ideas developed in this project. Also, special thanks to [Chris De Leon](https://www.linkedin.com/in/chris-de-leon-96bb361b5) and [Elijah Bartolome](https://www.linkedin.com/in/elijah-bartolome/) as parts of this project are based on their work as undergraduate students at the [lab](https://www.marshalllab.com/).
 
 ## Sources
 
