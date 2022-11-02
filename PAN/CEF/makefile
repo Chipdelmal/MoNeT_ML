@@ -7,7 +7,7 @@ condaFreeze:
 	- conda env export | grep -v "prefix" > ./app/requirements.yml
 
 ###############################################################################
-# Local Test
+# Docker Local
 ###############################################################################
 dockerBuild:
 	- docker rmi monet-cef:dev -f
@@ -17,9 +17,9 @@ dockerRun:
 	- docker run -p 8050:8050 -v "$(pwd)"/app:/app --rm monet-cef:dev
 
 ###############################################################################
-# Dockerhub Release
+# Docker Release
 ###############################################################################
-VERSION="0.1.0"
+VERSION="0.1.1"
 dockerRelease:
 	- docker rmi chipdelmal/monet-cef:$(VERSION) -f
 	- docker build -t chipdelmal/monet-cef:$(VERSION) .
@@ -27,12 +27,3 @@ dockerRelease:
 
 dockerPull:
 	- docker pull chipdelmal/monet-cef:$(VERSION)
-
-###############################################################################
-# Commands for Compose
-###############################################################################
-dockerCompose:
-	- docker-compose build
-
-dockerUp:
-	- docker-compose up

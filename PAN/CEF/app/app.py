@@ -55,23 +55,31 @@ app.layout = html.Div([
                 dbc.Col(html.Hr()),
                 lay.fvb_div, lay.mfr_div
             ]), 
-            width=7,
-            style={'margin-left':'10px'}
+            width=8,
+            style={'margin-left':'20px'}
         ),
         dbc.Col(
             html.Div([
-                dbc.Row(
-                    [
-                        dbc.Col(html.Div(lay.wop_gauge)), 
-                        dbc.Col(html.Div(lay.cpt_gauge))
-                    ]
-                ),
-                dbc.Row(
-                    [
-                        dbc.Col(html.Div(lay.tti_gauge)),
-                        dbc.Col(html.Div(lay.tto_gauge))
-                    ]
-                )
+                dbc.Row([
+                    html.H5(
+                        "Window of Protection (WOP)", 
+                        style={'textAlign':'center'}
+                    )
+                ]),
+                dbc.Row([
+                    dbc.Col(html.Div(lay.wop_gauge)),
+                    # dbc.Col(html.Div(lay.tti_gauge)), 
+                ]),
+                dbc.Row([
+                    html.H5(
+                        "Cumulative Potential for Transmission (CPT)", 
+                        style={'textAlign':'center'}
+                    )
+                ]),
+                dbc.Row([
+                    dbc.Col(html.Div(lay.cpt_gauge)),
+                    # dbc.Col(html.Div(lay.tto_gauge))
+                ])
             ]), 
             width=3,
             style={'margin-left':'3px'}
@@ -84,9 +92,9 @@ app.layout = html.Div([
 ###############################################################################
 @app.callback(
     Output('wop-gauge', 'value'),
-    Output('tti-gauge', 'value'),
-    Output('tto-gauge', 'value'),
     Output('cpt-gauge', 'value'),
+    # Output('tti-gauge', 'value'),
+    # Output('tto-gauge', 'value'),
     Input('ren-slider', 'value'),
     Input('res-slider', 'value'),
     Input('rei-slider', 'value'),
@@ -105,12 +113,12 @@ def update_prediction(ren, res, rei, pct, pmd, mfr, mtf, fvb):
     vct = np.array([[i[1] for i in probe]])
     # Evaluate models --------------------------------------------------------
     (wop, tti, cpt) = (
-        int(RF['WOP'].predict(vct)[0]),
+        float(RF['WOP'].predict(vct)[0]),
         int(RF['TTI'].predict(vct)[0]),
         float(RF['CPT'].predict(vct)[0])
     )
     tto = wop + tti
-    return (wop, tti, tto, cpt)
+    return (wop, cpt*100) #, tti, tto)
 
 
 ###############################################################################
