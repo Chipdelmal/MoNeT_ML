@@ -168,8 +168,8 @@ cpt_gauge = daq.Gauge(
     color={
         "gradient": True,
         "ranges": {
-            "#FFFFFF": [0,   25],
-            "#ABE2FB": [25,  50], 
+            "#FFFFFF": [0,   30],
+            "#ABE2FB": [30,  50], 
             "#FF006E": [50, 100]
         }
     },
