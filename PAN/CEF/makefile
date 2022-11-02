@@ -8,3 +8,9 @@ dockerBuild:
 
 dockerRun:
 	- docker run monet_cef:dev
+
+dockerCompose:
+	- docker-compose build
+
+dockerUp:
+	- docker-compose up

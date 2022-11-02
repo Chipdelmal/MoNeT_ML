@@ -16,9 +16,8 @@ import auxiliary as aux
 # Setup Dash App
 ###############################################################################
 server = Flask(__name__)
-app = Dash(server=server, external_stylesheets=[dbc.themes.BOOTSTRAP])
+app = Dash(server=server, external_stylesheets=[dbc.themes.FLATLY])
 app.title = 'pgSIT Cost Effectiveness'
-
 
 ###############################################################################
 # Run Model
@@ -40,7 +39,6 @@ vct = np.array([[i[1] for i in probeX]])
 (prediction, bias, contributions) = ti.predict(rf, vct)
 print(prediction)
 
-
 ###############################################################################
 # Run Dash App
 ###############################################################################
@@ -53,6 +51,7 @@ app.layout = dbc.Container([
     )
 ])
 
+# @app.callback()
 
 if __name__=='__main__':
     app.run_server()
