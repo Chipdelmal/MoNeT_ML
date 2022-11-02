@@ -2,7 +2,7 @@
 
 ## Instructions
 
-Download and install [docker](https://docs.docker.com/get-docker/), then pull our MGDrivE Webinar image from [our dockerhub](https://hub.docker.com/repository/docker/chipdelmal/monet-cef) with:
+Download and install [docker](https://docs.docker.com/get-docker/), then pull our  image from [our dockerhub](https://hub.docker.com/repository/docker/chipdelmal/monet-cef) with:
 
 ```bash
 docker pull chipdelmal/monet-cef:TAG_NUMBER
