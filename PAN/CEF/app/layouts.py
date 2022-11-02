@@ -3,6 +3,7 @@
 
 from dash import html
 from dash import dcc
+import dash_daq as daq
 import constants as cst
 
 def get_marks(start, end, step, norm=None):
@@ -113,3 +114,21 @@ fvb_div = html.Div([
         marks=get_marks_float(FVB[0], FVB[1], FVB[-2])
     )
 ])
+
+###############################################################################
+# Output Gauges
+###############################################################################
+wop_gauge = daq.Gauge(
+    id='wop-gauge',
+    color={
+        "gradient": True,
+        "ranges": {
+            "#FF006E": [0,      3*365], 
+            "#ABE2FB": [3*365,  6*365], 
+            "#FFFFFF": [6*365, 10*365]
+        }
+    },
+    value=0,
+    min=0, max=365*10,
+)
+

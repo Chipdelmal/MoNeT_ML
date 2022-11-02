@@ -71,14 +71,15 @@ app.layout = dbc.Container([
                 lay.fvb_div, lay.mfr_div, 
                 dbc.Col(html.Hr()),
             ]),
-            width={'size':'100%', 'offset': 0, 'order': 0}
+            width={'size':8, 'offset': 0, 'order': 0}
         ), style = {'textAlign': 'left', 'paddingBottom': '1%'}
     ),
     dbc.Row(        
         dbc.Col(
             html.Div([
                 html.H2('WOP Prediciton:', style={'display': 'inline-block'}),
-                html.H2(id='wop-out', style={'display':'inline-block', 'margin-left':'10px'})
+                html.H2(id='wop-out', style={'display':'inline-block', 'margin-left':'10px'}),
+                lay.wop_gauge
             ], style={'display': 'inline-block', 'paddingBottom': '1%'}),
             width={'size':12, 'offset':0, 'order':0}
         ), style = {'textAlign':'center', 'paddingBottom':'1%'}
@@ -86,7 +87,7 @@ app.layout = dbc.Container([
 ])
 
 @app.callback(
-    Output(component_id='wop-out', component_property='children'),
+    Output('wop-gauge', 'value'),
     Input('ren-slider', 'value'),
     Input('res-slider', 'value'),
     Input('rei-slider', 'value'),
