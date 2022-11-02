@@ -3,6 +3,7 @@
 
 from dash import html
 from dash import dcc
+import constants as cst
 
 def get_marks(start, end, step, norm=None):
     marks = dict()
@@ -17,14 +18,35 @@ def get_marks(start, end, step, norm=None):
     return marks
 
 ###############################################################################
-# Releases Scheme
+# Releases Scheme Sliders
 ###############################################################################
-rer_div = html.Div([
+(REN, RES, REI) = [
+    cst.SA_RANGES[i] for i in ('ren', 'rer', 'rei')
+]
+ren_div = html.Div([
+    html.H5('Number of Releases (ren):'),
+    dcc.Slider(
+        id='ren-slider',
+        min=REN[0], max=REN[1],
+        step=REN[-2], value=REN[-1],
+        marks=get_marks(REN[0], REN[1], REN[-2])
+    )
+])
+res_div = html.Div([
     html.H5('Release Size (res):'),
     dcc.Slider(
         id='res-slider',
-        min=0, max=50,
-        step=5, value=30,
-        marks=get_marks(0, 50, 1)
+        min=RES[0], max=RES[1],
+        step=RES[-2], value=RES[-1],
+        marks=get_marks(RES[0], RES[1], RES[-2])
+    )
+])
+rei_div = html.Div([
+    html.H5('Release Interval (rei):'),
+    dcc.Slider(
+        id='rei-slider',
+        min=REI[0], max=REI[1],
+        step=REI[-2], value=REI[-1],
+        marks=get_marks(REI[0], REI[1], REI[-2])
     )
 ])
