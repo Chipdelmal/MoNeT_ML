@@ -1,0 +1,8 @@
+* Output Metric: CPT
+
+* Feats Order: ['i_sxm', 'i_sxg', 'i_sxn', 'i_ren', 'i_res', 'i_rsg', 'i_gsv', 'i_fch', 'i_fcb', 'i_fcr', 'i_hrm', 'i_hrf', 'i_grp', 'i_mig']
+* Train/Validate entries: 2258460/2258461 (4516921)
+* Cross-validation R2: 1.00 (+/-0.00)
+* R2 score: 1.00
+* Root Mean square error: 0.02
+* Mean absolute error: 0.01

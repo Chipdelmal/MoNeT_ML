@@ -3,11 +3,10 @@
 
 # Datasets
 *.csv
-*.txt
+# *.txt
 *.joblib
 
 # Result files
-# *.txt
 # *.png
 
 # Byte-compiled / optimized / DLL files
