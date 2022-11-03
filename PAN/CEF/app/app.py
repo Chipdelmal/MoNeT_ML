@@ -32,7 +32,7 @@ app.layout = html.Div([
     dbc.Row(
         dbc.Col(
             html.Div([ 
-                html.H2("psSIT Cost Effectiveness"),
+                html.H2("psSIT Cost Effectiveness (prototype)"),
                 html.P("This tool is built for exploration purposes only! For accurate results use MGDrivE!"),
                 dbc.Col(html.Hr())
             ])
@@ -59,7 +59,7 @@ app.layout = html.Div([
             html.Div([
                 dbc.Row([
                     html.H5("Window of Protection", style={'textAlign':'center'}),
-                    html.H5("(R2: 0.91, MAE: 125, RMSE: 450)", style={'textAlign':'center'})
+                    html.H5("(R2: 0.92, MAE: 125, RMSE: 450)", style={'textAlign':'center'})
                 ]),
                 dbc.Row([
                     dbc.Col(html.Div(lay.wop_gauge)),
@@ -119,7 +119,7 @@ def update_prediction(ren, res, rei, pct, pmd, mfr, mtf, fvb):
         float(RF['CPT'].predict(vct)[0])
     )
     tto = wop + tti
-    return (wop, cpt*100) #, tti, tto)
+    return (wop, 100-cpt*100) #, tti, tto)
 
 
 ###############################################################################

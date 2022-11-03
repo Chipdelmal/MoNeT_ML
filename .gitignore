@@ -7,8 +7,8 @@
 *.joblib
 
 # Result files
-*.txt
-*.png
+# *.txt
+# *.png
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
