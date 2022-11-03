@@ -1,8 +1,8 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-import os
-from dash import dcc
+import numpy as np
+from treeinterpreter import treeinterpreter as ti
 from dash import html
 from dash import Dash
 from dash.dependencies import Input, Output
@@ -10,12 +10,8 @@ import dash_bootstrap_components as dbc
 import warnings
 warnings.simplefilter(action='ignore', category=UserWarning)
 
-import numpy as np
-from treeinterpreter import treeinterpreter as ti
-
 import layouts as lay
 import auxiliary as aux
-
 
 RF = {
     'WOP': aux.loadModel('HLT', '0.1', 'WOP'),
@@ -83,6 +79,14 @@ app.layout = html.Div([
             ]), 
             width=3,
             style={'margin-left':'3px'}
+        )
+    ]),
+    dbc.Row([
+        dbc.Col(
+            html.Div([
+                html.Hr(),
+                html.Img(src=app.get_asset_url('SAML.png'), style={'width':'100%'})
+            ])
         )
     ])
 ])
