@@ -128,7 +128,7 @@ wop_gauge = daq.Gauge(
             "#FFFFFF": [6*365, 10*365]
         }
     },
-    size=250,
+    size=225,
     label=' ',
     value=0, min=0, max=365*10,
     showCurrentValue=True, units="days"
@@ -173,7 +173,7 @@ cpt_gauge = daq.Gauge(
             "#FF006E": [50, 100]
         }
     },
-    size=250,
+    size=225,
     label=' ',
     value=0, min=0, max=100,
     showCurrentValue=True, units="%AUC"

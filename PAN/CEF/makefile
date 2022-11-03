@@ -19,7 +19,7 @@ dockerRun:
 ###############################################################################
 # Docker Release
 ###############################################################################
-VERSION="0.1.1"
+VERSION="0.1.3"
 dockerRelease:
 	- docker rmi chipdelmal/monet-cef:$(VERSION) -f
 	- docker build -t chipdelmal/monet-cef:$(VERSION) .

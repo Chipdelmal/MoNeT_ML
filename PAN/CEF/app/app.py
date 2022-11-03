@@ -33,6 +33,7 @@ app.layout = html.Div([
         dbc.Col(
             html.Div([ 
                 html.H2("psSIT Cost Effectiveness"),
+                html.P("This tool is built for exploration purposes only! For accurate results use MGDrivE!"),
                 dbc.Col(html.Hr())
             ])
         ), style={
@@ -45,11 +46,11 @@ app.layout = html.Div([
             html.Div([
                 lay.ren_div, lay.res_div, lay.rei_div,
                 dbc.Col(html.Hr()),
-                lay.pct_div, lay.pmd_div,
-                dbc.Col(html.Hr()),
                 lay.mtf_div, 
                 dbc.Col(html.Hr()),
-                lay.fvb_div, lay.mfr_div
+                lay.fvb_div, lay.mfr_div,
+                dbc.Col(html.Hr()),
+                lay.pct_div, lay.pmd_div
             ]), 
             width=8,
             style={'margin-left':'20px'}
@@ -57,20 +58,16 @@ app.layout = html.Div([
         dbc.Col(
             html.Div([
                 dbc.Row([
-                    html.H5(
-                        "Window of Protection (WOP)", 
-                        style={'textAlign':'center'}
-                    )
+                    html.H5("Window of Protection", style={'textAlign':'center'}),
+                    html.H5("(R2: 0.91, MAE: 125, RMSE: 450)", style={'textAlign':'center'})
                 ]),
                 dbc.Row([
                     dbc.Col(html.Div(lay.wop_gauge)),
                     # dbc.Col(html.Div(lay.tti_gauge)), 
                 ]),
                 dbc.Row([
-                    html.H5(
-                        "Cumulative Potential for Transmission (CPT)", 
-                        style={'textAlign':'center'}
-                    )
+                    html.H5("Cumulative Potential for Transmission", style={'textAlign':'center'}),
+                    html.H5("(R2: 0.94, MAE: 0.03, RMSE: 0.1)", style={'textAlign':'center'})
                 ]),
                 dbc.Row([
                     dbc.Col(html.Div(lay.cpt_gauge)),
@@ -110,7 +107,7 @@ app.layout = html.Div([
 )
 def update_prediction(ren, res, rei, pct, pmd, mfr, mtf, fvb):
     probe = (
-        ('ren', int(ren)), ('rer', int(res)), ('rei', int(rei)),
+        ('ren', int(ren)),   ('rer', int(res)),   ('rei', int(rei)),
         ('pct', float(pct)), ('pmd', float(pmd)),
         ('mfr', float(mfr)), ('mtf', float(mtf)), ('fvb', float(fvb))
     )
