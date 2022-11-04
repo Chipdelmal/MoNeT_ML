@@ -10,10 +10,16 @@ docker pull chipdelmal/monet-cef:TAG_NUMBER
 
 Replacing the `TAG_NUMBER` with the latest version of the image (eg. `docker pull chipdelmal/monet-cef:0.1.1`).
 
-To run the image, run the following command in the terminal:
+To run the image, run the following command in the terminal on MacOS or Linux:
 
 ```bash
 docker run -p 8050:8050 -v "$(pwd)"/app:/app --rm chipdelmal/monet-cef:TAG_NUMBER
+```
+
+and this one for Windows:
+
+```bash
+docker run -p 8050:8050 -v $pwd/app:/app --rm chipdelmal/monet-cef:0.1.4
 ```
 
 Again, replacing the `TAG_NUMBER` with the version downloaded in the previous step (eg. `docker run -p 8050:8050 -v "$(pwd)"/app:/app --rm chipdelmal/monet-cef:0.1.1`).
