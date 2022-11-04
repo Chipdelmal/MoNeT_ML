@@ -4,15 +4,14 @@ LABEL maintainer="Hector M. Sanchez C. <sanchez.hmsc@berkeley.edu>"
 ###############################################################################
 # Update and install linux packages
 ###############################################################################
-RUN apt-get update
-
+RUN apt-get update \
+    && pip install --upgrade pip
 ###############################################################################
 # Install python requirements
 ###############################################################################
 RUN mkdir requirements
 COPY app/requirements.txt ./requirements/
 RUN set -ex \
-    && pip install --upgrade pip \
     && pip install -r ./requirements/requirements.txt --no-cache-dir
 
 ###############################################################################
