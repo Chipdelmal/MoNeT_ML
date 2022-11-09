@@ -1,6 +1,7 @@
 FROM python:3.10-slim-buster
 LABEL maintainer="Hector M. Sanchez C. <sanchez.hmsc@berkeley.edu>"
 
+ENV DASH_DEBUG_MODE False
 ###############################################################################
 # Update and install linux packages
 ###############################################################################

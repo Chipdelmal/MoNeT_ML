@@ -14,8 +14,8 @@ import auxiliary as aux
 import constants as cst
 
 RF = {
-    'WOP': aux.loadModelNew('HLT', '0.1', 'WOP', 'mlp'),
-    'CPT': aux.loadModelNew('HLT', '0.1', 'CPT', 'mlp')
+    'WOP': aux.loadModel('HLT', '0.1', 'WOP', 'mlp'),
+    'CPT': aux.loadModel('HLT', '0.1', 'CPT', 'mlp')
 }
 ###############################################################################
 # Setup Dash App
@@ -121,4 +121,4 @@ def update_prediction(ren, res, rei, pct, pmd, mfr, mtf, fvb):
 # Run Dash App
 ###############################################################################
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port="8050", debug=True)
+    app.run(host="0.0.0.0", port="8050", debug=False)
