@@ -13,3 +13,9 @@ def loadModel(AOI, THS, MTR, PATH_MDL=cst.PATH_MDL):
     mdlPath = path.join(PATH_MDL, mdlName)
     rf = pkl.load(mdlPath)
     return rf
+
+def loadModelNew(AOI, THS, MTR, MDL, PATH_MDL=cst.PATH_MDL):
+    mdlName = f'{AOI}_{float(THS)*100:.0f}T_{MTR}-{MDL}-MLR.pkl'
+    mdlPath = path.join(PATH_MDL, mdlName)
+    rf = pkl.load(mdlPath)
+    return rf

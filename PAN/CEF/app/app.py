@@ -15,8 +15,7 @@ import auxiliary as aux
 
 RF = {
     'WOP': aux.loadModel('HLT', '0.1', 'WOP'),
-    'TTI': aux.loadModel('HLT', '0.1', 'TTI'),
-    'CPT': aux.loadModel('HLT', '0.1', 'CPT'),
+    'CPT': aux.loadModelNew('HLT', '0.1', 'CPT', 'mlp')
 }
 ###############################################################################
 # Setup Dash App
@@ -32,7 +31,7 @@ app.layout = html.Div([
     dbc.Row(
         dbc.Col(
             html.Div([ 
-                html.H2("psSIT Cost Effectiveness (prototype)"),
+                html.H2("psSIT Explorer (prototype)"),
                 html.P("This tool is built for exploration purposes only! For accurate results use MGDrivE!"),
                 dbc.Col(html.Hr())
             ])
@@ -113,17 +112,15 @@ def update_prediction(ren, res, rei, pct, pmd, mfr, mtf, fvb):
     )
     vct = np.array([[i[1] for i in probe]])
     # Evaluate models --------------------------------------------------------
-    (wop, tti, cpt) = (
+    (wop, cpt) = (
         float(RF['WOP'].predict(vct)[0]),
-        int(RF['TTI'].predict(vct)[0]),
         float(RF['CPT'].predict(vct)[0])
     )
-    tto = wop + tti
-    return (wop, 100-cpt*100) #, tti, tto)
+    return (wop, 100-cpt*100)
 
 
 ###############################################################################
 # Run Dash App
 ###############################################################################
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port="8050", debug=False)
+    app.run(host="0.0.0.0", port="8050", debug=True)
