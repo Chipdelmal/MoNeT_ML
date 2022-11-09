@@ -3,7 +3,7 @@
 
 PATH_MDL = './models/'
 
-
+SIM_TIME = 10*365
 SA_RANGES = {
     'ren': (1, 48, 1,  30), 
     'rer': (1, 50, 1,  30), 

@@ -7,14 +7,14 @@ from dash import html
 from dash import Dash
 from dash.dependencies import Input, Output
 import dash_bootstrap_components as dbc
-import warnings
-warnings.simplefilter(action='ignore', category=UserWarning)
-
+# import warnings
+# warnings.simplefilter(action='ignore', category=UserWarning)
 import layouts as lay
 import auxiliary as aux
+import constants as cst
 
 RF = {
-    'WOP': aux.loadModel('HLT', '0.1', 'WOP'),
+    'WOP': aux.loadModelNew('HLT', '0.1', 'WOP', 'mlp'),
     'CPT': aux.loadModelNew('HLT', '0.1', 'CPT', 'mlp')
 }
 ###############################################################################
@@ -58,7 +58,7 @@ app.layout = html.Div([
             html.Div([
                 dbc.Row([
                     html.H5("Window of Protection", style={'textAlign':'center'}),
-                    html.H5("(R2: 0.92, MAE: 125, RMSE: 450)", style={'textAlign':'center'})
+                    html.H5("(R2: 0.91, MAE: 125, RMSE: 450)", style={'textAlign':'center'})
                 ]),
                 dbc.Row([
                     dbc.Col(html.Div(lay.wop_gauge)),
@@ -66,7 +66,7 @@ app.layout = html.Div([
                 ]),
                 dbc.Row([
                     html.H5("Cumulative Potential for Transmission", style={'textAlign':'center'}),
-                    html.H5("(R2: 0.94, MAE: 0.03, RMSE: 0.1)", style={'textAlign':'center'})
+                    html.H5("(R2: 0.93, MAE: 0.03, RMSE: 0.1)", style={'textAlign':'center'})
                 ]),
                 dbc.Row([
                     dbc.Col(html.Div(lay.cpt_gauge)),
@@ -93,8 +93,6 @@ app.layout = html.Div([
 @app.callback(
     Output('wop-gauge', 'value'),
     Output('cpt-gauge', 'value'),
-    # Output('tti-gauge', 'value'),
-    # Output('tto-gauge', 'value'),
     Input('ren-slider', 'value'),
     Input('res-slider', 'value'),
     Input('rei-slider', 'value'),
@@ -116,7 +114,7 @@ def update_prediction(ren, res, rei, pct, pmd, mfr, mtf, fvb):
         float(RF['WOP'].predict(vct)[0]),
         float(RF['CPT'].predict(vct)[0])
     )
-    return (wop, 100-cpt*100)
+    return (wop*cst.SIM_TIME, 100-cpt*100)
 
 
 ###############################################################################
