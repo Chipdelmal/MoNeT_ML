@@ -37,7 +37,7 @@ def get_marks_float(start, end, step, multiplier=100):
     cst.SA_RANGES[i] for i in ('ren', 'rer', 'rei')
 ]
 ren_div = html.Div([
-    html.H5('Number of Releases (ren):'),
+    html.H5('Number of Releases:'),
     dcc.Slider(
         id='ren-slider',
         min=REN[0], max=REN[1],
@@ -46,7 +46,7 @@ ren_div = html.Div([
     )
 ])
 res_div = html.Div([
-    html.H5('Release Size (res):'),
+    html.H5('Release Size (eggs per adult x10):'),
     dcc.Slider(
         id='res-slider',
         min=RES[0], max=RES[1],
@@ -55,7 +55,7 @@ res_div = html.Div([
     )
 ])
 rei_div = html.Div([
-    html.H5('Release Interval (rei):'),
+    html.H5('Release Interval (days):'),
     dcc.Slider(
         id='rei-slider',
         min=REI[0], max=REI[1],
@@ -70,7 +70,7 @@ rei_div = html.Div([
     cst.SA_RANGES[i] for i in ('pct', 'pmd', 'mfr', 'mtf', 'fvb')
 ]
 pct_div = html.Div([
-    html.H5('Cutting Rate (pct):'),
+    html.H5('Cutting Rate (male and female):'),
     dcc.Slider(
         id='pct-slider',
         min=PCT[0], max=PCT[1],
@@ -79,7 +79,7 @@ pct_div = html.Div([
     )
 ])
 pmd_div = html.Div([
-    html.H5('Maternal Deposition (pmd):'),
+    html.H5('Maternal Deposition:'),
     dcc.Slider(
         id='pmd-slider',
         min=PMD[0], max=PMD[1],
@@ -88,7 +88,7 @@ pmd_div = html.Div([
     )
 ])
 mfr_div = html.Div([
-    html.H5('Male Fertility (mfr):'),
+    html.H5('Male Fertility:'),
     dcc.Slider(
         id='mfr-slider',
         min=MFR[0], max=MFR[1],
@@ -97,7 +97,7 @@ mfr_div = html.Div([
     )
 ])
 mtf_div = html.Div([
-    html.H5('Mating Fitness (mtf):'),
+    html.H5('Mating Fitness (trangenic males relative to wilds):'),
     dcc.Slider(
         id='mtf-slider',
         min=MTF[0], max=MTF[1],
@@ -106,7 +106,7 @@ mtf_div = html.Div([
     )
 ])
 fvb_div = html.Div([
-    html.H5('Female Viability (fvb):'),
+    html.H5('Female Viability:'),
     dcc.Slider(
         id='fvb-slider',
         min=FVB[0], max=FVB[1],
@@ -114,7 +114,6 @@ fvb_div = html.Div([
         marks=get_marks_float(FVB[0], FVB[1], FVB[-2])
     )
 ])
-120/3
 ###############################################################################
 # Output Gauges
 ###############################################################################

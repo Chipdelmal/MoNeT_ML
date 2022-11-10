@@ -21,17 +21,19 @@ RF = {
 # Setup Dash App
 ###############################################################################
 dbc_css = "https://cdn.jsdelivr.net/gh/AnnMarieW/dash-bootstrap-templates/dbc.min.css"
-app = Dash(__name__, external_stylesheets=[dbc.themes.YETI, dbc_css])
+app = Dash(__name__, external_stylesheets=[dbc.themes.YETI])
 server = app.server
 port = int(os.environ.get("PORT", 5000))
 app.title = 'pgSIT Cost Effectiveness'
 
+with open('version.txt') as f:
+    version = f.readlines()[0]
 ###############################################################################
 # Generate Layout
 ###############################################################################
 app.layout = html.Div([
     html.H2(
-        "pgSIT Explorer [Prototype]", 
+        f"pgSIT Explorer [v{version}]", 
         style={
             'backgroundColor': '#3d348b',
             'color': '#ffffff',
@@ -57,7 +59,7 @@ app.layout = html.Div([
             dbc.Col(
                 html.Div([
                     dbc.Row([
-                        html.H4("Window of Protection", style={'textAlign':'center'}),
+                        html.H4("Window of Protection", style={'textAlign':'center', 'font-size': '17.5px'}),
                         html.H6("(R²: 0.92, MAE: 0.05, RMSE: 0.12)", style={'textAlign':'center', 'font-size': '10px'})
                     ]),
                     dbc.Row([
@@ -65,7 +67,7 @@ app.layout = html.Div([
                         # dbc.Col(html.Div(lay.tti_gauge)), 
                     ]),
                     dbc.Row([
-                        html.H4("Cumulative Potential for Transmission", style={'textAlign':'center'}),
+                        html.H4("Reduction on Cumulative Potential for Transmission", style={'textAlign':'center', 'font-size': '17.5px'}),
                         html.H6("(R²: 0.94, MAE: 0.04, RMSE: 0.11)", style={'textAlign':'center', 'font-size': '10px'})
                     ]),
                     dbc.Row([
@@ -94,13 +96,13 @@ app.layout = html.Div([
                     href='https://marshalllab.github.io/MGDrivE/',
                     target="_blank", 
                     style={
-                        'color': '#ff006eCC', 'font-size': '15px',
+                        'color': '#3d348b', 'font-size': '15px',
                         'textAlign':'left', 'paddingLeft': '5px'
                     }
                 )
             ]), 
             style={
-                'textAlign':'right',
+                'textAlign':'left',
                 'paddingBottom':'0%', 'paddingTop':'0%',
                 'paddingLeft': '2%', 'paddingRight': '2%'
             }
@@ -115,7 +117,7 @@ app.layout = html.Div([
                     "Marshall Lab", href='https://www.marshalllab.com/', 
                     target="_blank",
                     style={
-                        'color': '#a2d2ff', 'font-size': '15px',
+                        'color': '#3d348b', 'font-size': '15px',
                         'paddingLeft': '8px'
                     }
                 ),
@@ -130,7 +132,7 @@ app.layout = html.Div([
                     "Héctor M. Sánchez C.", href='https://chipdelmal.github.io/', 
                     target="_blank",
                     style={
-                        'color': '#a2d2ff', 'font-size': '15px',
+                        'color': '#3d348b', 'font-size': '15px',
                         'paddingLeft': '8px', 'textAlign':'right'
                     }
                 )
