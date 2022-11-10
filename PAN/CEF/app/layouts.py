@@ -114,7 +114,7 @@ fvb_div = html.Div([
         marks=get_marks_float(FVB[0], FVB[1], FVB[-2])
     )
 ])
-
+120/3
 ###############################################################################
 # Output Gauges
 ###############################################################################
@@ -123,15 +123,15 @@ wop_gauge = daq.Gauge(
     color={
         "gradient": True,
         "ranges": {
-            "#FF006E": [0,      3*365], 
-            "#ABE2FB": [3*365,  6*365], 
-            "#FFFFFF": [6*365, 10*365]
+            "#FF006E": [0,  30], 
+            "#ABE2FB": [30, 60], 
+            "#FFFFFF": [60, 120]
         }
     },
-    size=250,
+    size=225,
     label=' ',
-    value=0, min=0, max=365*10,
-    showCurrentValue=True, units="days"
+    value=0, min=0, max=120,
+    showCurrentValue=True, units="months"
 )
 tti_gauge = daq.Gauge(
     id='tti-gauge',
@@ -173,7 +173,7 @@ cpt_gauge = daq.Gauge(
             "#FFFFFF": [60, 100]
         }
     },
-    size=250,
+    size=225,
     label=' ',
     value=0, min=0, max=100,
     showCurrentValue=True, units="(1-AUC)%"

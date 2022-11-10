@@ -3,7 +3,6 @@
 
 import os
 import numpy as np
-from treeinterpreter import treeinterpreter as ti
 from dash import html
 from dash import Dash
 from dash.dependencies import Input, Output
@@ -21,7 +20,8 @@ RF = {
 ###############################################################################
 # Setup Dash App
 ###############################################################################
-app = Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
+dbc_css = "https://cdn.jsdelivr.net/gh/AnnMarieW/dash-bootstrap-templates/dbc.min.css"
+app = Dash(__name__, external_stylesheets=[dbc.themes.YETI, dbc_css])
 server = app.server
 port = int(os.environ.get("PORT", 5000))
 app.title = 'pgSIT Cost Effectiveness'
@@ -30,13 +30,22 @@ app.title = 'pgSIT Cost Effectiveness'
 # Generate Layout
 ###############################################################################
 app.layout = html.Div([
+    html.H2(
+        "pgSIT Explorer [Prototype]", 
+        style={
+            'backgroundColor': '#3d348b',
+            'color': '#ffffff',
+            'textAlign':'center',
+            'paddingBottom':'1%', 'paddingTop':'1%'
+        }
+        # className="bg-primary text-white p-2 mb-2 text-center"
+    ),
     dbc.Row(
         dbc.Col(
-            html.Div([ 
-                html.H2("psSIT Explorer (prototype)"),
-                html.P("This tool is built for exploration purposes only! For accurate results use MGDrivE!"),
-                dbc.Col(html.Hr())
-            ])
+            # html.Div([ 
+            #     html.P("This tool is built for exploration purposes only! For accurate results use MGDrivE!"),
+            #     dbc.Col(html.Hr())
+            # ])
         ), style={
             'textAlign':'center',
             'paddingBottom':'1%', 'paddingTop':'2%'
@@ -60,7 +69,7 @@ app.layout = html.Div([
             html.Div([
                 dbc.Row([
                     html.H4("Window of Protection", style={'textAlign':'center'}),
-                    html.H6("(R2: 0.91, MAE: 0.05, RMSE: 0.12)", style={'textAlign':'center'})
+                    html.H6("(R²: 0.92, MAE: 0.05, RMSE: 0.12)", style={'textAlign':'center', 'font-size': '10px'})
                 ]),
                 dbc.Row([
                     dbc.Col(html.Div(lay.wop_gauge)),
@@ -68,7 +77,7 @@ app.layout = html.Div([
                 ]),
                 dbc.Row([
                     html.H4("Cumulative Potential for Transmission", style={'textAlign':'center'}),
-                    html.H6("(R2: 0.93, MAE: 0.04, RMSE: 0.11)", style={'textAlign':'center'})
+                    html.H6("(R²: 0.94, MAE: 0.04, RMSE: 0.11)", style={'textAlign':'center', 'font-size': '10px'})
                 ]),
                 dbc.Row([
                     dbc.Col(html.Div(lay.cpt_gauge)),
@@ -82,9 +91,19 @@ app.layout = html.Div([
     dbc.Row([
         dbc.Col(
             html.Div([
-                html.Hr(),
-                html.Img(src=app.get_asset_url('SAML.png'), style={'width':'100%'})
-            ])
+                # html.Hr(),
+                # html.Img(src=app.get_asset_url('SAML.png'), style={'width':'100%'}),
+                html.A(
+                    "by Héctor M. Sánchez C.", href='https://chipdelmal.github.io/', 
+                    target="_blank",
+                    style={'color': '#a2d2ff', 'font-size': '15px'}
+                )
+            ]), 
+            style={
+                'textAlign':'right',
+                'paddingBottom':'0%', 'paddingTop':'0%',
+                'paddingLeft': '2%', 'paddingRight': '2%'
+            }
         )
     ])
 ])
@@ -116,7 +135,7 @@ def update_prediction(ren, res, rei, pct, pmd, mfr, mtf, fvb):
         float(RF['WOP'].predict(vct)[0]),
         float(RF['CPT'].predict(vct)[0])
     )
-    return (wop*cst.SIM_TIME, 100-cpt*100)
+    return (wop*cst.SIM_TIME/30, 100-cpt*100)
 
 
 ###############################################################################
