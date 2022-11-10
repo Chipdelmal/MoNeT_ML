@@ -1,6 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
+import os
 import numpy as np
 from treeinterpreter import treeinterpreter as ti
 from dash import html
@@ -22,6 +23,7 @@ RF = {
 ###############################################################################
 app = Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
 server = app.server
+port = int(os.environ.get("PORT", 5000))
 app.title = 'pgSIT Cost Effectiveness'
 
 ###############################################################################
@@ -57,16 +59,16 @@ app.layout = html.Div([
         dbc.Col(
             html.Div([
                 dbc.Row([
-                    html.H5("Window of Protection", style={'textAlign':'center'}),
-                    html.H5("(R2: 0.91, MAE: 125, RMSE: 450)", style={'textAlign':'center'})
+                    html.H4("Window of Protection", style={'textAlign':'center'}),
+                    html.H6("(R2: 0.91, MAE: 0.05, RMSE: 0.12)", style={'textAlign':'center'})
                 ]),
                 dbc.Row([
                     dbc.Col(html.Div(lay.wop_gauge)),
                     # dbc.Col(html.Div(lay.tti_gauge)), 
                 ]),
                 dbc.Row([
-                    html.H5("Cumulative Potential for Transmission", style={'textAlign':'center'}),
-                    html.H5("(R2: 0.93, MAE: 0.03, RMSE: 0.1)", style={'textAlign':'center'})
+                    html.H4("Cumulative Potential for Transmission", style={'textAlign':'center'}),
+                    html.H6("(R2: 0.93, MAE: 0.04, RMSE: 0.11)", style={'textAlign':'center'})
                 ]),
                 dbc.Row([
                     dbc.Col(html.Div(lay.cpt_gauge)),
@@ -121,4 +123,4 @@ def update_prediction(ren, res, rei, pct, pmd, mfr, mtf, fvb):
 # Run Dash App
 ###############################################################################
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port="8050", debug=False)
+    app.run(host="0.0.0.0", port=port, debug=False)
