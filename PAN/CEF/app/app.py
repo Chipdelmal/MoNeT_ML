@@ -33,7 +33,7 @@ with open('version.txt') as f:
 ###############################################################################
 app.layout = html.Div([
     html.H2(
-        f"pgSIT Explorer [v{version}]", 
+        f"pgSIT Explorer [Prototype v{version}]", 
         style={
             'backgroundColor': '#3d348b',
             'color': '#ffffff',
@@ -85,7 +85,7 @@ app.layout = html.Div([
                 # html.Hr(),
                 # html.Img(src=app.get_asset_url('SAML.png'), style={'width':'100%'}),
                 html.A(
-                    "Disclaimer: This tool was created for exploration purposes only. For accurate results use",
+                    "Disclaimer: This tool was created for exploration purposes only and using entomological-based metrics only. For accurate results use",
                     style={
                         'color': '#8d99ae', 'font-size': '15px',
                         'textAlign':'left'
@@ -122,7 +122,7 @@ app.layout = html.Div([
                     }
                 ),
                 html.A(
-                    "by",
+                    "led by",
                     style={
                         'color': '#8d99ae', 'font-size': '15px',
                         'paddingLeft': '8px'

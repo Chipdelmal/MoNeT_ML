@@ -37,7 +37,7 @@ def get_marks_float(start, end, step, multiplier=100):
     cst.SA_RANGES[i] for i in ('ren', 'rer', 'rei')
 ]
 ren_div = html.Div([
-    html.H5('Number of Releases:'),
+    html.H5('Number of Releases (every N days based on the release interval):'),
     dcc.Slider(
         id='ren-slider',
         min=REN[0], max=REN[1],
