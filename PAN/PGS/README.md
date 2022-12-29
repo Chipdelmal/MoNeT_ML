@@ -1,32 +1,28 @@
 # pgSIT Cost-Effectiveness
 
-This model is now live at our [heroku site](https://monet-cef.herokuapp.com/), so take a look!
+This model is now live at our [heroku site](https://monet-pgs.herokuapp.com/), so take a look!
 
-[![](./app/assets/thumb.png)](https://monet-cef.herokuapp.com/)
+[![](./app/assets/thumb.png)](https://monet-pgs.herokuapp.com/)
 
 ## Instructions to Run Locally
 
-Download and install [docker](https://docs.docker.com/get-docker/), then pull our  image from [our dockerhub](https://hub.docker.com/repository/docker/chipdelmal/monet-cef) with:
+Download and install [docker](https://docs.docker.com/get-docker/), then pull our  image from [our dockerhub](https://hub.docker.com/repository/docker/chipdelmal/monet-pgs) with:
 
 ```bash
-docker pull chipdelmal/monet-cef:TAG_NUMBER
+docker pull chipdelmal/monet-pgs:latest
 ```
-
-Replacing the `TAG_NUMBER` with the latest version of the image (eg. `docker pull chipdelmal/monet-cef:0.1.1`).
 
 To run the image, run the following command in the terminal on MacOS or Linux:
 
 ```bash
-docker run -p 5000:5000 -v "$(pwd)"/app:/app --rm chipdelmal/monet-cef:TAG_NUMBER
+docker run -p 5000:5000 -v "$(pwd)"/app:/app --rm chipdelmal/monet-pgs:latest
 ```
 
 or this one for Windows:
 
 ```bash
-docker run -p 5000:5000 -v $pwd/app:/app --rm chipdelmal/monet-cef:0.1.4
+docker run -p 5000:5000 -v $pwd/app:/app --rm chipdelmal/monet-pgs:latest
 ```
-
-Again, replacing the `TAG_NUMBER` with the version downloaded in the previous step (eg. `docker run -p 5000:5000 -v "$(pwd)"/app:/app --rm chipdelmal/monet-cef:0.1.1`).
 
 Finally, open the following address on your favorite browser:
 

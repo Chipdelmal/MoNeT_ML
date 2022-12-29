@@ -35,7 +35,7 @@ app.layout = html.Div([
     html.H2(
         f"pgSITv2 Explorer [Prototype v{version}]", 
         style={
-            'backgroundColor': '#3d348b',
+            'backgroundColor': '#52b69a',
             'color': '#ffffff',
             'textAlign':'center',
             'paddingBottom':'1%', 'paddingTop':'1%'
