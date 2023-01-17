@@ -173,7 +173,7 @@ def update_prediction(ren, res, rei, pct, pmd, mfr, mtf, fvb):
         float(RF['WOP'].predict(vct)[0]),
         float(RF['CPT'].predict(vct)[0])
     )
-    return (wop*cst.SIM_TIME/30, 100-cpt*100)
+    return (wop*cst.SIM_TIME/30, cpt*100)
 
 
 ###############################################################################
