@@ -127,7 +127,7 @@ wop_gauge = daq.Gauge(
             "#FFFFFF": [60, 120]
         }
     },
-    size=225,
+    size=200,
     label=' ',
     value=0, min=0, max=120,
     showCurrentValue=True, units="months"
@@ -172,10 +172,25 @@ cpt_gauge = daq.Gauge(
             "#FFFFFF": [60, 100]
         }
     },
-    size=225,
+    size=200,
     label=' ',
     value=0, min=0, max=100,
     showCurrentValue=True, units="(1-AUC)%"
+)
+poe_gauge = daq.Gauge(
+    id='poe-gauge',
+    color={
+        "gradient": True,
+        "ranges": {
+            "#FF006E": [0,   50],
+            "#ABE2FB": [50,  75], 
+            "#FFFFFF": [75, 100]
+        }
+    },
+    size=200,
+    label=' ',
+    value=0, min=0, max=100,
+    showCurrentValue=True, units="percent"
 )
 
 

@@ -14,8 +14,9 @@ import auxiliary as aux
 import constants as cst
 
 RF = {
-    'WOP': aux.loadModel('HLT', '0.1', 'WOP', 'mlp'),
-    'CPT': aux.loadModel('HLT', '0.1', 'CPT', 'mlp')
+    'WOP': aux.loadModel('HLT', '0.1', 'WOP', 'mlp', QNT=50),
+    'CPT': aux.loadModel('HLT', '0.1', 'CPT', 'mlp', QNT=50),
+    'POE': aux.loadModel('HLT', '0.1', 'POE', 'mlp', QNT=50)
 }
 ###############################################################################
 # Setup Dash App
@@ -53,7 +54,7 @@ app.layout = html.Div([
                     dbc.Col(html.Hr()),
                     lay.pct_div, lay.pmd_div
                 ]), 
-                width=8,
+                width=7,
                 style={'margin-left':'20px'}
             ),
             dbc.Col(
@@ -67,15 +68,26 @@ app.layout = html.Div([
                         # dbc.Col(html.Div(lay.tti_gauge)), 
                     ]),
                     dbc.Row([
+                        html.H4("Probability of Elimination", style={'textAlign':'center', 'font-size': '17.5px'}),
+                        html.H6("(R²: 0.94, MAE: 0.04, RMSE: 0.11)", style={'textAlign':'center', 'font-size': '10px'})
+                    ]),
+                    dbc.Row([
+                        dbc.Col(html.Div(lay.poe_gauge)),
+                    ])
+                ]),
+                width=2
+            ),
+            dbc.Col(
+                html.Div([
+                    dbc.Row([
                         html.H4("Reduction on Cumulative Potential for Transmission", style={'textAlign':'center', 'font-size': '17.5px'}),
                         html.H6("(R²: 0.94, MAE: 0.04, RMSE: 0.11)", style={'textAlign':'center', 'font-size': '10px'})
                     ]),
                     dbc.Row([
                         dbc.Col(html.Div(lay.cpt_gauge)),
                     ])
-                ]), 
-                width=3,
-                style={'margin-left':'3px', 'margin-right':'0px'}
+                ]),
+                width=2
             )
         ], style={'paddingTop': '1%'}
     ),
@@ -152,6 +164,7 @@ app.layout = html.Div([
 @app.callback(
     Output('wop-gauge', 'value'),
     Output('cpt-gauge', 'value'),
+    Output('poe-gauge', 'value'),
     Input('ren-slider', 'value'),
     Input('res-slider', 'value'),
     Input('rei-slider', 'value'),
@@ -169,11 +182,12 @@ def update_prediction(ren, res, rei, pct, pmd, mfr, mtf, fvb):
     )
     vct = np.array([[i[1] for i in probe]])
     # Evaluate models --------------------------------------------------------
-    (wop, cpt) = (
+    (wop, cpt, poe) = (
         float(RF['WOP'].predict(vct)[0]),
-        float(RF['CPT'].predict(vct)[0])
+        float(RF['CPT'].predict(vct)[0]),
+        float(RF['POE'].predict(vct)[0])
     )
-    return (wop*cst.SIM_TIME/30, cpt*100)
+    return (wop*cst.SIM_TIME/30, cpt*100, poe*100)
 
 
 ###############################################################################
