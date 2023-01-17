@@ -14,7 +14,7 @@ dockerBuild:
 	- docker build -t monet-pgs:dev .
 
 dockerRun:
-	- docker run -p 8080:8080 -v "$(pwd)"/app:/app --rm monet-pgs:dev
+	- docker run -p 5000:5000 -v "$(pwd)"/app:/app --rm monet-pgs:dev
 
 ###############################################################################
 # Docker Release
