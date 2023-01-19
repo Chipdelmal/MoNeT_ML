@@ -122,14 +122,14 @@ wop_gauge = daq.Gauge(
     color={
         "gradient": True,
         "ranges": {
-            "#FF006E": [0,  30], 
-            "#ABE2FB": [30, 60], 
-            "#FFFFFF": [60, 120]
+            "#FF006E": [0,  20], 
+            "#ABE2FB": [20, 40], 
+            "#FFFFFF": [40, 60]
         }
     },
     size=200,
     label=' ',
-    value=0, min=0, max=120,
+    value=0, min=0, max=60,
     showCurrentValue=True, units="months"
 )
 tti_gauge = daq.Gauge(

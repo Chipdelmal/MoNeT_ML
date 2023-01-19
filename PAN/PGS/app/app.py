@@ -187,6 +187,8 @@ def update_prediction(ren, res, rei, pct, pmd, mfr, mtf, fvb):
         float(RF['CPT'].predict(vct)[0]),
         float(RF['POE'].predict(vct)[0])
     )
+    if (int(ren)==0 or int(res)==0):
+        (wop, cpt, poe) = (0, 0, 0)
     return (wop*cst.SIM_TIME/30, cpt*100, poe*100)
 
 
