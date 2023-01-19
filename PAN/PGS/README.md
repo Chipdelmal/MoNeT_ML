@@ -1,8 +1,5 @@
-# pgSIT Cost-Effectiveness
+# pgSIT2
 
-This model is now live at our [heroku site](https://monet-pgs.herokuapp.com/), so take a look!
-
-[![](./app/assets/thumb.png)](https://monet-pgs.herokuapp.com/)
 
 ## Instructions to Run Locally
 
