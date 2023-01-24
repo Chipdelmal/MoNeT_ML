@@ -61,7 +61,7 @@ app.layout = html.Div([
                 html.Div([
                     dbc.Row([
                         html.H4("Window of Protection", style={'textAlign':'center', 'font-size': '17.5px'}),
-                        html.H6("(R²: 0.92, MAE: 0.05, RMSE: 0.12)", style={'textAlign':'center', 'font-size': '10px'})
+                        # html.H6("(R²: 0.92, MAE: 0.05, RMSE: 0.12)", style={'textAlign':'center', 'font-size': '10px'})
                     ]),
                     dbc.Row([
                         dbc.Col(html.Div(lay.wop_gauge)),
@@ -69,7 +69,7 @@ app.layout = html.Div([
                     ]),
                     dbc.Row([
                         html.H4("Probability of Elimination", style={'textAlign':'center', 'font-size': '17.5px'}),
-                        html.H6("(R²: 0.94, MAE: 0.04, RMSE: 0.11)", style={'textAlign':'center', 'font-size': '10px'})
+                        # html.H6("(R²: 0.94, MAE: 0.04, RMSE: 0.11)", style={'textAlign':'center', 'font-size': '10px'})
                     ]),
                     dbc.Row([
                         dbc.Col(html.Div(lay.poe_gauge)),
@@ -81,7 +81,7 @@ app.layout = html.Div([
                 html.Div([
                     dbc.Row([
                         html.H4("Reduction on Cumulative Potential for Transmission", style={'textAlign':'center', 'font-size': '17.5px'}),
-                        html.H6("(R²: 0.94, MAE: 0.04, RMSE: 0.11)", style={'textAlign':'center', 'font-size': '10px'})
+                        # html.H6("(R²: 0.94, MAE: 0.04, RMSE: 0.11)", style={'textAlign':'center', 'font-size': '10px'})
                     ]),
                     dbc.Row([
                         dbc.Col(html.Div(lay.cpt_gauge)),
