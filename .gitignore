@@ -1,5 +1,8 @@
 # Serialized files
 *.pkl
+*.pb
+*.index*
+*.data*
 
 # Datasets
 *.csv

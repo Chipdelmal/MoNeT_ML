@@ -14,9 +14,9 @@ import auxiliary as aux
 import constants as cst
 
 RF = {
-    'WOP': aux.loadModel('HLT', '0.1', 'WOP', 'mlp', QNT=None),
-    'CPT': aux.loadModel('HLT', '0.1', 'CPT', 'mlp', QNT=None),
-    'POE': aux.loadModel('HLT', '0.1', 'POE', 'mlp', QNT=50)
+    'WOP': aux.loadModel('HLT', '0.1', 'WOP', 'mlp', QNT=50),
+    'CPT': aux.loadModel('HLT', '0.1', 'CPT', 'krs', QNT=50),
+    'POE': aux.loadModel('HLT', '0.1', 'POE', 'krs', QNT=50)
 }
 ###############################################################################
 # Setup Dash App
@@ -36,7 +36,7 @@ app.layout = html.Div([
     html.H2(
         f"pgSITv2 Explorer [Prototype v{version}]", 
         style={
-            'backgroundColor': '#52b69a',
+            'backgroundColor': '#a2d2ff',
             'color': '#ffffff',
             'textAlign':'center',
             'paddingBottom':'1%', 'paddingTop':'1%'
