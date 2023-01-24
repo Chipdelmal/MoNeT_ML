@@ -1,5 +1,6 @@
 # pgSIT2
 
+![](../../media/pgSIT.png)
 
 ## Instructions to Run Locally
 

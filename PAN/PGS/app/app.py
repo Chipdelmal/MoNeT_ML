@@ -14,7 +14,7 @@ import auxiliary as aux
 import constants as cst
 
 RF = {
-    'WOP': aux.loadModel('HLT', '0.1', 'WOP', 'mlp', QNT=50),
+    'WOP': aux.loadModel('HLT', '0.1', 'WOP', 'krs', QNT=50),
     'CPT': aux.loadModel('HLT', '0.1', 'CPT', 'krs', QNT=50),
     'POE': aux.loadModel('HLT', '0.1', 'POE', 'krs', QNT=50)
 }
@@ -60,15 +60,15 @@ app.layout = html.Div([
             dbc.Col(
                 html.Div([
                     dbc.Row([
-                        html.H4("Window of Protection", style={'textAlign':'center', 'font-size': '17.5px'}),
+                        html.H4("Reduction on Cumulative Potential for Transmission (CPT)", style={'textAlign':'center', 'font-size': '17.5px'}),
                         # html.H6("(R²: 0.92, MAE: 0.05, RMSE: 0.12)", style={'textAlign':'center', 'font-size': '10px'})
                     ]),
                     dbc.Row([
-                        dbc.Col(html.Div(lay.wop_gauge)),
+                        dbc.Col(html.Div(lay.cpt_gauge)),
                         # dbc.Col(html.Div(lay.tti_gauge)), 
                     ]),
                     dbc.Row([
-                        html.H4("Probability of Elimination", style={'textAlign':'center', 'font-size': '17.5px'}),
+                        html.H4("Probability of Elimination (POE)", style={'textAlign':'center', 'font-size': '17.5px'}),
                         # html.H6("(R²: 0.94, MAE: 0.04, RMSE: 0.11)", style={'textAlign':'center', 'font-size': '10px'})
                     ]),
                     dbc.Row([
@@ -80,11 +80,11 @@ app.layout = html.Div([
             dbc.Col(
                 html.Div([
                     dbc.Row([
-                        html.H4("Reduction on Cumulative Potential for Transmission", style={'textAlign':'center', 'font-size': '17.5px'}),
+                        html.H4("Window of Protection (WOP)", style={'textAlign':'center', 'font-size': '17.5px'}),
                         # html.H6("(R²: 0.94, MAE: 0.04, RMSE: 0.11)", style={'textAlign':'center', 'font-size': '10px'})
                     ]),
                     dbc.Row([
-                        dbc.Col(html.Div(lay.cpt_gauge)),
+                        dbc.Col(html.Div(lay.wop_gauge)),
                     ])
                 ]),
                 width=2
@@ -95,7 +95,6 @@ app.layout = html.Div([
         dbc.Col(
             html.Div([
                 # html.Hr(),
-                # html.Img(src=app.get_asset_url('SAML.png'), style={'width':'100%'}),
                 html.A(
                     "Disclaimer: This tool was created for exploration purposes only and using entomological-based metrics only. For accurate results use",
                     style={
@@ -122,7 +121,7 @@ app.layout = html.Div([
         dbc.Col(
             html.Div([
                 html.A(
-                    "Dev. @",
+                    "Dev @",
                     style={'color': '#8d99ae', 'font-size': '15px'}
                 ),
                 html.A(
@@ -154,6 +153,16 @@ app.layout = html.Div([
                 'paddingBottom':'0%', 'paddingTop':'0%',
                 'paddingLeft': '2%', 'paddingRight': '2%'
             }
+        )
+    ]),
+    dbc.Row([dbc.Col(html.Div([html.Hr()]))]),
+    dbc.Row([
+        dbc.Col(
+            html.Div([
+                dbc.Col(html.Div(["", "CPT", html.Img(src=app.get_asset_url('HLT_50Q_10T_CPT-krs-MLR.png'), style={'width':'90%'})])),
+                dbc.Col(html.Div(["", "POE", html.Img(src=app.get_asset_url('HLT_50Q_10T_POE-krs-MLR.png'), style={'width':'90%'})])),
+                dbc.Col(html.Div(["","WOP", html.Img(src=app.get_asset_url('HLT_50Q_10T_WOP-krs-MLR.png'), style={'width':'90%'})])),
+            ], style={'paddingLeft': '5%'})
         )
     ])
 ], style={'width': "99.2%"})
@@ -188,8 +197,14 @@ def update_prediction(ren, res, rei, pct, pmd, mfr, mtf, fvb):
         float(RF['POE'].predict(vct)[0])
     )
     if (int(ren)==0 or int(res)==0):
-        (wop, cpt, poe) = (0, 0, 0)
-    return (wop*cst.SIM_TIME/30, cpt*100, poe*100)
+        fMetrics = (0, 0, 0)
+    else:
+        fMetrics = (
+            wop*(cst.SIM_TIME+cst.REL_START)/30, 
+            (cpt+cst.REL_START/cst.SIM_TIME)*100, 
+            poe*100
+        )
+    return fMetrics
 
 
 ###############################################################################

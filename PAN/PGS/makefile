@@ -21,8 +21,8 @@ dockerRun:
 ###############################################################################
 VERSION=$(file < ./app/version.txt)
 dockerRelease:
-	- docker build -t chipdelmal/monet-pgs:$(VERSION) .
-	- docker push chipdelmal/monet-pgs:$(VERSION)
+	# - docker build -t chipdelmal/monet-pgs:$(VERSION) .
+	# - docker push chipdelmal/monet-pgs:$(VERSION)
 	- docker build -t chipdelmal/monet-pgs:latest .
 	- docker push chipdelmal/monet-pgs:latest
 
