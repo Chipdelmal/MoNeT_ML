@@ -155,7 +155,15 @@ app.layout = html.Div([
             }
         )
     ]),
-    dbc.Row([dbc.Col(html.Div([html.Hr()]))]),
+    dbc.Row([
+        dbc.Col(
+            html.Div([
+                    html.Hr(),
+                    html.H4("Regression Models' PDP/ICE Plots")
+                ]
+            ), style={'textAlign': 'center'}
+        )
+    ]),
     dbc.Row([
         dbc.Col(
             html.Div([
