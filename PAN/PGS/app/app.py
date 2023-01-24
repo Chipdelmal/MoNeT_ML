@@ -96,7 +96,7 @@ app.layout = html.Div([
             html.Div([
                 # html.Hr(),
                 html.A(
-                    "Disclaimer: This tool was created for exploration purposes only and using entomological-based metrics only. For accurate results use",
+                    "Disclaimer: This tool was created for exploration purposes only (using entomological-based metrics). For accurate results use",
                     style={
                         'color': '#8d99ae', 'font-size': '15px',
                         'textAlign':'left'
