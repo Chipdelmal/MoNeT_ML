@@ -167,9 +167,9 @@ app.layout = html.Div([
     dbc.Row([
         dbc.Col(
             html.Div([
-                dbc.Col(html.Div(["", "CPT", html.Img(src=app.get_asset_url('HLT_50Q_10T_CPT-krs-MLR.png'), style={'width':'90%'})])),
-                dbc.Col(html.Div(["", "POE", html.Img(src=app.get_asset_url('HLT_50Q_10T_POE-krs-MLR.png'), style={'width':'90%'})])),
-                dbc.Col(html.Div(["","WOP", html.Img(src=app.get_asset_url('HLT_50Q_10T_WOP-krs-MLR.png'), style={'width':'90%'})])),
+                dbc.Col(html.Div(["", "1-CPT (R² 0.93)", html.Img(src=app.get_asset_url('HLT_50Q_10T_CPT-krs-MLR.png'), style={'width':'90%'})])),
+                dbc.Col(html.Div(["", "POE (R² 0.92)", html.Img(src=app.get_asset_url('HLT_50Q_10T_POE-krs-MLR.png'), style={'width':'90%'})])),
+                dbc.Col(html.Div(["","WOP (R² 0.88)", html.Img(src=app.get_asset_url('HLT_50Q_10T_WOP-krs-MLR.png'), style={'width':'90%'})])),
             ], style={'paddingLeft': '5%'})
         )
     ])
