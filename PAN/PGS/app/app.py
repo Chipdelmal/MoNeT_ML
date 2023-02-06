@@ -14,7 +14,7 @@ import auxiliary as aux
 import constants as cst
 
 RF = {
-    'WOP': aux.loadModel('HLT', '0.1', 'WOP', 'krs', QNT=50),
+    'WOP': aux.loadModel('HLT', '0.1', 'WOP', 'krs', QNT=None),
     'CPT': aux.loadModel('HLT', '0.1', 'CPT', 'krs', QNT=50),
     'POE': aux.loadModel('HLT', '0.1', 'POE', 'krs', QNT=50)
 }
@@ -169,7 +169,7 @@ app.layout = html.Div([
             html.Div([
                 dbc.Col(html.Div(["", "1-CPT (R² 0.93)", html.Img(src=app.get_asset_url('HLT_50Q_10T_CPT-krs-MLR.png'), style={'width':'90%'})])),
                 dbc.Col(html.Div(["", "POE (R² 0.92)", html.Img(src=app.get_asset_url('HLT_50Q_10T_POE-krs-MLR.png'), style={'width':'90%'})])),
-                dbc.Col(html.Div(["","WOP (R² 0.88)", html.Img(src=app.get_asset_url('HLT_50Q_10T_WOP-krs-MLR.png'), style={'width':'90%'})])),
+                dbc.Col(html.Div(["","WOP (R² 0.88)", html.Img(src=app.get_asset_url('HLT_10T_WOP-krs-MLR.png'), style={'width':'90%'})])),
             ], style={'paddingLeft': '5%'})
         )
     ])
