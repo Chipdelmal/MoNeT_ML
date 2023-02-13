@@ -14,7 +14,7 @@ import auxiliary as aux
 import constants as cst
 
 RF = {
-    'WOP': aux.loadModel('HLT', '0.1', 'WOP', 'krs', QNT=None),
+    'WOP': aux.loadModel('HLT', '0.1', 'WOP', 'krs', QNT=50),
     'CPT': aux.loadModel('HLT', '0.1', 'CPT', 'krs', QNT=50),
     'POE': aux.loadModel('HLT', '0.1', 'POE', 'krs', QNT=50)
 }
