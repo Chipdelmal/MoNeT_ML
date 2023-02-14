@@ -24,7 +24,7 @@ RF = {
 dbc_css = "https://cdn.jsdelivr.net/gh/AnnMarieW/dash-bootstrap-templates/dbc.min.css"
 app = Dash(__name__, external_stylesheets=[dbc.themes.YETI])
 server = app.server
-port = int(os.environ.get("PORT", 5000))
+port = int(os.environ.get("PORT", 8000))
 app.title = 'pgSIT2'
 
 with open('version.txt') as f:
