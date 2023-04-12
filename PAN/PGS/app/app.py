@@ -60,19 +60,19 @@ app.layout = html.Div([
             dbc.Col(
                 html.Div([
                     dbc.Row([
+                        html.H4("Window of Protection (WOP)", style={'textAlign':'center', 'font-size': '17.5px'}),
+                        # html.H6("(R²: 0.94, MAE: 0.04, RMSE: 0.11)", style={'textAlign':'center', 'font-size': '10px'})
+                    ]),
+                    dbc.Row([
+                        dbc.Col(html.Div(lay.wop_gauge)),
+                    ]),
+                    dbc.Row([
                         html.H4("Reduction on Cumulative Potential for Transmission (CPT)", style={'textAlign':'center', 'font-size': '17.5px'}),
                         # html.H6("(R²: 0.92, MAE: 0.05, RMSE: 0.12)", style={'textAlign':'center', 'font-size': '10px'})
                     ]),
                     dbc.Row([
                         dbc.Col(html.Div(lay.cpt_gauge)),
                         # dbc.Col(html.Div(lay.tti_gauge)), 
-                    ]),
-                    dbc.Row([
-                        html.H4("Probability of Elimination (POE)", style={'textAlign':'center', 'font-size': '17.5px'}),
-                        # html.H6("(R²: 0.94, MAE: 0.04, RMSE: 0.11)", style={'textAlign':'center', 'font-size': '10px'})
-                    ]),
-                    dbc.Row([
-                        dbc.Col(html.Div(lay.poe_gauge)),
                     ])
                 ]),
                 width=2
@@ -80,11 +80,11 @@ app.layout = html.Div([
             dbc.Col(
                 html.Div([
                     dbc.Row([
-                        html.H4("Window of Protection (WOP)", style={'textAlign':'center', 'font-size': '17.5px'}),
+                        html.H4("Probability of Elimination (POE)", style={'textAlign':'center', 'font-size': '17.5px'}),
                         # html.H6("(R²: 0.94, MAE: 0.04, RMSE: 0.11)", style={'textAlign':'center', 'font-size': '10px'})
                     ]),
                     dbc.Row([
-                        dbc.Col(html.Div(lay.wop_gauge)),
+                        dbc.Col(html.Div(lay.poe_gauge)),
                     ])
                 ]),
                 width=2
