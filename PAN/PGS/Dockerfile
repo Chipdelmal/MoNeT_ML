@@ -6,6 +6,8 @@ ENV DASH_DEBUG_MODE False
 # Update and install linux packages
 ###############################################################################
 RUN apt-get update \
+    && apt-get -y install gcc mono-mcs \
+    && rm -rf /var/lib/apt/lists/* \
     && pip install --upgrade pip
 ###############################################################################
 # Install python requirements
