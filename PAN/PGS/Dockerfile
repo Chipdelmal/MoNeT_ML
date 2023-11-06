@@ -26,5 +26,5 @@ COPY app/ ./
 # Run server
 ###############################################################################
 EXPOSE 8000
-CMD ["gunicorn", "-b", "0.0.0.0:8000", "--reload", "app:server"]
+CMD ["gunicorn", "--timeout", "1000", "-b", "0.0.0.0:8000", "--reload", "app:server"]
 # CMD ["python", "app.py"]
