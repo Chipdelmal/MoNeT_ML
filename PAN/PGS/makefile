@@ -13,6 +13,14 @@ dockerBuild:
 	- docker rmi monet-pgs:dev -f
 	- docker build -t monet-pgs:dev .
 
+docker_release:
+	- make jupyter_all
+	- docker buildx build . \
+		--platform=linux/amd64,linux/arm64 \
+		-t chipdelmal/mgsurve_webinar2023:$(version) \
+		-t chipdelmal/mgsurve_webinar2023:latest \
+		--push
+
 dockerRun:
 	- docker run -p 8000:8000 -v ${PWD}/app:/app --rm monet-pgs:dev
 
