@@ -29,7 +29,7 @@ dependencies:
   - llvm-openmp=14.0.4=ha654fa7_0
   - markupsafe=2.1.1=py310h90acd4f_2
   - ncurses=6.3=h96cf925_1
-  - numpy=1.23.4=py310h1b7c290_1
+  - numpy=1.22.3
   - openssl=3.0.7=hfd90126_1
   - pip=22.3=pyhd8ed1ab_0
   - plotly=5.11.0=pyhd8ed1ab_0
