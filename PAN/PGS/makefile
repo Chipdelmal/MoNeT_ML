@@ -1,3 +1,4 @@
+#!/bin/sh
 
 ###############################################################################
 # Freeze Requirements
@@ -13,13 +14,6 @@ dockerBuild:
 	- docker rmi monet-pgs:dev -f
 	- docker build -t monet-pgs:dev .
 
-dockerRelease:
-	- docker buildx build . \
-		--platform=linux/amd64,linux/arm64 \
-		-t chipdelmal/monet-pgs:$(version) \
-		-t chipdelmal/monet-pgs:latest \
-		--push
-
 dockerRun:
 	- docker run -p 8000:8000 -v ${PWD}/app:/app --rm monet-pgs:dev
 
@@ -27,11 +21,16 @@ dockerRun:
 # Docker Release
 ###############################################################################
 VERSION=$(file < ./app/version.txt)
+
+dockerVersion:
+	- printf "$(VERSION)"
+
 dockerRelease:
-	- docker build -t chipdelmal/monet-pgs:$(VERSION) .
-	- docker push chipdelmal/monet-pgs:$(VERSION)
-	- docker build -t chipdelmal/monet-pgs:latest .
-	- docker push chipdelmal/monet-pgs:latest
+	- docker buildx build . \
+		--platform=linux/amd64,linux/arm64 \
+		-t chipdelmal/monet-pgs:$(VERSION) \
+		-t chipdelmal/monet-pgs:latest \
+		--push
 
 dockerPull:
 	- docker pull chipdelmal/monet-pgs:$(VERSION)
